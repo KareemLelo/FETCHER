@@ -23,11 +23,11 @@ function App() {
             <NavBar />
           </GridItem>
           <Show above="lg">
-            <GridItem area={"aside"} backgroundColor={"gray"}>
+            <GridItem area={"aside"} backgroundColor={"white"}>
               <SideBar />
             </GridItem>
           </Show>
-          <GridItem area={"main"} backgroundColor={"lightblue"}>
+          <GridItem area={"main"} backgroundColor={"white"}>
             main
           </GridItem>
         </Grid>
