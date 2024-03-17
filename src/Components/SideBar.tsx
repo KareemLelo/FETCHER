@@ -1,5 +1,5 @@
 import { useState } from "react";
-import avatar from "../assets/Avatar.png";
+import avatar from "../assets/Icons/Avatar.png";
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
@@ -25,7 +25,7 @@ const SideBar = () => {
         } bg-dark-purple h-min p-5  pt-8 relative duration-300 rounded-b-lg`}
       >
         <img
-          src="./src/assets/control.png"
+          src="./src/assets/Icons/control.png"
           className={`border-solid border-dark-purple absolute cursor-pointer rounded-full
            -right-3 top-9 w-7 border-2  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
@@ -48,7 +48,7 @@ const SideBar = () => {
               } `}
               onClick={() => setMenuHeading(Menu.title)}
             >
-              <img src={`./src/assets/${Menu.src}.png`} />
+              <img src={`./src/assets/Icons/${Menu.src}.png`} />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
                 {Menu.title}
               </span>
