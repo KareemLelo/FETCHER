@@ -17,7 +17,7 @@ const SideBar = () => {
   const hide = !open && "scale-0";
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <div
         className={` ${
           open ? "w-72" : "w-20 "
