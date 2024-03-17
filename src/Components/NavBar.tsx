@@ -23,14 +23,14 @@ const NavBar = () => {
         <HStack justifyContent={"space-between"} className="p-3">
           <Image src={logo} boxSize={"40px"} />
           <List display={"flex"}>
-            {pages.map((page, index) => (
+            {pages.map((pages, index) => (
               <ListItem
                 key={index}
                 className="border-2 border-solid border-white rounded-lg p-1"
                 marginX={10}
               >
                 <Button variant={"link"} onClick={() => setPage(page)}>
-                  {page}
+                  {pages}
                 </Button>
               </ListItem>
             ))}
