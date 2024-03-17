@@ -19,9 +19,9 @@ const SideBar = () => {
   return (
     <div className="flex">
       <div
-        className={`${
-          open ? "w-72" : "w-20"
-        } w-72 h-min duration-300 p-5 pt-7 bg-dark-purple relative rounded-b-lg`}
+        className={` ${
+          open ? "w-72" : "w-20 "
+        } bg-dark-purple h-min p-5  pt-8 relative duration-300 rounded-b-lg`}
       >
         <img
           src="./src/assets/control.png"
