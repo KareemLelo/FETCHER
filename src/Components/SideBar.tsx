@@ -3,6 +3,7 @@ import avatar from "../assets/Avatar.png";
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
+  const [MenuHeading, setMenuHeading] = useState("");
   const Menus = [
     { title: "My Profile", src: "Chart_fill" },
     { title: "My Credit Card", src: "Chat" },
@@ -17,7 +18,7 @@ const SideBar = () => {
   const hide = !open && "scale-0";
 
   return (
-    <div className="flex ">
+    <div className="flex">
       <div
         className={` ${
           open ? "w-72" : "w-20 "
@@ -45,6 +46,7 @@ const SideBar = () => {
               ${Menu.gap ? "mt-9" : "mt-2"} ${
                 index === 0 && "bg-light-white"
               } `}
+              onClick={() => setMenuHeading(Menu.title)}
             >
               <img src={`./src/assets/${Menu.src}.png`} />
               <span className={`${!open && "hidden"} origin-left duration-200`}>
@@ -55,7 +57,9 @@ const SideBar = () => {
         </ul>
       </div>
       <div className="h-screen flex-1 p-7">
-        <h1 className="text-2xl font-semibold ">Home Page</h1>
+        <h1 className="text-2xl font-semibold ">
+          {MenuHeading || "Home Page"}
+        </h1>
       </div>
     </div>
   );

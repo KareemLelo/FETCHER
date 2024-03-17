@@ -1,5 +1,6 @@
 import { Grid, GridItem, Show } from "@chakra-ui/react";
 import "./App.css";
+import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
@@ -13,12 +14,16 @@ function App() {
             base: `"nav" "main"`,
             lg: `"nav nav" "aside main"`,
           }}
+          templateColumns={{
+            base: "1fr",
+            lg: "400px 1fr",
+          }}
         >
           <GridItem area={"nav"}>
             <NavBar />
           </GridItem>
           <Show above="lg">
-            <GridItem area={"aside"} backgroundColor={"white"}>
+            <GridItem area={"aside"} backgroundColor={"gray"}>
               <SideBar />
             </GridItem>
           </Show>
