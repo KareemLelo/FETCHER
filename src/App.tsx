@@ -4,7 +4,6 @@ import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
-import QuestCards from "./Components/QuestCards";
 import QuestGrid from "./Components/QuestGrid";
 
 function App() {
@@ -52,7 +51,7 @@ function App() {
           }}
           templateColumns={{
             base: "1fr",
-            lg: "400px 1fr",
+            lg: "1fr lg",
           }}
         >
           <GridItem area={"nav"}>
@@ -64,7 +63,7 @@ function App() {
             </GridItem>
           </Show>
           <GridItem area={"main"} backgroundColor={"white"}>
-            <QuestGrid />
+            {/* <QuestGrid /> */}
           </GridItem>
         </Grid>
       </div>

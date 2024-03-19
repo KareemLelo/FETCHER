@@ -18,7 +18,7 @@ const SideBar = () => {
   const hide = !open && "scale-0";
 
   return (
-    <div className="flex">
+    <div className={`${!open ? "w-min" : "w-90"} flex`}>
       <div
         className={` ${
           open ? "w-72" : "w-20 "
@@ -27,7 +27,7 @@ const SideBar = () => {
         <img
           src="./src/assets/Icons/control.png"
           className={`border-solid border-dark-purple absolute cursor-pointer rounded-full
-           -right-3 top-9 w-7 border-2  ${!open && "rotate-180"}`}
+           -right-3 top-9 w-7 border-2  ${!open && "rotate-180"} `}
           onClick={() => setOpen(!open)}
         />
         <div className={`flex gap-x-4 items-center `}>
