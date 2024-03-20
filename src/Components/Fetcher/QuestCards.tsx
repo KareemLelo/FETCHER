@@ -5,6 +5,7 @@ import {
   Heading,
   Text,
   Button,
+  Center,
 } from "@chakra-ui/react";
 import { Quest } from "../../Services/QuestInterface";
 
@@ -15,12 +16,12 @@ interface Props {
 const QuestCards = ({ quests }: Props) => {
   return (
     <Card
-      className="mt-10 "
       backgroundColor={"#081A51"}
       maxW="sm"
       borderRadius={10}
       overflow={"hidden"}
-      width={"300px"}
+      minW="200px"
+      width={{ sm: "250px" }}
     >
       <CardBody>
         <Heading fontSize="2xl" fontFamily={"sans"} paddingBottom={"15px"}>

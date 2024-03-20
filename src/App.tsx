@@ -5,7 +5,7 @@ import "@fontsource/poppins";
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
 import QuestGrid from "./Components/Fetcher/QuestGrid";
-import CreditCardGrid from "./Components/CreditCardGrid";
+import QuestForm from "./Components/QuestForm";
 
 function App() {
   const quests = [
@@ -48,24 +48,27 @@ function App() {
         <Grid
           templateAreas={{
             base: `"nav" "main"`,
-            lg: `"nav nav" "aside main"`,
+            md: `"nav nav" "aside main"`,
           }}
           templateColumns={{
             base: "1fr",
-            lg: "1fr lg",
+            md: "400px 1fr",
           }}
         >
           <GridItem area={"nav"}>
             <NavBar />
           </GridItem>
-          <Show above="lg">
-            <GridItem area={"aside"} backgroundColor={"white"}>
-              <SideBar />
-            </GridItem>
-          </Show>
-          <GridItem area={"main"} backgroundColor={"white"}>
-            {/* <QuestGrid /> */}
-            {/* <CreditCardGrid /> */}
+          <GridItem area={"aside"} backgroundColor={"white"}>
+            <SideBar />
+          </GridItem>
+          <GridItem
+            area={"main"}
+            backgroundColor={"white"}
+            maxWidth="100%"
+            overflow="auto"
+          >
+            <QuestGrid />
+            {/* <QuestForm /> */}
           </GridItem>
         </Grid>
       </div>

@@ -45,9 +45,9 @@ const QuestGrid = () => {
       <div>
         <ul>
           <SimpleGrid
-            className="flex justify-center"
-            columns={{ sm: 1, md: 2, lg: 3 }}
-            spacingX={40}
+            className="flex justify-center mt-10"
+            columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+            gap={5}
           >
             {quests.map((quest) => (
               <QuestCards quests={quest} />
