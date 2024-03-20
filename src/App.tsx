@@ -4,7 +4,8 @@ import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
-import QuestGrid from "./Components/QuestGrid";
+import QuestGrid from "./Components/Fetcher/QuestGrid";
+import CreditCardGrid from "./Components/CreditCardGrid";
 
 function App() {
   const quests = [
@@ -64,6 +65,7 @@ function App() {
           </Show>
           <GridItem area={"main"} backgroundColor={"white"}>
             {/* <QuestGrid /> */}
+            {/* <CreditCardGrid /> */}
           </GridItem>
         </Grid>
       </div>

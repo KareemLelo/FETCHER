@@ -1,16 +1,12 @@
-import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
-  Image,
   Heading,
   Text,
   Button,
-  Icon,
 } from "@chakra-ui/react";
-import { Quest } from "./QuestGrid";
+import { Quest } from "../../Services/QuestInterface";
 
 interface Props {
   quests: Quest;

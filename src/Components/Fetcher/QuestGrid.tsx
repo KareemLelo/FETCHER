@@ -1,18 +1,9 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import QuestCards from "./QuestCards";
 
-export interface Quest {
-  name: string;
-  itemType: string;
-  quantity: number;
-  direction: string;
-  weight: number;
-  price: number;
-}
-
-interface Props {
+/* interface Props {
   quests: Quest[];
-}
+} */
 
 const QuestGrid = () => {
   const quests = [

@@ -22,7 +22,7 @@ const SideBar = () => {
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-dark-purple h-min p-5  pt-8 relative duration-300 rounded-b-lg`}
+        } bg-dark-purple h-screen p-5  pt-8 relative duration-300 rounded-b-lg`}
       >
         <img
           src="./src/assets/Icons/control.png"
