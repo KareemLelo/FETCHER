@@ -39,15 +39,26 @@ const QuestGrid = () => {
       weight: 0.5,
       price: 135,
     },
+    {
+      name: "Certificate",
+      itemType: "Document",
+      quantity: 10,
+      direction: "UK",
+      weight: 0.5,
+      price: 135,
+    },
   ];
   return (
     <>
       <div>
         <ul>
           <SimpleGrid
+            minChildWidth={"250px"} // or use "columns" prop for fixed number of columns
+            spacingY="10px"
+            spacingX={"-10px"} // Adjust the spacing between items
+            width="100%"
             className="flex justify-center mt-10"
-            columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-            gap={5}
+            columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}
           >
             {quests.map((quest) => (
               <QuestCards quests={quest} />

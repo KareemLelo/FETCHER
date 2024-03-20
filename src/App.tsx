@@ -58,7 +58,11 @@ function App() {
           <GridItem area={"nav"}>
             <NavBar />
           </GridItem>
-          <GridItem area={"aside"} backgroundColor={"white"}>
+          <GridItem
+            area={"aside"}
+            backgroundColor={"white"}
+            display={{ base: "none", md: "block" }}
+          >
             <SideBar />
           </GridItem>
           <GridItem
