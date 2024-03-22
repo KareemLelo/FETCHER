@@ -1,16 +1,13 @@
-interface Login {
-  email: string;
-  password: number;
-}
+import React from "react";
 
-const Login = () => {
+const Register = () => {
   return (
     <section className="min-h-screen flex items-center justify-center">
-      <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
-        <div className="md:w-1/2 px-8 md:px-16">
-          <h2 className="font-bold text-2xl text-[#002D74]">Login</h2>
+      <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center border-2 border-solid border-red-600">
+        <div className="md:w-1/2 px-8 md:px-16 border-2 border-solid border-red-600">
+          <h2 className="font-bold text-2xl text-[#002D74]">Register</h2>
           <p className="text-xs mt-4 text-[#002D74]">
-            If you are already a member, easily log in
+            Be Fetcher Or QuestMaker With Us
           </p>
 
           <form action="" className="flex flex-col gap-4 ">
@@ -67,4 +64,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

@@ -6,6 +6,8 @@ import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
 import QuestGrid from "./Components/Fetcher/QuestGrid";
 import QuestForm from "./Components/QuestForm";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
 
 function App() {
   const quests = [
@@ -54,25 +56,19 @@ function App() {
             base: "1fr",
             md: "400px 1fr",
           }}
+          backgroundColor={"white"}
         >
           <GridItem area={"nav"}>
             <NavBar />
           </GridItem>
-          <GridItem
-            area={"aside"}
-            backgroundColor={"white"}
-            display={{ base: "none", md: "block" }}
-          >
+          <GridItem area={"aside"} display={{ base: "none", md: "block" }}>
             <SideBar />
           </GridItem>
-          <GridItem
-            area={"main"}
-            backgroundColor={"white"}
-            maxWidth="100%"
-            overflow="auto"
-          >
-            <QuestGrid />
+          <GridItem area={"main"} maxWidth="100%" overflow="auto">
+            {/* <QuestGrid /> */}
             {/* <QuestForm /> */}
+            {/* <Login /> */}
+            <Register />
           </GridItem>
         </Grid>
       </div>
