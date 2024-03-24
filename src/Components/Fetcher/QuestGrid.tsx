@@ -1,12 +1,29 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  Button,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+} from "@chakra-ui/react";
 import QuestCards from "./QuestCards";
+import QuestForm from "../QuestForm"; // Adjust this import based on default or named export
+import { useState } from "react";
+import { Quest } from "../../Services/QuestInterface";
 
 /* interface Props {
   quests: Quest[];
 } */
 
 const QuestGrid = () => {
-  const quests = [
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [quests, setQuests] = useState<Quest[]>([]);
+
+  const handleAddQuest = (newQuest: Quest) => {
+    setQuests([...quests, newQuest]);
+    onClose(); // Close the modal after adding a new quest
+  };
+  const quest = [
     {
       name: "MacBook",
       itemType: "Laptop",
@@ -50,22 +67,29 @@ const QuestGrid = () => {
   ];
   return (
     <>
-      <div>
-        <ul>
-          <SimpleGrid
-            minChildWidth={"250px"} // or use "columns" prop for fixed number of columns
-            spacingY="10px"
-            spacingX={"-10px"} // Adjust the spacing between items
-            width="100%"
-            className="flex justify-center mt-10"
-            columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}
-          >
-            {quests.map((quest) => (
-              <QuestCards quests={quest} />
-            ))}
-          </SimpleGrid>
-        </ul>
-      </div>
+      <Button onClick={onOpen} mb={4}>
+        Create a Quest
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <QuestForm onSave={handleAddQuest} />
+        </ModalContent>
+      </Modal>
+      <ul>
+        <SimpleGrid
+          minChildWidth={"250px"}
+          spacingY="20px"
+          spacingX="20px"
+          width="100%"
+          className="flex justify-center mt-10"
+          columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}
+        >
+          {quest.map((quest, index) => (
+            <QuestCards key={index} quests={quest} />
+          ))}
+        </SimpleGrid>
+      </ul>
     </>
   );
 };

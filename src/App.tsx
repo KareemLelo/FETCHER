@@ -1,16 +1,18 @@
-import { Grid, GridItem, Show } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
+import CreditCardGrid from "./Components/CreditCardGrid";
 import QuestGrid from "./Components/Fetcher/QuestGrid";
+/* import QuestGrid from "./Components/Fetcher/QuestGrid";
 import QuestForm from "./Components/QuestForm";
 import Login from "./Components/Login";
-import Register from "./Components/Register";
+import Register from "./Components/Register"; */
 
 function App() {
-  const quests = [
+  /*  const quests = [
     {
       name: "MacBook",
       itemType: "Laptop",
@@ -43,7 +45,7 @@ function App() {
       weight: 0.5,
       price: 135,
     },
-  ];
+  ]; */
   return (
     <>
       <div>
@@ -68,10 +70,11 @@ function App() {
             <SideBar />
           </GridItem>
           <GridItem area={"main"} maxWidth="100%" overflow="auto">
-            {/* <QuestGrid /> */}
+            <QuestGrid />
             {/* <QuestForm /> */}
             {/* <Login /> */}
             {/* <Register /> */}
+            {/* <CreditCardGrid /> */}
           </GridItem>
         </Grid>
       </div>

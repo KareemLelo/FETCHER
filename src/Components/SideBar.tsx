@@ -10,9 +10,6 @@ const SideBar = () => {
     { title: "New Quest", src: "User", gap: true },
     { title: "View My Fetcher ", src: "Calendar" },
     { title: "Track My Order", src: "Search" },
-    { title: "Analytics", src: "Chart" },
-    { title: "Files ", src: "Folder", gap: true },
-    { title: "Setting", src: "Setting" },
   ];
 
   const hide = !open && "scale-0";
@@ -22,7 +19,7 @@ const SideBar = () => {
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-dark-purple h-screen p-5  pt-8 relative duration-300 rounded-b-lg`}
+        } bg-dark-purple h-min p-5  pt-8 relative duration-300 rounded-b-lg`}
       >
         <img
           src="./src/assets/Icons/control.png"

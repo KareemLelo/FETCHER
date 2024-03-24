@@ -7,7 +7,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-import { CreditInfo } from "./CreditCardGrid";
+import { CreditInfo } from "./CreditCardForm";
 
 interface Props {
   creditCard: CreditInfo;
@@ -16,7 +16,7 @@ interface Props {
 const CreditCard = ({ creditCard }: Props) => {
   return (
     <Card
-      className="mt-10 "
+      className=" "
       backgroundColor={"#081A51"}
       maxW="sm"
       borderRadius={10}
