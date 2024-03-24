@@ -61,14 +61,17 @@ function App() {
           <GridItem area={"nav"}>
             <NavBar />
           </GridItem>
-          <GridItem area={"aside"} display={{ base: "none", md: "block" }}>
+          <GridItem
+            area={"aside"}
+            display={{ base: "none", md: "block" }} // This line controls the visibility based on the breakpoint
+          >
             <SideBar />
           </GridItem>
           <GridItem area={"main"} maxWidth="100%" overflow="auto">
             {/* <QuestGrid /> */}
             {/* <QuestForm /> */}
             {/* <Login /> */}
-            <Register />
+            {/* <Register /> */}
           </GridItem>
         </Grid>
       </div>
