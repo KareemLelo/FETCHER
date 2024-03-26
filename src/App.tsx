@@ -10,6 +10,7 @@ import QuestForm from "./Components/QuestForm";
 import Login from "./Components/Login";
 import Register from "./Components/Register"; */
 import QuestListGrid from "./Components/Fetcher/QuestListGrid";
+import MyProfile from "./Components/MyProfile";
 
 function App() {
   const quests = [
@@ -75,7 +76,8 @@ function App() {
             {/* <Login /> */}
             {/* <Register /> */}
             {/* <CreditCardGrid /> */}
-            <QuestListGrid quests={quests} />
+            {/* <QuestListGrid quests={quests} /> */}
+            <MyProfile />
           </GridItem>
         </Grid>
       </div>
