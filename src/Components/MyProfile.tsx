@@ -62,7 +62,15 @@ const MyProfile = () => {
   };
 
   return (
-    <Box bg={cardBg} p={6} borderRadius="lg" boxShadow="md" color={textColor}>
+    <Box
+      bg={cardBg}
+      p={6}
+      m={{ base: 5, md: 10 }}
+      borderRadius="lg"
+      boxShadow="md"
+      color={textColor}
+      width={{ base: "80%", lg: "800px" }}
+    >
       <VStack spacing={5} align="stretch">
         <Box display="flex" justifyContent="center">
           <Avatar
