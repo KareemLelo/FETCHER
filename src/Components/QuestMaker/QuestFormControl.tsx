@@ -74,6 +74,8 @@ export const QuestForm = ({ onSave, onClose }: QuestFormProps) => {
               name="name"
               value={quest.name}
               onChange={handleChange}
+              borderColor="#A9BFA4"
+              _focus={{ borderColor: "#F2D096" }}
               placeholder="Quest Name"
             />
           </FormControl>
@@ -85,6 +87,8 @@ export const QuestForm = ({ onSave, onClose }: QuestFormProps) => {
               name="itemType"
               value={quest.itemType}
               onChange={handleChange}
+              borderColor="#A9BFA4"
+              _focus={{ borderColor: "#F2D096" }}
               placeholder="Item Type"
             />
           </FormControl>
@@ -97,6 +101,8 @@ export const QuestForm = ({ onSave, onClose }: QuestFormProps) => {
                 name="quantity"
                 value={quest.quantity.toString()}
                 onChange={handleChange}
+                borderColor="#A9BFA4"
+                _focus={{ borderColor: "#F2D096" }}
               />
             </NumberInput>
           </FormControl>
@@ -108,6 +114,8 @@ export const QuestForm = ({ onSave, onClose }: QuestFormProps) => {
               name="direction"
               value={quest.direction}
               onChange={handleChange}
+              borderColor="#A9BFA4"
+              _focus={{ borderColor: "#F2D096" }}
               placeholder="Direction/Buying"
             />
           </FormControl>
@@ -120,6 +128,8 @@ export const QuestForm = ({ onSave, onClose }: QuestFormProps) => {
                 name="weight"
                 value={quest.weight.toString()}
                 onChange={handleChange}
+                borderColor="#A9BFA4"
+                _focus={{ borderColor: "#F2D096" }}
               />
             </NumberInput>
           </FormControl>
@@ -132,6 +142,8 @@ export const QuestForm = ({ onSave, onClose }: QuestFormProps) => {
                 name="price"
                 value={quest.price.toString()}
                 onChange={handleChange}
+                borderColor="#A9BFA4"
+                _focus={{ borderColor: "#F2D096" }}
               />
             </NumberInput>
           </FormControl>

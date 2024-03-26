@@ -8,51 +8,66 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { Quest } from "../../Services/QuestInterface";
+import { useColorModeValue } from "@chakra-ui/react";
 
 interface Props {
   quests: Quest;
 }
 
 const QuestCards = ({ quests }: Props) => {
+  // Theme colors
+  const cardBg = useColorModeValue("brand.background", "brand.primary"); // Assuming dark mode uses 'brand.secondary'
+  const textColor = useColorModeValue("brand.text", "white");
+  const buttonBg = useColorModeValue("brand.primary", "brand.accent");
+  const buttonTextColor = useColorModeValue("white", "brand.text");
+
   return (
     <Card
-      backgroundColor={"#081A51"}
+      bg={cardBg}
       maxW="sm"
-      borderRadius={10}
-      overflow={"hidden"}
+      borderRadius="lg"
+      overflow="hidden"
       minW="200px"
       width={{ sm: "250px" }}
+      boxShadow="xl" // Adding shadow for better visual separation
     >
       <CardBody>
-        <Heading fontSize="2xl" fontFamily={"sans"} paddingBottom={"15px"}>
+        <Heading
+          fontSize="2xl"
+          fontFamily="body"
+          paddingBottom="4"
+          color={textColor}
+        >
           {quests.name}
         </Heading>
-        <Text className="pb-1">Item Type: {quests.itemType}</Text>
-        <Text className="pb-1">Quantity: {quests.quantity}</Text>
-        <Text className="pb-1">Direction/Buying: {quests.direction}</Text>
-        <Text className="pb-1">Weight: {quests.weight} Kg</Text>
-        <Text>Price: {quests.price} JD+</Text>
-
-        {/* <Text className="pb-1">Item Type: Apple Device</Text>
-        <Text className="pb-1">Quantity: 1</Text>
-        <Text className="pb-1">Direction/Buying: US</Text>
-        <Text className="pb-1">Weight: 1.5 Kg</Text>
-        <Text>Price:1134 JD +</Text> */}
+        <Text pb="1" color={textColor}>
+          Item Type: {quests.itemType}
+        </Text>
+        <Text pb="1" color={textColor}>
+          Quantity: {quests.quantity}
+        </Text>
+        <Text pb="1" color={textColor}>
+          Direction/Buying: {quests.direction}
+        </Text>
+        <Text pb="1" color={textColor}>
+          Weight: {quests.weight} Kg
+        </Text>
+        <Text color={textColor}>Price: {quests.price} JD+</Text>
       </CardBody>
-      <div className="flex items-center justify-center">
-        <CardFooter>
-          <Button width={"200px"} height={"50px"} marginTop={"-10px"}>
+      <CardFooter>
+        <Center>
+          <Button
+            width="200px"
+            height="50px"
+            mt="-10px"
+            bg={buttonBg}
+            color={buttonTextColor}
+            _hover={{ bg: "brand.accent" }} // Adjust hover color as needed
+          >
             Check Quest
-            <div className="bg-white rounded-full ml-2">
-              <img
-                src="./src/assets/Icons/control.png"
-                className={`border-solid border-dark-purple rounded-full
-             w-4 rotate-180  `}
-              />
-            </div>
           </Button>
-        </CardFooter>
-      </div>
+        </Center>
+      </CardFooter>
     </Card>
   );
 };

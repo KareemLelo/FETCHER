@@ -41,7 +41,9 @@ const CreditCardGrid = () => {
         width={"200px"}
         height={"50px"}
         marginTop={"10px"}
-        backgroundColor={"gray"}
+        backgroundColor={"brand.primary"} // Use the primary color from your theme
+        color={"brand.text"} // Use the text color from your theme for the button text
+        _hover={{ backgroundColor: "brand.accent" }} // Change to accent color on hover
         onClick={onOpen}
       >
         Add Credit Card
@@ -59,6 +61,7 @@ const CreditCardGrid = () => {
         width="100%"
         className="mt-10"
         columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} // Adjust column count as needed
+        gap={6}
       >
         {creditCards.map((creditCard, index) => (
           <CreditCard key={index} creditCard={creditCard} />

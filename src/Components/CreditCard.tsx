@@ -5,49 +5,65 @@ import {
   Button,
   Text,
   Heading,
+  useColorModeValue,
 } from "@chakra-ui/react";
-
-import { CreditInfo } from "./CreditCardForm";
+import { CreditInfo } from "./CreditCardForm"; // Adjust the import path as necessary
 
 interface Props {
   creditCard: CreditInfo;
 }
 
 const CreditCard = ({ creditCard }: Props) => {
+  // Use theme colors
+  const cardBg = useColorModeValue("brand.background", "brand.secondary"); // Default to secondary color for dark mode
+  const textColor = useColorModeValue("brand.text", "white");
+  const buttonBg = useColorModeValue("brand.primary", "brand.accent");
+  const buttonHoverBg = useColorModeValue("brand.accent", "brand.primary");
+  const buttonTextColor = useColorModeValue("white", "brand.text");
+
   return (
     <Card
-      className=" "
-      backgroundColor={"#081A51"}
+      bg={cardBg}
       maxW="sm"
-      borderRadius={10}
-      overflow={"hidden"}
-      width={"300px"}
+      borderRadius="lg"
+      overflow="hidden"
+      width="300px"
+      boxShadow="xl" // Adding a shadow for better visual separation
     >
       <CardBody>
-        <Heading fontSize="2xl" fontFamily={"sans"} paddingBottom={15}>
+        <Heading
+          fontSize="xl"
+          fontFamily="body"
+          paddingBottom={4}
+          color={textColor}
+        >
           Visa Card
         </Heading>
-        <Text className="pb-1">Card Number: {creditCard.cardNumber}</Text>
-        <Text className="pb-1">
+        <Text color={textColor} pb={2}>
+          Card Number: {creditCard.cardNumber}
+        </Text>
+        <Text color={textColor} pb={2}>
           Expiration Date: {creditCard.expirationDate}
         </Text>
-        <Text className="pb-1">CVV: {creditCard.CVV}</Text>
-        <Text className="pb-1">Card Holder: {creditCard.holderName}</Text>
+        <Text color={textColor} pb={2}>
+          CVV: {creditCard.CVV}
+        </Text>
+        <Text color={textColor} pb={2}>
+          Card Holder: {creditCard.holderName}
+        </Text>
       </CardBody>
-      <div className="flex items-center justify-center">
-        <CardFooter>
-          <Button width={"200px"} height={"50px"} marginTop={"-10px"}>
-            View Info
-            <div className="bg-white rounded-full ml-2">
-              <img
-                src="./src/assets/Icons/control.png"
-                className={`border-solid border-dark-purple rounded-full
-                 w-4 rotate-180  `}
-              />
-            </div>
-          </Button>
-        </CardFooter>
-      </div>
+      <CardFooter display="flex" justifyContent="center">
+        <Button
+          width="200px"
+          height="50px"
+          mt="-10px"
+          bg={buttonBg}
+          color={buttonTextColor}
+          _hover={{ bg: buttonHoverBg }}
+        >
+          View Info
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

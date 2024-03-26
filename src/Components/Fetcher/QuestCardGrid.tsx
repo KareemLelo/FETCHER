@@ -7,7 +7,7 @@ import {
   ModalContent,
 } from "@chakra-ui/react";
 import QuestCards from "./QuestCards";
-import QuestForm from "../QuestForm"; // Adjust this import based on default or named export
+import QuestForm from "../QuestMaker/QuestForm"; // Adjust this import based on default or named export
 import { useState } from "react";
 import { Quest } from "../../Services/QuestInterface";
 

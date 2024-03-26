@@ -1,64 +1,83 @@
 import { useState } from "react";
-import avatar from "../assets/Icons/Avatar.png";
+import {
+  Box,
+  Flex,
+  IconButton,
+  Image,
+  useColorModeValue,
+  VStack,
+  Text,
+  List,
+  ListItem,
+} from "@chakra-ui/react";
+import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import avatar from "../assets/Icons/Avatar.png"; // Make sure the path is correct
 
 const SideBar = () => {
   const [open, setOpen] = useState(true);
-  const [MenuHeading, setMenuHeading] = useState("");
   const Menus = [
     { title: "My Profile", src: "Chart_fill" },
     { title: "My Credit Card", src: "Chat" },
     { title: "New Quest", src: "User", gap: true },
-    { title: "View My Fetcher ", src: "Calendar" },
+    { title: "View My Fetcher", src: "Calendar" },
     { title: "Track My Order", src: "Search" },
   ];
 
-  const hide = !open && "scale-0";
+  // Theme colors
+  const sidebarBg = useColorModeValue("brand.secondary", "brand.primary");
+  const textColor = useColorModeValue("brand.text", "white");
+  const iconColor = useColorModeValue("brand.primary", "brand.accent");
 
   return (
-    <div className={`${!open ? "w-min" : "w-90"} flex`}>
-      <div
-        className={` ${
-          open ? "w-72" : "w-20 "
-        } bg-dark-purple h-min p-5  pt-8 relative duration-300 rounded-b-lg`}
+    <Flex direction="row" className={`${!open ? "w-min" : "w-90"} flex`}>
+      <Box
+        w={open ? "250px" : "90px"}
+        bg={sidebarBg}
+        h="100vh"
+        p={5}
+        pt={8}
+        position="relative"
+        rounded="md"
       >
-        <img
-          src="./src/assets/Icons/control.png"
-          className={`border-solid border-dark-purple absolute cursor-pointer rounded-full
-           -right-3 top-9 w-7 border-2  ${!open && "rotate-180"} `}
+        <IconButton
+          icon={open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           onClick={() => setOpen(!open)}
+          aria-label="Toggle Sidebar"
+          bgColor={iconColor}
+          color="white"
+          borderRadius="full"
+          position="absolute"
+          right="-3"
+          top="9"
         />
-        <div className={`flex gap-x-4 items-center `}>
-          <img src={avatar} className={`cursor-pointer duration-500`} />
-          <h1
-            className={`${hide} text-white origin-left font-medium text-xl duration-300`}
-          >
-            QuestMaker
-          </h1>
-        </div>
-        <ul className="pt-6">
-          {Menus.map((Menu, index) => (
-            <li
+        <VStack gap="4" alignItems="center">
+          <Image src={avatar} borderRadius="full" boxSize="40px" />
+          {open && (
+            <Text fontSize="xl" fontWeight="medium" color={textColor}>
+              QuestMaker
+            </Text>
+          )}
+        </VStack>
+        <List spacing={3} mt="6">
+          {Menus.map((menu, index) => (
+            <ListItem
               key={index}
-              className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                index === 0 && "bg-light-white"
-              } `}
-              onClick={() => setMenuHeading(Menu.title)}
+              p={2}
+              rounded="md"
+              _hover={{ bg: "RGBA(0, 0, 0, 0.08)" }}
+              mt={menu.gap ? 9 : 2}
+              display="flex"
+              alignItems="center"
+              gap="4"
+              cursor="pointer"
             >
-              <img src={`./src/assets/Icons/${Menu.src}.png`} />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                {Menu.title}
-              </span>
-            </li>
+              <img src={`./src/assets/Icons/${menu.src}.png`} />
+              {open && <Text color={textColor}>{menu.title}</Text>}
+            </ListItem>
           ))}
-        </ul>
-      </div>
-      <div className="h-screen flex-1 p-7">
-        <h1 className="text-2xl font-semibold text-dark-purple">
-          {MenuHeading || "Home Page"}
-        </h1>
-      </div>
-    </div>
+        </List>
+      </Box>
+    </Flex>
   );
 };
 

@@ -1,77 +1,89 @@
 import {
-  Button,
-  HStack,
+  Box,
+  Flex,
+  Text,
   IconButton,
-  Image,
-  List,
-  ListItem,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  useBreakpointValue,
+  Stack,
+  Collapse,
+  Link,
+  Button,
+  useDisclosure,
+  useColorModeValue,
+  HStack,
+  Icon,
 } from "@chakra-ui/react";
-import logo from "../assets/TestLogo.svg";
-import { HamburgerIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { FaRegUser } from "react-icons/fa";
 
 const NavBar = () => {
-  const pages = ["Home", "Terms&Co", "Contact"];
-  const [page, setPage] = useState("");
-  const ItemsList = [
-    "My Profile",
-    "New Quest",
-    "My Credit Card",
-    "View My Fetcher",
-    "Track My Order",
-  ];
-
-  // Determine if the full navigation should be displayed based on the current breakpoint
-  const displayFullNav = useBreakpointValue({ base: false, md: true });
+  const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <div className="bg-dark-purple">
-      <HStack justifyContent={"center"} p={3}>
-        <Image src={logo} boxSize={"40px"} />
-        {displayFullNav ? (
-          <List display={"flex"}>
-            {pages.map((page, index) => (
-              <ListItem
-                key={index}
-                className="border-2 border-solid border-white rounded-lg p-1 mx-2"
+    <Box bg="brand.background" px={4}>
+      {" "}
+      {/* Using the background color from the theme */}
+      <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+        <HStack spacing={8} alignItems={"center"}>
+          <Box>
+            <Text color="brand.text" fontSize="xl" fontWeight="bold">
+              Logo
+            </Text>
+          </Box>
+          <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
+            {["Home", "Terms&Co", "Contact"].map((link) => (
+              <Link
+                key={link}
+                px={2}
+                py={1}
+                rounded={"md"}
+                _hover={{ textDecoration: "none", bg: "brand.accent" }} // Using the accent color for hover
+                href={"#"}
+                color="brand.text" // Text color for better contrast
               >
-                <Button variant={"link"} onClick={() => setPage(page)}>
-                  {page}
-                </Button>
-              </ListItem>
+                {link}
+              </Link>
             ))}
-          </List>
-        ) : (
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              icon={<HamburgerIcon />}
-              variant={"outline"}
-            />
-            <MenuList backgroundColor={"#081A51"}>
-              {pages.map((page, index) => (
-                <MenuItem
-                  backgroundColor={"#081A51"}
-                  key={index}
-                  onClick={() => setPage(page)}
-                >
-                  {page}
-                </MenuItem>
-              ))}
-
-              {ItemsList.map((item) => (
-                <MenuItem backgroundColor={"#081A51"}>{item}</MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
-        )}
-      </HStack>
-    </div>
+          </HStack>
+        </HStack>
+        <Flex alignItems={"center"}>
+          <Button
+            variant={"solid"}
+            bg="brand.primary" // Primary button color
+            size={"sm"}
+            mr={4}
+            leftIcon={<Icon as={FaRegUser} />}
+            _hover={{ bg: "brand.secondary" }} // Change for hover state
+          >
+            Login
+          </Button>
+          <Button
+            variant={"outline"}
+            borderColor="brand.primary" // Outline based on primary color
+            color="brand.text"
+            size={"sm"}
+            _hover={{
+              bg: "brand.primary", // Fill color on hover
+              color: "brand.background", // Text color on hover for contrast
+            }}
+          >
+            Sign Up
+          </Button>
+        </Flex>
+      </Flex>
+      <Collapse in={isOpen} animateOpacity>
+        <Stack
+          bg="brand.background" // Ensuring consistency with the navbar background
+          p={4}
+          display={{ md: "none" }}
+        >
+          {["Home", "Terms&Co", "Contact"].map((link) => (
+            <Link key={link} href={"#"} color="brand.text">
+              {link}
+            </Link>
+          ))}
+        </Stack>
+      </Collapse>
+    </Box>
   );
 };
 
