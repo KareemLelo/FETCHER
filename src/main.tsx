@@ -3,18 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { extendTheme, ChakraProvider } from "@chakra-ui/react";
-
-const theme = extendTheme({
-  colors: {
-    brand: {
-      primary: "#6D9886",
-      secondary: "#A9BFA4",
-      accent: "#F2D096",
-      background: "#F4F4F2",
-      text: "#333333",
-    },
-  },
-});
+import theme from "../src/themes/theme.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ChakraProvider theme={theme}>

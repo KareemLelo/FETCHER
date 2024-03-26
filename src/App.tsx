@@ -4,12 +4,12 @@ import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
-import CreditCardGrid from "./Components/CreditCardGrid";
+/* import CreditCardGrid from "./Components/CreditCardGrid";
 import QuestGrid from "./Components/Fetcher/QuestCardGrid";
-
 import QuestForm from "./Components/QuestForm";
 import Login from "./Components/Login";
-import Register from "./Components/Register";
+import Register from "./Components/Register"; */
+import QuestListGrid from "./Components/Fetcher/QuestListGrid";
 
 function App() {
   const quests = [
@@ -72,9 +72,10 @@ function App() {
           <GridItem area={"main"} maxWidth="100%" overflow="auto">
             {/* <QuestGrid /> */}
             {/* <QuestForm /> */}
-            <Login />
+            {/* <Login /> */}
             {/* <Register /> */}
             {/* <CreditCardGrid /> */}
+            <QuestListGrid quests={quests} />
           </GridItem>
         </Grid>
       </div>
