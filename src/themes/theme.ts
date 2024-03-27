@@ -17,6 +17,12 @@ const colors = {
       accent: "#F2D096",
       background: "#F4F4F2",
       text: "#333333",
+      highlight: "#9DB4A0", // A lighter shade of primary for highlights or hover states
+    alert: "#E57373", // For warnings or errors
+    success: "#81C784", // For success messages
+    info: "#64B5F6", // For informational messages
+    dark: "#2E4053", // A dark shade for text or backgrounds needing contrast
+    light: "#FBFBFB", // A very light shade for backgrounds or cards
     },
   };
 
