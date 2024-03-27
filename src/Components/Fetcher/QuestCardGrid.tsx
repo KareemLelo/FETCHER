@@ -7,7 +7,6 @@ import {
   ModalContent,
 } from "@chakra-ui/react";
 import QuestCards from "./QuestCards";
-import QuestForm from "../QuestMaker/QuestForm"; // Adjust this import based on default or named export
 import { useState } from "react";
 import { Quest } from "../../Services/QuestInterface";
 
@@ -16,13 +15,8 @@ import { Quest } from "../../Services/QuestInterface";
 } */
 
 const QuestGrid = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [quests, setQuests] = useState<Quest[]>([]);
 
-  const handleAddQuest = (newQuest: Quest) => {
-    setQuests([...quests, newQuest]);
-    onClose(); // Close the modal after adding a new quest
-  };
   const quest = [
     {
       name: "MacBook",
@@ -67,15 +61,6 @@ const QuestGrid = () => {
   ];
   return (
     <>
-      <Button onClick={onOpen} mb={4}>
-        Create a Quest
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <QuestForm onSave={handleAddQuest} />
-        </ModalContent>
-      </Modal>
       <ul>
         <SimpleGrid
           minChildWidth={"250px"}

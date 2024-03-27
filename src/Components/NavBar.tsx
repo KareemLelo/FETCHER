@@ -2,21 +2,20 @@ import {
   Box,
   Flex,
   Text,
-  IconButton,
   Stack,
   Collapse,
   Link,
   Button,
   useDisclosure,
-  useColorModeValue,
   HStack,
   Icon,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { FaRegUser } from "react-icons/fa";
+import { useContent } from "../ContentContext";
 
 const NavBar = () => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen } = useDisclosure();
+  const { setContent } = useContent();
 
   return (
     <Box bg="brand.background" px={4}>
@@ -53,6 +52,7 @@ const NavBar = () => {
             mr={4}
             leftIcon={<Icon as={FaRegUser} />}
             _hover={{ bg: "brand.secondary" }} // Change for hover state
+            onClick={() => setContent("login")}
           >
             Login
           </Button>
@@ -65,6 +65,7 @@ const NavBar = () => {
               bg: "brand.primary", // Fill color on hover
               color: "brand.background", // Text color on hover for contrast
             }}
+            onClick={() => setContent("register")}
           >
             Sign Up
           </Button>

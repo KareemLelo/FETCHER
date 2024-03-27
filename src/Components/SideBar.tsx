@@ -12,8 +12,10 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import avatar from "../assets/Icons/Avatar.png"; // Make sure the path is correct
+import { useContent } from "../ContentContext";
 
 const SideBar = () => {
+  const { setContent } = useContent();
   const [open, setOpen] = useState(true);
   const Menus = [
     { title: "My Profile", src: "Chart_fill" },
@@ -70,6 +72,7 @@ const SideBar = () => {
               alignItems="center"
               gap="4"
               cursor="pointer"
+              onClick={() => setContent(menu.title)}
             >
               <img src={`./src/assets/Icons/${menu.src}.png`} />
               {open && <Text color={textColor}>{menu.title}</Text>}
