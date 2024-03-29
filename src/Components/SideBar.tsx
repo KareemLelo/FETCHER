@@ -23,6 +23,10 @@ const SideBar = () => {
     { title: "New Quest", src: "User", gap: true },
     { title: "View My Fetcher", src: "Calendar" },
     { title: "Track My Order", src: "Search" },
+    { title: "Available Quests", src: "Quest", gap: true },
+    { title: "My Mission", src: "Mission" },
+    { title: "Track My Progress", src: "Progress" },
+    { title: "Rate My Experience", src: "Rate" },
   ];
 
   // Theme colors
