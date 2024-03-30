@@ -21,7 +21,7 @@ interface Register {
 }
 
 const Register = () => {
-  const [accountType, setAccountType] = useState("");
+  const [, /* accountType */ setAccountType] = useState("");
   const inputCss = "p-2  rounded-xl border bg-white text-black shadow-md";
 
   const Account = ["Fetcher", "QuestMaker"];

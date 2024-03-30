@@ -15,7 +15,6 @@ interface Props {
 }
 
 const QuestCards = ({ quests }: Props) => {
-  // Theme colors
   const cardBg = useColorModeValue("brand.background", "brand.primary"); // Assuming dark mode uses 'brand.secondary'
   const textColor = useColorModeValue("brand.text", "white");
   const buttonBg = useColorModeValue("brand.primary", "brand.accent");

@@ -1,28 +1,15 @@
-import {
-  SimpleGrid,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-} from "@chakra-ui/react";
+import { SimpleGrid, Heading, Flex, Box } from "@chakra-ui/react";
 import QuestCards from "./QuestCards";
-import QuestForm from "../QuestMaker/QuestForm"; // Adjust this import based on default or named export
-import { useState } from "react";
-import { Quest } from "../../Services/QuestInterface";
+/* import { useState } from "react";
+import { Quest } from "../../Services/QuestInterface"; */
 
 /* interface Props {
   quests: Quest[];
 } */
 
 const QuestGrid = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [quests, setQuests] = useState<Quest[]>([]);
+  /* const [quests, setQuests] = useState<Quest[]>([]); */
 
-  const handleAddQuest = (newQuest: Quest) => {
-    setQuests([...quests, newQuest]);
-    onClose(); // Close the modal after adding a new quest
-  };
   const quest = [
     {
       name: "MacBook",
@@ -67,15 +54,19 @@ const QuestGrid = () => {
   ];
   return (
     <>
-      <Button onClick={onOpen} mb={4}>
-        Create a Quest
-      </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <QuestForm onSave={handleAddQuest} />
-        </ModalContent>
-      </Modal>
+      <Box display="flex" justifyContent="center" width="100%" pt={"10"}>
+        <Flex
+          justifyContent="center" // Centers children vertically in the container
+          alignItems="center" // Centers children horizontally in the container
+          width="400px"
+          textAlign="center"
+        >
+          <Heading color="brand.text">
+            Available Quests Awaiting for You to Fetch!
+          </Heading>
+        </Flex>
+      </Box>
+
       <ul>
         <SimpleGrid
           minChildWidth={"250px"}
