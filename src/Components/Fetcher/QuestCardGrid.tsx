@@ -58,10 +58,13 @@ const QuestGrid = () => {
         <Flex
           justifyContent="center" // Centers children vertically in the container
           alignItems="center" // Centers children horizontally in the container
-          width="400px"
+          width={{ sm: "260px", md: "300px", lg: "400px" }}
           textAlign="center"
         >
-          <Heading color="brand.text">
+          <Heading
+            color="brand.text"
+            fontSize={{ base: "30px", md: "30px", lg: "40px" }}
+          >
             Available Quests Awaiting for You to Fetch!
           </Heading>
         </Flex>

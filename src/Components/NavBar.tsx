@@ -23,7 +23,16 @@ const NavBar = () => {
   const bg = "brand.background";
   const color = "brand.text";
 
-  const menuItems = ["Home", "Terms&Co", "Contact"]; // Define your menu items here
+  const menuItems = [
+    { title: "Home", src: "" },
+    { title: "Terms&Co", src: "" },
+    { title: "Contact", src: "" },
+    { title: "My Profile", src: "Chart_fill" },
+    { title: "My Credit Card", src: "Chat" },
+    { title: "New Quest", src: "User" },
+    { title: "View My Fetcher", src: "Calendar" },
+    { title: "Track My Order", src: "Search" },
+  ];
 
   return (
     <Box px={4} bg={bg} w="full">
@@ -45,16 +54,16 @@ const NavBar = () => {
           justifyContent="center"
           flex={1}
         >
-          {menuItems.map((item) => (
+          {menuItems.slice(0, 3).map((item) => (
             <Button
-              key={item}
+              key={item.title}
               variant="ghost"
               mx={2}
-              onClick={() => setContent(item.toLowerCase())}
+              onClick={() => setContent(item.title)}
               color={color}
               _hover={{ bg: "brand.secondary" }}
             >
-              {item}
+              {item.title}
             </Button>
           ))}
         </Flex>
@@ -113,12 +122,12 @@ const NavBar = () => {
               <Stack>
                 {menuItems.map((item) => (
                   <Button
-                    key={item}
+                    key={item.title}
                     variant="ghost"
                     justifyContent="start"
-                    onClick={() => setContent(item.toLowerCase())}
+                    onClick={() => setContent(item.title)}
                   >
-                    {item}
+                    {item.title}
                   </Button>
                 ))}
               </Stack>

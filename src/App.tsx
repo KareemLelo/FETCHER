@@ -43,7 +43,12 @@ function App() {
             >
               <SideBar />
             </GridItem>
-            <GridItem area={"main"} maxWidth="100%" overflow="auto">
+            <GridItem
+              area={"main"}
+              maxWidth="100%"
+              overflow="auto"
+              maxHeight={"100%"}
+            >
               <MainContent />
             </GridItem>
           </Grid>
