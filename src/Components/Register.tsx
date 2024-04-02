@@ -1,30 +1,75 @@
+import React from "react";
 import {
   Button,
-  HStack,
+  VStack,
+  Input,
+  useToast,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  VStack,
+  HStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
+import axios from "axios";
+import useForm from "../Hooks/useForm"; // Ensure the path is accurate
 
-interface Register {
+interface RegisterData {
   firstName: string;
   lastName: string;
   email: string;
   accCategory: string;
   userName: string;
   password: string;
-  mobile: number;
+  mobile: string;
 }
 
 const Register = () => {
-  const [, /* accountType */ setAccountType] = useState("");
-  const inputCss = "p-2  rounded-xl border bg-white text-black shadow-md";
+  const toast = useToast();
+  const { formData, handleInputChange, handleSubmit } = useForm<RegisterData>(
+    {
+      firstName: "",
+      lastName: "",
+      email: "",
+      accCategory: "",
+      userName: "",
+      password: "",
+      mobile: "",
+    },
+    async (data) => {
+      try {
+        const response = await axios.post("http://localhost:3500/register", data)
+        toast({
+          title: "Registration successful",
+          description: "You're now registered.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        console.log(response.data);
+        // Optionally use response data here
+      } catch (error) {
+        console.error("Error sending sign up data:", error);
+        toast({
+          title: "Registration failed",
+          description: "There was an issue with your registration.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    }
+  );
 
-  const Account = ["Fetcher", "QuestMaker"];
+  const setAccountType = (accType: string) => {
+    handleInputChange({
+      target: { name: "accCategory", value: accType },
+    } as React.ChangeEvent<HTMLInputElement>);
+  };
+
+  const AccountTypes = ["Fetcher", "QuestMaker"];
+
+  const inputCss = "p-2  rounded-xl border bg-white text-black shadow-md";
 
   return (
     <section className="min-h-screen flex items-center justify-center">
@@ -36,33 +81,39 @@ const Register = () => {
           </p>
           <div className=" text-xs border-b border-[#002D74] py-2 text-[#002D74] shadow-sm"></div>
 
-          <form action="" className="mt-8">
+          <form action="" className="mt-8" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 grid-rows-1">
               <VStack>
                 <div>
                   <HStack>
-                    <input
+                    <Input
                       className={inputCss}
                       type="text"
                       name="firstName"
                       placeholder="First Name"
+                      onChange={handleInputChange}
+                      value={formData.firstName}
                     />
                     <div className="relative">
-                      <input
+                      <Input
                         className={inputCss}
                         type="text"
                         name="lastName"
                         placeholder="Last Name"
+                        onChange={handleInputChange}
+                        value={formData.lastName}
                       />
                     </div>
                   </HStack>
                 </div>
                 <div>
-                  <input
+                  <Input
                     className={inputCss}
                     type="email"
                     name="email"
                     placeholder="Email"
+                    onChange={handleInputChange}
+                    value={formData.email}
                   />
                 </div>
                 <div>
@@ -75,11 +126,12 @@ const Register = () => {
                       textColor={"gray"}
                       width={200}
                     >
-                      Acount Category
+                      Acount Category: {formData.accCategory || "Select"}
                     </MenuButton>
                     <MenuList backgroundColor={"#081A51"}>
-                      {Account.map((type) => (
+                      {AccountTypes.map((type) => (
                         <MenuItem
+                          key={type}
                           onClick={() => setAccountType(type)}
                           backgroundColor={"#081A51"}
                         >
@@ -91,18 +143,22 @@ const Register = () => {
                 </div>
                 <div>
                   <HStack>
-                    <input
+                    <Input
                       className={inputCss}
                       type="text"
                       name="userName"
                       placeholder="Username"
+                      onChange={handleInputChange}
+                      value={formData.userName}
                     />
                     <div className="relative">
-                      <input
+                      <Input
                         className={inputCss}
                         type="password"
                         name="password"
                         placeholder="Password"
+                        onChange={handleInputChange}
+                        value={formData.password}
                       />
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -119,24 +175,28 @@ const Register = () => {
                   </HStack>
                 </div>
                 <div>
-                  <input
+                  <Input
                     className={inputCss}
-                    type="number"
+                    type="text"
                     name="mobile"
                     placeholder="Mobile Number"
+                    onChange={handleInputChange}
+                    value={formData.mobile}
                   />
+                </div>
+                <div className="mt-5 text-xs border-b border-[#002D74] py-4 text-[#002D74] shadow-sm"></div>
+
+                <div className="mt-3 text-md flex justify-center items-center text-[#002D74] ">
+                  <button type="submit"
+                    className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 shadow-md">
+                    Signup
+                  </button>
                 </div>
               </VStack>
             </div>
           </form>
 
-          <div className="mt-5 text-xs border-b border-[#002D74] py-4 text-[#002D74] shadow-sm"></div>
 
-          <div className="mt-3 text-md flex justify-center items-center text-[#002D74] ">
-            <button className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 shadow-md">
-              Register
-            </button>
-          </div>
         </div>
       </div>
     </section>
