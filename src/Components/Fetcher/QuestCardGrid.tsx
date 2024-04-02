@@ -54,7 +54,7 @@ const QuestGrid = () => {
   ];
   return (
     <>
-      <Box display="flex" justifyContent="center" width="100%" pt={"10"}>
+      <Box display="flex" justifyContent="center" width="100%" m={"10"}>
         <Flex
           justifyContent="center" // Centers children vertically in the container
           alignItems="center" // Centers children horizontally in the container
@@ -72,9 +72,10 @@ const QuestGrid = () => {
           minChildWidth={"250px"}
           spacingY="20px"
           spacingX="20px"
-          width="100%"
+          width="auto"
           className="flex justify-center mt-10"
           columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}
+          pl={10}
         >
           {quest.map((quest, index) => (
             <QuestCards key={index} quests={quest} />
