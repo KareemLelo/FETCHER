@@ -70,6 +70,7 @@ const NavBar = () => {
 
         <Stack direction="row" alignItems="center" display={{ md: "flex" }}>
           <Button
+            width={{ base: "65px", md: "auto" }}
             variant="solid"
             bg="brand.primary"
             size="sm"
@@ -81,6 +82,7 @@ const NavBar = () => {
             Login
           </Button>
           <Button
+            width={{ base: "65px", md: "auto" }}
             variant="outline"
             borderColor="brand.primary"
             size="sm"

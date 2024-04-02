@@ -108,6 +108,7 @@ const MyProfile = () => {
                   value={profile.name}
                   onChange={updateField}
                   placeholder="Enter your name"
+                  _placeholder={{ color: "white" }}
                 />
               </FormControl>
               <FormControl isRequired>
@@ -118,6 +119,7 @@ const MyProfile = () => {
                   value={profile.email}
                   onChange={updateField}
                   placeholder="Enter your email"
+                  _placeholder={{ color: "white" }}
                 />
               </FormControl>
               <FormControl>
@@ -127,6 +129,7 @@ const MyProfile = () => {
                   value={profile.bio}
                   onChange={updateField}
                   placeholder="A short bio about yourself..."
+                  _placeholder={{ color: "white" }}
                 />
               </FormControl>
               <FormControl isRequired>
@@ -136,13 +139,14 @@ const MyProfile = () => {
                   value={profile.mobileNumber}
                   onChange={updateField}
                   placeholder="Enter your mobile number"
+                  _placeholder={{ color: "white" }}
                 />
               </FormControl>
               <Button
                 type="submit"
-                backgroundColor="brand.primary"
+                backgroundColor="brand.accent"
                 colorScheme="teal"
-                color="white"
+                color="brand.text"
               >
                 Save Changes
               </Button>
