@@ -4,19 +4,8 @@ import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
-/* import CreditCardGrid from "./Components/CreditCardGrid";
-import QuestGrid from "./Components/Fetcher/QuestCardGrid";
-
-import Login from "./Components/Login";
-import Register from "./Components/Register";
-import QuestListGrid from "./Components/Fetcher/QuestListGrid";
-import MyProfile from "./Components/MyProfile";
-import QuestForm from "./Components/QuestMaker/QuestFrom"; */
 import MainContent from "./MainContent";
 import { ContentProvider } from "./ContentContext";
-
-import TrackOrder from "./Components/QuestMaker/TrackOrder";
-import TrackOrderPage from "./Components/QuestMaker/TrackOrderPage";
 
 function App() {
   return (
