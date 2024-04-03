@@ -61,7 +61,7 @@ const QuestCards = ({ quests }: Props) => {
             mt="-10px"
             bg={buttonBg}
             color={buttonTextColor}
-            _hover={{ bg: "brand.accent" }} // Adjust hover color as needed
+            _hover={{ bg: "brand.secondary" }} // Adjust hover color as needed
           >
             Check Quest
           </Button>

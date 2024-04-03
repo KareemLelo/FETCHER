@@ -62,10 +62,16 @@ const TrackOrder: React.FC<{
   const [activeStep, setActiveStep] = useState(0);
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
-  const advanceStep = () =>
-    setActiveStep((prevStep) =>
-      prevStep < statusSteps.length - 1 ? prevStep + 1 : prevStep
-    );
+  const [isComplete, setIsComplete] = useState(false);
+
+  const advanceStep = () => {
+    if (activeStep < statusSteps.length - 1) {
+      setActiveStep((prevStep) => prevStep + 1);
+    } else {
+      // Once the last step is reached, set the complete state to true
+      setIsComplete(true);
+    }
+  };
   const buttonText = statusSteps[activeStep].actionLabel;
 
   return (
@@ -98,7 +104,11 @@ const TrackOrder: React.FC<{
         ))}
       </HStack>
       <Flex justify="center" mt={4}>
-        <Button colorScheme="blue" onClick={advanceStep}>
+        <Button
+          colorScheme="blue"
+          onClick={advanceStep}
+          isDisabled={isComplete}
+        >
           {buttonText}
         </Button>
       </Flex>

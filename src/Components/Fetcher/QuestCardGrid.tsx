@@ -54,27 +54,30 @@ const QuestGrid = () => {
   ];
   return (
     <>
-      <Box display="flex" justifyContent="center" width="100%" pt={"10"}>
+      <Box display="flex" justifyContent="center" width="auto" m={"10"}>
         <Flex
           justifyContent="center" // Centers children vertically in the container
           alignItems="center" // Centers children horizontally in the container
-          width="400px"
+          width={{ sm: "260px", md: "300px", lg: "400px" }}
           textAlign="center"
         >
-          <Heading color="brand.text">
+          <Heading
+            color="brand.text"
+            fontSize={{ base: "30px", md: "30px", lg: "40px" }}
+          >
             Available Quests Awaiting for You to Fetch!
           </Heading>
         </Flex>
       </Box>
-
       <ul>
         <SimpleGrid
           minChildWidth={"250px"}
           spacingY="20px"
           spacingX="20px"
-          width="100%"
+          width="auto"
           className="flex justify-center mt-10"
           columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}
+          p={7}
         >
           {quest.map((quest, index) => (
             <QuestCards key={index} quests={quest} />
