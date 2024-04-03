@@ -11,6 +11,7 @@ import {
   Input,
   useToast,
   useColorModeValue,
+  Divider,
 } from "@chakra-ui/react";
 
 // Define a type for the profile state
@@ -79,24 +80,35 @@ const MyProfile = () => {
             src="path/to/your-profile-picture.jpg"
           />
         </Box>
-        <Heading size="md">My Profile</Heading>
+        <Heading size="lg" mb={5}>
+          My Profile
+        </Heading>
         {profileSaved ? (
-          <VStack spacing={3}>
+          <VStack display={"flex"} alignItems={"left"} spacing={3}>
             <Text fontSize="lg">
               <strong>Name:</strong> {profile.name}
             </Text>
+            <Divider />
             <Text fontSize="lg">
               <strong>Email:</strong> {profile.email}
             </Text>
+            <Divider />
+
             <Text fontSize="lg">
               <strong>Bio:</strong> {profile.bio}
             </Text>
+            <Divider />
+
             <Text fontSize="lg">
-              <strong>Mobile Number:</strong> {profile.mobileNumber}
+              <strong>Mobile Number: +962</strong> {profile.mobileNumber}
             </Text>
-            <Button onClick={handleEdit} colorScheme="blue">
-              Edit Profile
-            </Button>
+            <Divider />
+
+            <Box display={"flex"} justifyContent={"center"}>
+              <Button onClick={handleEdit} colorScheme="blue">
+                Edit Profile
+              </Button>
+            </Box>
           </VStack>
         ) : (
           <form onSubmit={handleSubmit}>
