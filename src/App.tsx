@@ -15,6 +15,9 @@ import QuestForm from "./Components/QuestMaker/QuestFrom"; */
 import MainContent from "./MainContent";
 import { ContentProvider } from "./ContentContext";
 
+import TrackOrder from "./Components/QuestMaker/TrackOrder";
+import TrackOrderPage from "./Components/QuestMaker/TrackOrderPage";
+
 function App() {
   return (
     <>
@@ -41,13 +44,6 @@ function App() {
               <SideBar />
             </GridItem>
             <GridItem area={"main"} maxWidth="100%" overflow="auto">
-              {/* <QuestGrid /> */}
-              {/* <QuestForm /> */}
-              {/* <Login /> */}
-              {/* <Register /> */}
-              {/* <CreditCardGrid /> */}
-              {/* <QuestListGrid quests={quests} /> */}
-              {/* <MyProfile /> */}
               <MainContent />
             </GridItem>
           </Grid>
