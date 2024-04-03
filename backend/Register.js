@@ -28,8 +28,8 @@ app.post('/register', (req,res) => {
   try {
     await client.connect();
     console.log("connected to db")
-    const database = client.db("testDB"); // Ensure this is your correct DB name
-    const collection = database.collection("testSignup"); // Adjust to your collection name
+    const database = client.db("BZKdatabase"); // Ensure this is your correct DB name
+    const collection = database.collection("BZKUsers"); // Adjust to your collection name
 
     // Create a document to insert
     const doc = {
