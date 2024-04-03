@@ -3,7 +3,7 @@
 import Register from "./Components/Register";
 import Login from "./Components/Login";
 import QuestForm from "./Components/QuestMaker/QuestForm";
-import QuestGrid from "./Components/Fetcher/QuestCardGrid";
+import QuestGrid from "./Components/Fetcher/HomeContentF";
 import { useContent } from "./ContentContext";
 import MyProfile from "./Components/MyProfile";
 import CreditCardGrid from "./Components/CreditCardGrid";
