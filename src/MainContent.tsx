@@ -9,6 +9,7 @@ import MyProfile from "./Components/MyProfile";
 import CreditCardGrid from "./Components/CreditCardGrid";
 import TrackOrderPage from "./Components/QuestMaker/TrackOrderPage";
 import QuestListGrid from "./Components/Fetcher/QuestListGrid";
+import HomeContentQM from "./Components/QuestMaker/HomeContentQM";
 
 // Import other components as needed
 
@@ -16,6 +17,8 @@ const MainContent = () => {
   const { content } = useContent();
 
   switch (content) {
+    case "Home":
+      return <QuestGrid />;
     case "register":
       return <Register />;
     case "login":
@@ -33,7 +36,7 @@ const MainContent = () => {
     default:
       return (
         // Your default content or components
-        <QuestGrid />
+        <HomeContentQM />
       );
   }
 };
