@@ -14,7 +14,7 @@ app.use(cors(corsOptions));  // Use CORS if your React app is served from a diff
 app.use(express.json()); // For parsing application/json
 
 // Handle login POST request
-app.post('/login', (req,res) => {
+app.post('/login', (req, res) => {
   const { username, password } = req.body;
   console.log('Received login for:', username, 'with password:', password);
 
