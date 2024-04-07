@@ -1,5 +1,5 @@
 interface Login {
-  email: string;
+  username: string;
   password: number;
 }
 
@@ -16,9 +16,9 @@ const Login = () => {
           <form action="" className="flex flex-col gap-4 ">
             <input
               className="p-2 mt-8 rounded-xl border bg-white text-black"
-              type="email"
-              name="email"
-              placeholder="Email"
+              type="text"
+              name="username"
+              placeholder="Username"
             />
             <div className="relative">
               <input
