@@ -14,12 +14,12 @@ const HomeContentQM: React.FC = () => {
 
   const items = [
     {
-      src: "C:UsersPC-LABDesktopFETCHERsrcassetsImagesNike.png",
+      src: "/src/assets/Images/Nike.png",
       aspectRatio: 5 / 2,
       url: "https://nike.com",
     },
     {
-      src: "C:UsersPC-LABDesktopFETCHERsrcassetsImagesCanonCamera.png",
+      src: "/src/assets/Images/CanonCamera.png",
       aspectRatio: 20 / 9,
       url: "https://canon.com",
     },
@@ -29,7 +29,7 @@ const HomeContentQM: React.FC = () => {
       url: "https://apple.com",
     },
     {
-      src: "src/assets/Images/Splash.png",
+      src: "/src/assets/Images/Splash.png",
       aspectRatio: 5 / 2,
       url: "https://splash.com",
     },
@@ -62,7 +62,7 @@ const HomeContentQM: React.FC = () => {
             }}
             onClick={() => window.open(item.url, "_blank")}
           >
-            <Image src={item.src} alt="" objectFit="cover" />
+            <Image src={item.src} alt="i" objectFit="cover" />
           </AspectRatio>
         ))}
       </SimpleGrid>
