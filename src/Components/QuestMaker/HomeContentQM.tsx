@@ -14,22 +14,22 @@ const HomeContentQM: React.FC = () => {
 
   const items = [
     {
-      src: "./src/assets/Images/Nike.png",
+      src: "/src/assets/Images/Nike.png",
       aspectRatio: 5 / 2,
       url: "https://nike.com",
     },
     {
-      src: "./src/assets/Images/CanonCamera.png",
+      src: "/src/assets/Images/CanonCamera.png",
       aspectRatio: 20 / 9,
       url: "https://canon.com",
     },
     {
-      src: "./src/assets/Images/Apple.png",
+      src: "/src/assets/Images/Apple.png",
       aspectRatio: 20 / 9,
       url: "https://apple.com",
     },
     {
-      src: "./src/assets/Images/Splash.png",
+      src: "/src/assets/Images/Splash.png",
       aspectRatio: 5 / 2,
       url: "https://splash.com",
     },
