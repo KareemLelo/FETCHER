@@ -40,14 +40,14 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findByCredentials(username);
+    const { userName, password } = req.body;
+    const user = await User.findByCredentials(userName);
 
     if (user && await bcrypt.compare(password, user.password)) {
-      console.log('successful login for:', username);
+      console.log('successful login for:', userName);
       res.status(200).json({ message: "Successfully logged in" });
     } else {
-      console.log('login failed for:', username);
+      console.log('login failed for:', userName);
       res.status(401).json({ message: "Invalid Username or Password" });
     }
   } catch (error) {

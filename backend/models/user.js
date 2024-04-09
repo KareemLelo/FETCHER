@@ -58,25 +58,25 @@ class User {
     const newUser = new this.model(this.data);
     return newUser.save();
   }
-  static async findByUsername(username) {
+  static async findByUsername(userName) {
     // Ideally, you should be hashing the password and comparing the hashed password
-    let user = await QuestMakerModel.findOne({ username }).lean();
+    let user = await QuestMakerModel.findOne({ userName }).lean();
     if (!user) {
-      user = await FetcherModel.findOne({ username }).lean();// .lean() is optional for performance
+      user = await FetcherModel.findOne({ userName }).lean();// .lean() is optional for performance
     }
     return user;
     
   }
   // Check if the email or username already exists
-  static async usernameOrEmailExists(username, email) {
-    console.log(`Checking if username: ${username} or email: ${email} exists.`);
+  static async usernameOrEmailExists(userName, email) {
+    console.log(`Checking if username: ${userName} or email: ${email} exists.`);
     const questMakerExists = await QuestMakerModel.findOne({
-      $or: [{ username }, { email }],
+      $or: [{ userName }, { email }],
     }).lean();
     //console.log(`QuestMaker exists: ${questMakerExists}`);
 
     const fetcherExists = !questMakerExists && await FetcherModel.findOne({
-      $or: [{ username }, { email }],
+      $or: [{ userName }, { email }],
     }).lean();
     //console.log(`Fetcher exists: ${fetcherExists}`);
 
