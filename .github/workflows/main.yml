@@ -1,8 +1,10 @@
 name: Firebase Deployment
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: Build
@@ -10,32 +12,41 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2.3.2
+
       - name: Install Dependencies
         run: npm install
+
       - name: Build
         env:
           CI: false
         run: npm run build
+
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: build-artifact
-          path: dist # Changed from build to dist
+          path: dist
+
   deploy:
-  name: Deploy
-  needs: build
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout Repo # Ensure firebase.json is checked out
-      uses: actions/checkout@v2.3.2
-    - name: Download Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: build-artifact
-        # No path specified, downloads to the root of the workspace
-    - name: Deploy to Firebase
-      uses: w9jds/firebase-action@master
-      with:
-        args: deploy --only hosting
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2.3.2
+        # This step ensures firebase.json is present in the workspace root.
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          # No path is specified here, which means the artifact will be downloaded
+          # to the root of the workspace. This is important to ensure the downloaded
+          # content does not inadvertently nest inside another directory.
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
