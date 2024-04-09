@@ -29,7 +29,7 @@ const HomeContentQM: React.FC = () => {
       url: "https://apple.com",
     },
     {
-      src: "srcassetsImagesSplash.png",
+      src: "src/assets/Images/Splash.png",
       aspectRatio: 5 / 2,
       url: "https://splash.com",
     },
