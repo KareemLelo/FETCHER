@@ -12,7 +12,7 @@ const uri = "mongodb+srv://banaalhawadya:BZKMONGO@cluster0.gb0y35r.mongodb.net/B
 mongoose.connect(uri);
 
 mongoose.connection.on('open', () => {
-    console.log('Connected to MongoDB.');
+    console.log('Connected to MongoDB');
 });
   
 mongoose.connection.on('error', (err) => {
