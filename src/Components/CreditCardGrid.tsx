@@ -21,12 +21,7 @@ const CreditCardGrid = () => {
       CVV: "123",
       holderName: "John Doe",
     },
-    {
-      cardNumber: "2345 6789 0123 4567",
-      expirationDate: "11/25",
-      CVV: "456",
-      holderName: "Jane Doe",
-    },
+
     // Add more credit card objects as needed
   ]);
 
