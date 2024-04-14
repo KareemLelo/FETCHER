@@ -82,7 +82,7 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
               color={"brand.text"}
               _hover={{ bg: "brand.secondary" }} // Adjust hover color as needed
             >
-              Check Quest
+              Accept Quest
             </Button>
           </Center>
         </Collapse>
