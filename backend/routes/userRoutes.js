@@ -12,4 +12,9 @@ router.post('/login',loginUser);
 
 //protected routes
 router.route('/profile/:_id').get(protectRoutes,getUserProfile);
+
+
+router.get('/hello', (req, res) => {
+    res.send('Hello, World!');
+  });
 export default router;
