@@ -25,6 +25,7 @@ const QuestForm: React.FC = () => {
     direction: "",
     weight: 0,
     price: 0,
+    link: "",
   });
   const [quests, setQuests] = useState<Quest[]>([]);
   const [showForm, setShowForm] = useState(true);
@@ -73,6 +74,7 @@ const QuestForm: React.FC = () => {
       direction: "",
       weight: 0,
       price: 0,
+      link: "",
     });
   };
 
@@ -100,7 +102,7 @@ const QuestForm: React.FC = () => {
                   name="name"
                   value={quest.name}
                   onChange={handleChange}
-                  placeholder="Enter quest name"
+                  placeholder="Enter Quest Name..."
                   borderColor={borderColor}
                   _placeholder={{ color: placeholderColor }}
                 />
@@ -111,7 +113,7 @@ const QuestForm: React.FC = () => {
                   name="itemType"
                   value={quest.itemType}
                   onChange={handleChange}
-                  placeholder="Enter item type"
+                  placeholder="Enter Item Type..."
                   borderColor={borderColor}
                   _placeholder={{ color: placeholderColor }}
                 />
@@ -162,6 +164,17 @@ const QuestForm: React.FC = () => {
                   />
                 </NumberInput>
               </FormControl>
+              <FormControl>
+                <FormLabel>Link (URL)</FormLabel>
+                <Input
+                  name="link"
+                  value={quest.link}
+                  onChange={handleChange}
+                  placeholder="Enter Url Here..."
+                  borderColor={borderColor}
+                  _placeholder={{ color: placeholderColor }}
+                />
+              </FormControl>
               <Button
                 type="submit"
                 bg={buttonBg}
@@ -208,6 +221,7 @@ const QuestForm: React.FC = () => {
             <Text>Direction: {q.direction}</Text>
             <Text>Weight: {q.weight} kg</Text>
             <Text>Price: ${q.price}</Text>
+            <Text>Link: {q.link}</Text>
           </Stack>
         </Flex>
       ))}

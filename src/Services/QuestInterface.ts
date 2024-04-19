@@ -5,4 +5,5 @@ export interface Quest {
     direction: string;
     weight: number;
     price: number;
+    link:string;
   }
