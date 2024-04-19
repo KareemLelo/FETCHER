@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 // Create a Schema corresponding to the document interface.
 const QuestMakerSchema = new mongoose.Schema({
+ // _id: Number,
   firstName: String,
   lastName: String,
   email: String,
@@ -16,6 +17,7 @@ const QuestMakerSchema = new mongoose.Schema({
 });
 
 const FetcherSchema = new mongoose.Schema({
+  //_id: Number,
   firstName: String,
   lastName: String,
   email: String,
@@ -56,7 +58,7 @@ class User {
     return newUser.save();
   }
 
-  static async findByUsername(userName) {
+  static async findByUserName(userName) {
     // Ideally, you should be hashing the password and comparing the hashed password
     let user = await QuestMakerModel.findOne({ userName }).lean();
     if (!user) {
@@ -66,7 +68,7 @@ class User {
   }
 
   // Check if the email or username already exists
-  static async usernameOrEmailExists(userName, email) {
+  static async userNameOrEmailExists(userName, email) {
     console.log(`Checking if username: ${userName} or email: ${email} exists.`);
 
     const questMakerExists = await QuestMakerModel.findOne({

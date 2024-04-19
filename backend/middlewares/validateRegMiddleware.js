@@ -3,7 +3,7 @@ import User from '../models/user.js';
 async function validateRegistration(req,res,next)
 {
   const { userName, email, password } = req.body;
-  const alreadyExists = await User.usernameOrEmailExists(userName, email);
+  const alreadyExists = await User.userNameOrEmailExists(userName, email);
   const passwordRegex = new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^\\da-zA-Z]).{8,}$');
 
   // Check if username or email already exists
