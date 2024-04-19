@@ -5,9 +5,9 @@ import QuestGrid from "./Components/Fetcher/HomeContentF";
 import { useContent } from "./ContentContext";
 import CreditCardGrid from "./Components/CreditCardGrid";
 import TrackOrderPage from "./Components/QuestMaker/TrackOrderPage";
-import QuestListGrid from "./Components/Fetcher/QuestListGrid";
 import HomeContentQM from "./Components/QuestMaker/HomeContentQM";
 import MyProfilePage from "./Components/MyProfilePage";
+import AvailableQuestPage from "./Components/Fetcher/AvailableQuestPage";
 
 // Import other components as needed
 
@@ -30,7 +30,7 @@ const MainContent = () => {
     case "Track My Order":
       return <TrackOrderPage />;
     case "Available Quests":
-      return <QuestListGrid quests={[]} />;
+      return <AvailableQuestPage quests={[]} />;
     default:
       return (
         // Your default content or components
