@@ -15,7 +15,7 @@ mongoose.connect(URI)
 
 const app = express();
 
-const org=process.env.origin;
+const org="https://fetcher-xwdy.onrender.com";
 const corsOptions = 
 {
     origin: org, // This is the client's URL
@@ -35,5 +35,7 @@ const startServer = async () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });
 };
+
+console.log("Succesfull")
   
 startServer();
