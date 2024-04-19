@@ -1,15 +1,14 @@
-// MainContent.jsx
-
 import Register from "./Components/Register";
 import Login from "./Components/Login";
 import QuestForm from "./Components/QuestMaker/QuestForm";
 import QuestGrid from "./Components/Fetcher/HomeContentF";
 import { useContent } from "./ContentContext";
-import MyProfile from "./Components/MyProfile";
 import CreditCardGrid from "./Components/CreditCardGrid";
 import TrackOrderPage from "./Components/QuestMaker/TrackOrderPage";
-import QuestListGrid from "./Components/Fetcher/QuestListGrid";
 import HomeContentQM from "./Components/QuestMaker/HomeContentQM";
+import MyProfilePage from "./Components/MyProfilePage";
+import AvailableQuestPage from "./Components/Fetcher/AvailableQuestPage";
+import HomeContentF from "./Components/Fetcher/HomeContentF";
 
 // Import other components as needed
 
@@ -26,13 +25,13 @@ const MainContent = () => {
     case "New Quest":
       return <QuestForm />;
     case "My Profile":
-      return <MyProfile />;
+      return <MyProfilePage />;
     case "My Credit Card":
       return <CreditCardGrid />;
     case "Track My Order":
       return <TrackOrderPage />;
     case "Available Quests":
-      return <QuestListGrid quests={[]} />;
+      return <AvailableQuestPage quests={[]} />;
     default:
       return (
         // Your default content or components

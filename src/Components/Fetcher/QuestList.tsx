@@ -71,6 +71,10 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
               Weight: {quest.weight} Kg
             </Text>
             <Divider pb={2} />
+            <Text fontSize="sm" color={textColor}>
+              Link: {quest.link}
+            </Text>
+            <Divider pb={2} />
             {/* Add any additional attributes here */}
           </Box>
           <Center>
