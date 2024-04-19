@@ -8,6 +8,7 @@ import TrackOrderPage from "./Components/QuestMaker/TrackOrderPage";
 import HomeContentQM from "./Components/QuestMaker/HomeContentQM";
 import MyProfilePage from "./Components/MyProfilePage";
 import AvailableQuestPage from "./Components/Fetcher/AvailableQuestPage";
+import HomeContentF from "./Components/Fetcher/HomeContentF";
 
 // Import other components as needed
 

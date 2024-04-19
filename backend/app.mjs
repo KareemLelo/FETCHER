@@ -15,7 +15,7 @@ mongoose.connect(URI)
 
 const app = express();
 
-const org="https://fetcher-xwdy.onrender.com";
+const org=process.env.origin;
 const corsOptions = 
 {
     origin: org, // This is the client's URL
@@ -27,15 +27,13 @@ app.use(express.json());
 app.use('/',userRoutes);//tells the Express. app to use the router defined in userRoutes for any HTTP requests that match the path '/api/users'
 // '/api/users': This is the base path or route prefix. The userRoutes router will handle any requests that start with this path.
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3500;
 
 const startServer = async () => {
     //await connectDb(); // Connect to database
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`Server running on ${PORT}`);
     });
 };
-
-console.log("Succesfull")
   
 startServer();
