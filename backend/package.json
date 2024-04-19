@@ -14,8 +14,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.mjs",
-    "build": "cd .. && cd src && npm run build"
+    "start": "node /app.mjs",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
