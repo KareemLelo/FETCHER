@@ -5,7 +5,6 @@ import {
   ModalContent,
   useDisclosure,
   SimpleGrid,
-  Flex,
   Box,
 } from "@chakra-ui/react";
 import CreditCard from "./CreditCard";
