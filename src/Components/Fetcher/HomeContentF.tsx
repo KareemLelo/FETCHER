@@ -7,7 +7,7 @@ import { Quest } from "../../Services/QuestInterface"; */
   quests: Quest[];
 } */
 
-const QuestGrid = () => {
+const HomeContentF = () => {
   /* const [quests, setQuests] = useState<Quest[]>([]); */
 
   const quest = [
@@ -18,6 +18,7 @@ const QuestGrid = () => {
       direction: "US",
       weight: 1.5,
       price: 1135,
+      link: "#",
     },
     {
       name: "Nike Dunk Low",
@@ -26,6 +27,7 @@ const QuestGrid = () => {
       direction: "Dubai",
       weight: 10,
       price: 112,
+      link: "#",
     },
     {
       name: "تنكة جبنه",
@@ -34,6 +36,7 @@ const QuestGrid = () => {
       direction: "Kuwait",
       weight: 15,
       price: 115,
+      link: "#",
     },
     {
       name: "Certificate",
@@ -42,6 +45,7 @@ const QuestGrid = () => {
       direction: "UK",
       weight: 0.5,
       price: 135,
+      link: "#",
     },
     {
       name: "Certificate",
@@ -50,6 +54,7 @@ const QuestGrid = () => {
       direction: "UK",
       weight: 0.5,
       price: 135,
+      link: "#",
     },
   ];
   return (
@@ -88,4 +93,4 @@ const QuestGrid = () => {
   );
 };
 
-export default QuestGrid;
+export default HomeContentF;
