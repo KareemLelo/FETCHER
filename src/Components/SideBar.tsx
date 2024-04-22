@@ -19,22 +19,29 @@ const SideBar = () => {
   const [open, setOpen] = useState(true);
 
   const questMakerMenus = [
-    { title: "My Profile", src: "Chart_fill" },
-    { title: "My Credit Card", src: "Chat" },
-    { title: "New Quest", src: "User", gap: true },
-    { title: "View My Fetcher", src: "Calendar" },
-    { title: "Track My Order", src: "Search" },
-    { title: "Logout", src: "Search" },
+    {
+      title: "My Profile",
+      src: "src/assets/Icons/User.png",
+    },
+    { title: "My Credit Card", src: "src/assets/Icons/Chat.png" },
+    { title: "New Quest", src: "src/assets/Icons/Chart_fill.png", gap: true },
+    { title: "View My Fetcher", src: "src/assets/Icons/Calendar.png" },
+    { title: "Track My Order", src: "src/assets/Icons/Search.png" },
+    { title: "Logout", src: "src/assets/Icons/Setting.png" },
   ];
 
   const fetcherMenus = [
-    { title: "My Profile", src: "Chart_fill" },
-    { title: "My Credit Card", src: "Chat" },
-    { title: "Available Quests", src: "User", gap: true },
-    { title: "My Mission", src: "Chart_fill" },
-    { title: "Track My Progress", src: "Calendar" },
-    { title: "Rate My Experience", src: "Search" },
-    { title: "Logout", src: "Search" },
+    { title: "My Profile", src: "src/assets/Icons/User.png" },
+    { title: "My Credit Card", src: "src/assets/Icons/Chat.png" },
+    {
+      title: "Available Quests",
+      src: "src/assets/Icons/Chart_fill.png",
+      gap: true,
+    },
+    { title: "My Mission", src: "src/assets/Icons/Folder.png" },
+    { title: "Track My Progress", src: "src/assets/Icons/Calender.png" },
+    { title: "Rate My Experience", src: "src/assets/Icons/Search.png" },
+    { title: "Logout", src: "src/assets/Icons/Setting.png" },
   ];
 
   // Determine which menus to display based on the account type
@@ -89,10 +96,7 @@ const SideBar = () => {
                 cursor="pointer"
                 onClick={() => setContent(menu.title)}
               >
-                <img
-                  src={`./src/assets/Icons/${menu.src}.png`}
-                  alt={menu.title}
-                />
+                <img src={menu.src} alt={menu.title} />
                 {open && <Text color={textColor}>{menu.title}</Text>}
               </ListItem>
             ))}
