@@ -70,7 +70,7 @@ const MyProfile = () => {
       borderRadius="lg"
       boxShadow="md"
       color={textColor}
-      width={{ base: "80%", lg: "800px" }}
+      width={{ base: "80%", md: "80%" }}
     >
       <VStack spacing={5} align="stretch">
         <Box display="flex" justifyContent="center">

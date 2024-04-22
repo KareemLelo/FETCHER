@@ -9,6 +9,7 @@ import {
   MenuItem,
   MenuList,
   HStack,
+  Divider,
 } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
 import axios from "axios";
@@ -38,7 +39,10 @@ const Register = () => {
     },
     async (data) => {
       try {
-        const response = await axios.post("http://localhost:3500/register", data)
+        const response = await axios.post(
+          "http://localhost:3500/register",
+          data
+        );
         toast({
           title: "Registration successful",
           description: "You're now registered.",
@@ -72,10 +76,12 @@ const Register = () => {
   const inputCss = "p-2  rounded-xl border bg-white text-black shadow-md";
 
   return (
-    <section className="min-h-screen flex items-center justify-center">
+    <section className=" flex items-center justify-center m-5">
       <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center ">
         <div className=" px-8 md:px-16 ">
-          <h2 className="font-bold text-2xl text-[#002D74]">Register</h2>
+          <h2 className="text-center font-bold text-2xl text-[#002D74]">
+            Register
+          </h2>
           <p className="text-md mt-3 text-[#002D74]">
             Be Fetcher Or QuestMaker With Us
           </p>
@@ -86,7 +92,7 @@ const Register = () => {
               <VStack>
                 <div>
                   <HStack>
-                    <Input
+                    <input
                       className={inputCss}
                       type="text"
                       name="firstName"
@@ -95,7 +101,7 @@ const Register = () => {
                       value={formData.firstName}
                     />
                     <div className="relative">
-                      <Input
+                      <input
                         className={inputCss}
                         type="text"
                         name="lastName"
@@ -107,7 +113,7 @@ const Register = () => {
                   </HStack>
                 </div>
                 <div>
-                  <Input
+                  <input
                     className={inputCss}
                     type="email"
                     name="email"
@@ -143,7 +149,7 @@ const Register = () => {
                 </div>
                 <div>
                   <HStack>
-                    <Input
+                    <input
                       className={inputCss}
                       type="text"
                       name="userName"
@@ -152,7 +158,7 @@ const Register = () => {
                       value={formData.userName}
                     />
                     <div className="relative">
-                      <Input
+                      <input
                         className={inputCss}
                         type="password"
                         name="password"
@@ -175,7 +181,7 @@ const Register = () => {
                   </HStack>
                 </div>
                 <div>
-                  <Input
+                  <input
                     className={inputCss}
                     type="text"
                     name="mobile"
@@ -184,19 +190,19 @@ const Register = () => {
                     value={formData.mobile}
                   />
                 </div>
-                <div className="mt-5 text-xs border-b border-[#002D74] py-4 text-[#002D74] shadow-sm"></div>
+                <Divider />
 
-                <div className="mt-3 text-md flex justify-center items-center text-[#002D74] ">
-                  <button type="submit"
-                    className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 shadow-md">
+                <div className=" text-md flex justify-center items-center text-[#002D74] ">
+                  <button
+                    type="submit"
+                    className="py-2 px-5 bg-white border rounded-xl hover:scale-110 duration-300 shadow-md"
+                  >
                     Signup
                   </button>
                 </div>
               </VStack>
             </div>
           </form>
-
-
         </div>
       </div>
     </section>

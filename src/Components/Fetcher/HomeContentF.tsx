@@ -78,7 +78,7 @@ const HomeContentF = () => {
         <SimpleGrid
           minChildWidth={"250px"}
           spacingY="20px"
-          spacingX="20px"
+          spacingX="5px"
           width="auto"
           className="flex justify-center mt-10"
           columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Input, Button, useToast } from "@chakra-ui/react";
-import { useContent } from "../ContentContext"; // Ensure the path is correct
+import { useContent } from "../ContentManagment/ContentContext"; // Ensure the path is correct
 
 interface LoginDetails {
   username: string;
@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center">
+    <section className=" flex items-center justify-center m-5">
       <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
         <div className="md:w-1/2 px-8 md:px-16">
           <h2 className="font-bold text-2xl text-[#002D74]">Login</h2>
@@ -63,7 +63,7 @@ const Login = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
-            <Input
+            <input
               className="p-2 mt-8 rounded-xl border bg-white text-black"
               type="text"
               name="username"
@@ -72,7 +72,7 @@ const Login = () => {
               value={loginDetails.username}
             />
             <div className="relative">
-              <Input
+              <input
                 className="p-2 rounded-xl border w-full bg-white text-black"
                 type="password"
                 name="password"
@@ -92,12 +92,12 @@ const Login = () => {
                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
               </svg>
             </div>
-            <Button
+            <button
               className="bg-[#002D74] rounded-xl text-white py-2 hover:scale-105 duration-300"
               type="submit"
             >
               Login
-            </Button>
+            </button>
           </form>
 
           <div className="mt-5 text-xs border-b border-[#002D74] py-4 text-[#002D74]">

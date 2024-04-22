@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { FaRegUser } from "react-icons/fa";
-import { useContent } from "../ContentContext"; // Ensure this is the correct path to your ContentContext
+import { useContent } from "../ContentManagment/ContentContext"; // Ensure this is the correct path to your ContentContext
 
 const NavBar = () => {
   const { isOpen, onToggle } = useDisclosure();

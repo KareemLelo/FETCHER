@@ -1,6 +1,6 @@
 // TrackOrderPage.tsx
 import React from "react";
-import { VStack } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 import TrackOrder from "./TrackOrder";
 import TrackOrderDesc from "./TrackOrderDesc";
 import Vault from "./Vault";
@@ -22,11 +22,13 @@ const balance = 350; // Mock balance
 
 const TrackOrderPage: React.FC = () => {
   return (
-    <VStack align="stretch" maxWidth="full" m={6} spacing={6}>
-      <TrackOrder order={order} />
-      <TrackOrderDesc order={order} />
-      <Vault balance={balance} transactions={transactions} />
-    </VStack>
+    <Flex justifyContent={"center"}>
+      <VStack align="stretch" maxWidth="full" m={6} spacing={6} width={"80%"}>
+        <TrackOrder order={order} />
+        <TrackOrderDesc order={order} />
+        <Vault balance={balance} transactions={transactions} />
+      </VStack>
+    </Flex>
   );
 };
 

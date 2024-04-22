@@ -4,8 +4,9 @@ import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
 import SideBar from "./Components/SideBar";
-import MainContent from "./MainContent";
-import { ContentProvider } from "./ContentContext";
+import MainContent from "./ContentManagment/MainContent";
+import { ContentProvider } from "./ContentManagment/ContentContext";
+import SidebarAppear from "./SidebarAppear";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
             }}
             templateColumns={{
               base: "1fr",
-              md: "400px 1fr",
+              md: "250px 1fr",
             }}
             backgroundColor={"white"}
           >
@@ -30,7 +31,7 @@ function App() {
               area={"aside"}
               display={{ base: "none", md: "block" }} // This line controls the visibility based on the breakpoint
             >
-              <SideBar />
+              <SidebarAppear />
             </GridItem>
             <GridItem
               area={"main"}

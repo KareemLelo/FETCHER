@@ -65,7 +65,7 @@ const AvailableQuestPage: React.FC<QuestListGridProps> = (/* { quests } */) => {
       <Flex
         direction="column"
         alignItems="center"
-        maxWidth={{ base: "80%", md: "80%", lg: "800" }}
+        maxWidth={{ base: "80%", md: "60%" }}
         ml={{ base: 4, md: 10 }}
         mt={{ base: 4, md: 10 }}
       >

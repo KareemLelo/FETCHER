@@ -5,6 +5,8 @@ import {
   ModalContent,
   useDisclosure,
   SimpleGrid,
+  Flex,
+  Box,
 } from "@chakra-ui/react";
 import CreditCard from "./CreditCard";
 import { useState } from "react";
@@ -31,7 +33,7 @@ const CreditCardGrid = () => {
   };
 
   return (
-    <>
+    <Box ml="50px" h="100vh">
       <Button
         width={"200px"}
         height={"50px"}
@@ -62,7 +64,7 @@ const CreditCardGrid = () => {
           <CreditCard key={index} creditCard={creditCard} />
         ))}
       </SimpleGrid>
-    </>
+    </Box>
   );
 };
 
