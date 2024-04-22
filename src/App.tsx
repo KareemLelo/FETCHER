@@ -3,7 +3,6 @@ import "./App.css";
 import "@fontsource/poppins";
 
 import NavBar from "./Components/NavBar";
-import SideBar from "./Components/SideBar";
 import MainContent from "./ContentManagment/MainContent";
 import { ContentProvider } from "./ContentManagment/ContentContext";
 import SidebarAppear from "./SidebarAppear";
