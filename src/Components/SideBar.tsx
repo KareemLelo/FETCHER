@@ -39,7 +39,7 @@ const SideBar = () => {
       gap: true,
     },
     { title: "My Mission", src: "src/assets/Icons/Folder.png" },
-    { title: "Track My Progress", src: "src/assets/Icons/Calender.png" },
+    { title: "Track My Progress", src: "src/assets/Icons/Calendar.png" },
     { title: "Rate My Experience", src: "src/assets/Icons/Search.png" },
     { title: "Logout", src: "src/assets/Icons/Setting.png" },
   ];

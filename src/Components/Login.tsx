@@ -8,8 +8,8 @@ interface LoginDetails {
 }
 
 const dummyUsers = [
-  { username: "questmaker1", password: "password123", role: "QuestMaker" },
-  { username: "fetcher1", password: "password123", role: "Fetcher" },
+  { username: "questmaker1", password: "pass", role: "QuestMaker" },
+  { username: "fetcher1", password: "pass", role: "Fetcher" },
 ];
 
 const Login = () => {

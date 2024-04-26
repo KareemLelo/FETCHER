@@ -29,7 +29,7 @@ const statusSteps = [
     icon: FaPlaneArrival,
   },
   {
-    label: "Waiting for confirmation",
+    label: "Waiting for Agreement",
     actionLabel: "Confirm Payment",
     colorScheme: "green",
     icon: MdConfirmationNumber,

@@ -58,7 +58,6 @@ const MyPassport = () => {
     <Box
       bg={cardBg}
       p={6}
-      m={{ base: 5, md: 10 }}
       borderRadius="lg"
       boxShadow="md"
       color={textColor}
@@ -100,7 +99,7 @@ const MyPassport = () => {
                   name="expirationDate"
                   value={passport.expirationDate}
                   onChange={updatePassportField}
-                  placeholder="YYYY-MM-DD"
+                  type="date"
                   _placeholder={{ color: "white" }}
                 />
               </FormControl>
