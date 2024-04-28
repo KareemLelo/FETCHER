@@ -9,8 +9,13 @@ import {
   Text,
   List,
   ListItem,
+  Icon,
 } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { BsCreditCard, BsAirplaneEngines } from "react-icons/bs";
+import { AiOutlineShopping } from "react-icons/ai";
+import { IoIosLogOut } from "react-icons/io";
+import { RiFileUserLine } from "react-icons/ri";
 import avatar from "../assets/Icons/Avatar.png"; // Verify the path
 import { useContent } from "../ContentManagment/ContentContext";
 
@@ -21,27 +26,24 @@ const SideBar = () => {
   const questMakerMenus = [
     {
       title: "My Profile",
-      src: "src/assets/Icons/User.png",
+      icon: RiFileUserLine,
     },
-    { title: "My Credit Card", src: "src/assets/Icons/Chat.png" },
-    { title: "New Quest", src: "src/assets/Icons/Chart_fill.png", gap: true },
-    { title: "View My Fetcher", src: "src/assets/Icons/Calendar.png" },
-    { title: "Track My Order", src: "src/assets/Icons/Search.png" },
-    { title: "Logout", src: "src/assets/Icons/Setting.png" },
+    { title: "My Credit Card", icon: BsCreditCard },
+    { title: "New Quest", icon: AiOutlineShopping, gap: true },
+    { title: "Track My Order", icon: BsAirplaneEngines },
+    { title: "Logout", icon: IoIosLogOut },
   ];
 
   const fetcherMenus = [
-    { title: "My Profile", src: "src/assets/Icons/User.png" },
-    { title: "My Credit Card", src: "src/assets/Icons/Chat.png" },
+    { title: "My Profile", icon: RiFileUserLine },
+    { title: "My Credit Card", icon: BsCreditCard },
     {
       title: "Available Quests",
-      src: "src/assets/Icons/Chart_fill.png",
+      icon: AiOutlineShopping,
       gap: true,
     },
-    { title: "My Mission", src: "src/assets/Icons/Folder.png" },
-    { title: "Track My Progress", src: "src/assets/Icons/Calendar.png" },
-    { title: "Rate My Experience", src: "src/assets/Icons/Search.png" },
-    { title: "Logout", src: "src/assets/Icons/Setting.png" },
+    { title: "Track My Progress", icon: BsAirplaneEngines },
+    { title: "Logout", icon: IoIosLogOut },
   ];
 
   // Determine which menus to display based on the account type
@@ -96,7 +98,7 @@ const SideBar = () => {
                 cursor="pointer"
                 onClick={() => setContent(menu.title)}
               >
-                <img src={menu.src} alt={menu.title} />
+                <Icon as={menu.icon} boxSize="24px" />
                 {open && <Text color={textColor}>{menu.title}</Text>}
               </ListItem>
             ))}
