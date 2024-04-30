@@ -1,5 +1,5 @@
 import React from "react";
-import { useContent } from "./ContentContext"; // Ensure the path is correct
+import { useContent } from "./ContentContext";
 import HomeContentF from "../Components/Fetcher/HomeContentF";
 import HomeContentQM from "../Components/QuestMaker/HomeContentQM";
 import Register from "../Components/SignUp";
@@ -7,7 +7,7 @@ import Login from "../Components/Login";
 import QuestForm from "../Components/QuestMaker/QuestForm";
 import MyProfilePage from "../Components/MyProfile/MyProfilePage";
 import TrackOrderPage from "../Components/TrackMyOrder/TrackOrderPage";
-import AvailableQuestPage from "../Components/AvailableQuests/AvailableQuestPage";
+import AvailableQuestPage from "../Components/Fetcher/AvailableQuests/AvailableQuestPage";
 import CreditCardGrid from "../Components/MyCreditCard/CreditCardPage";
 
 const MainContent: React.FC = () => {
@@ -42,6 +42,8 @@ const MainContent: React.FC = () => {
         return <AvailableQuestPage quests={[]} />;
       case "My Credit Card":
         return <CreditCardGrid />;
+      case "Track My Progress":
+        return <TrackOrderPage />;
       default:
         // This will handle undefined content state, showing home based on role
         return CheckLogedin();

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Input, Button, useToast } from "@chakra-ui/react";
-import { useContent } from "../ContentManagment/ContentContext"; // Ensure the path is correct
+import { useToast } from "@chakra-ui/react";
+import { useContent } from "../ContentManagment/ContentContext";
+// Ensure the path is correct
 
 interface LoginDetails {
   username: string;

@@ -1,6 +1,14 @@
 // TrackOrderDesc.tsx
 import React from "react";
-import { Box, Divider, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { useOrderStatus } from "../../ContentManagment/OrderStatusContext";
 
 const TrackOrderDesc: React.FC<{
   order: {
@@ -10,6 +18,7 @@ const TrackOrderDesc: React.FC<{
     estimatedDelivery: string;
   };
 }> = ({ order }) => {
+  const { setActiveStep, isComplete } = useOrderStatus();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
@@ -28,6 +37,16 @@ const TrackOrderDesc: React.FC<{
           Estimated Delivery: {order.estimatedDelivery}
         </Text>
         <Divider mb={2} />
+        <Flex justifyContent={"center"}>
+          <Button
+            colorScheme="red"
+            onClick={() => setActiveStep(0)}
+            isDisabled={isComplete}
+            w={"150px"}
+          >
+            Cancel
+          </Button>
+        </Flex>
       </Flex>
     </Box>
   );

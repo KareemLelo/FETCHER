@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Heading, VStack } from "@chakra-ui/react";
 import QuestList from "./QuestList"; // Adjust the import path as necessary
-import { Quest } from "../../Services/QuestInterface"; // Adjust path as necessary
+import { Quest } from "../../../Services/QuestInterface"; // Adjust path as necessary
 
 interface QuestListGridProps {
   quests: Quest[];

@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useCallback,
-} from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 
 interface User {
   username: string;
@@ -14,11 +8,11 @@ interface User {
 interface ContentContextType {
   content: string;
   accountType: string;
-  user: User | null; // Added to manage user data
+  user: User | null;
   setContent: (content: string) => void;
   setAccountType: (type: string) => void;
-  setUser: (user: User | null) => void; // Function to update the current user
-  logout: () => void; // Function to handle logout
+  setUser: (user: User | null) => void;
+  logout: () => void;
 }
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
@@ -31,22 +25,17 @@ export const useContent = () => {
   return context;
 };
 
-interface ContentProviderProps {
-  children: ReactNode;
-}
-
-export const ContentProvider: React.FC<ContentProviderProps> = ({
-  children,
-}) => {
+export const ContentContextProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [content, setContent] = useState<string>("default");
   const [accountType, setAccountType] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
 
   const logout = useCallback(() => {
-    // Reset user to null to represent a logged-out state
     setUser(null);
-    setContent("default"); // Optionally reset content state
-    setAccountType(""); // Optionally reset account type
+    setContent("default");
+    setAccountType("");
   }, []);
 
   return (

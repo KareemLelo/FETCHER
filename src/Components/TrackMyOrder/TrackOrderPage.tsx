@@ -1,9 +1,11 @@
 // TrackOrderPage.tsx
 import React from "react";
 import { Flex, VStack } from "@chakra-ui/react";
-import TrackOrder from "./TrackOrder";
+import TrackOrderF from "./TrackOrderF";
 import TrackOrderDesc from "./TrackOrderDesc";
 import Vault from "./Vault";
+import { useContent } from "../../ContentManagment/ContentContext";
+import TrackOrderQM from "./TrackOrderQM";
 
 const order = {
   id: "ABC123",
@@ -21,10 +23,16 @@ const transactions = [
 const balance = 350; // Mock balance
 
 const TrackOrderPage: React.FC = () => {
+  const { accountType } = useContent();
   return (
     <Flex justifyContent={"center"}>
       <VStack align="stretch" maxWidth="full" m={6} spacing={6} width={"80%"}>
-        <TrackOrder order={order} />
+        {accountType === "QuestMaker" ? (
+          <TrackOrderQM order={order} />
+        ) : (
+          <TrackOrderF order={order} />
+        )}
+
         <TrackOrderDesc order={order} />
         <Vault balance={balance} transactions={transactions} />
       </VStack>
