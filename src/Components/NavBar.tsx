@@ -11,33 +11,70 @@ import {
   Portal,
   useDisclosure,
   Center,
+  Icon,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { BsCreditCard, BsAirplaneEngines } from "react-icons/bs";
+import { AiOutlineShopping } from "react-icons/ai";
+import { IoIosLogOut } from "react-icons/io";
+import { RiFileUserLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
+import { CgCopy } from "react-icons/cg";
+import { TiHomeOutline } from "react-icons/ti";
+import { Avatar, AvatarBadge } from "@chakra-ui/react";
 import { useContent } from "../ContentManagment/ContentContext"; // Ensure this is the correct path to your ContentContext
+
+const questMakerMenus = [
+  {
+    title: "Home",
+    icon: TiHomeOutline,
+  },
+  {
+    title: "Terms&Co",
+    icon: CgCopy,
+  },
+  {
+    title: "My Profile",
+    icon: RiFileUserLine,
+  },
+  { title: "My Credit Card", icon: BsCreditCard },
+  { title: "New Quest", icon: AiOutlineShopping, gap: true },
+  { title: "Track My Order", icon: BsAirplaneEngines },
+  { title: "Logout", icon: IoIosLogOut },
+];
+
+const fetcherMenus = [
+  {
+    title: "Home",
+    icon: TiHomeOutline,
+  },
+  {
+    title: "Terms&Co",
+    icon: CgCopy,
+  },
+  { title: "My Profile", icon: RiFileUserLine },
+  { title: "My Credit Card", icon: BsCreditCard },
+  {
+    title: "Available Quests",
+    icon: AiOutlineShopping,
+    gap: true,
+  },
+  { title: "Track My Progress", icon: BsAirplaneEngines },
+  { title: "Logout", icon: IoIosLogOut },
+];
 
 const NavBar = () => {
   const { isOpen, onToggle } = useDisclosure();
-  const { setContent } = useContent();
+  const { setContent, accountType } = useContent();
+
+  const Menus = accountType === "QuestMaker" ? questMakerMenus : fetcherMenus;
 
   const bg = "brand.background";
   const color = "brand.text";
 
-  const menuItems = [
-    { title: "Home", src: "" },
-    { title: "Terms&Co", src: "" },
-    { title: "Contact", src: "" },
-    { title: "My Profile", src: "Chart_fill" },
-    { title: "My Credit Card", src: "Chat" },
-    { title: "New Quest", src: "User" },
-    { title: "View My Fetcher", src: "Calendar" },
-    { title: "Track My Order", src: "Search" },
-  ];
-
   return (
     <Box px={4} bg={bg} w="full">
       <Flex h={16} alignItems="center" justifyContent="space-between">
-        {/* Logo: Centered on smaller screens, left-aligned on larger screens */}
         <Center
           flex={{ base: 1, md: 0 }}
           justifyContent={{ base: "center", md: "start" }}
@@ -54,7 +91,7 @@ const NavBar = () => {
           justifyContent="center"
           flex={1}
         >
-          {menuItems.slice(0, 3).map((item) => (
+          {Menus.slice(0, 2).map((item) => (
             <Button
               key={item.title}
               variant="ghost"
@@ -68,31 +105,42 @@ const NavBar = () => {
           ))}
         </Flex>
 
-        <Stack direction="row" alignItems="center" display={{ md: "flex" }}>
-          <Button
-            width={{ base: "65px", md: "auto" }}
-            variant="solid"
+        {accountType ? (
+          <Avatar
+            size="sm"
+            /* src={user.avatarUrl} */
             bg="brand.primary"
-            size="sm"
-            leftIcon={<FaRegUser />}
-            onClick={() => setContent("login")}
-            mr={4}
-            _hover={{ bg: "brand.highlight" }}
+            color="white"
           >
-            Login
-          </Button>
-          <Button
-            width={{ base: "65px", md: "auto" }}
-            variant="outline"
-            borderColor="brand.primary"
-            size="sm"
-            color={color}
-            onClick={() => setContent("register")}
-            _hover={{ bg: "brand.highlight" }}
-          >
-            Sign Up
-          </Button>
-        </Stack>
+            <AvatarBadge boxSize="1em" bg="green.500" />
+          </Avatar>
+        ) : (
+          <Stack direction="row" alignItems="center" display={{ md: "flex" }}>
+            <Button
+              width={{ base: "65px", md: "auto" }}
+              variant="solid"
+              bg="brand.primary"
+              size="sm"
+              leftIcon={<FaRegUser />}
+              onClick={() => setContent("login")}
+              mr={4}
+              _hover={{ bg: "brand.highlight" }}
+            >
+              Login
+            </Button>
+            <Button
+              width={{ base: "65px", md: "auto" }}
+              variant="outline"
+              borderColor="brand.primary"
+              size="sm"
+              color={color}
+              onClick={() => setContent("register")}
+              _hover={{ bg: "brand.highlight" }}
+            >
+              Sign Up
+            </Button>
+          </Stack>
+        )}
 
         {/* Collapsible Menu for smaller screens */}
         <Popover isOpen={isOpen} onClose={onToggle} placement="bottom-start">
@@ -122,15 +170,18 @@ const NavBar = () => {
               maxW="sm" // Limit max width to avoid stretching across the screen
             >
               <Stack>
-                {menuItems.map((item) => (
-                  <Button
-                    key={item.title}
-                    variant="ghost"
-                    justifyContent="start"
-                    onClick={() => setContent(item.title)}
-                  >
-                    {item.title}
-                  </Button>
+                {Menus.map((item) => (
+                  <Box>
+                    <Icon as={item.icon} boxSize="24px" />
+                    <Button
+                      key={item.title}
+                      variant="ghost"
+                      justifyContent="start"
+                      onClick={() => setContent(item.title)}
+                    >
+                      {item.title}
+                    </Button>
+                  </Box>
                 ))}
               </Stack>
             </PopoverContent>

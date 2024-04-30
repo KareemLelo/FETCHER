@@ -41,8 +41,7 @@ interface Order {
 }
 
 const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
-  const { activeStep, setActiveStep, isComplete, setAgreeStatus } =
-    useOrderStatus(); // Updated context hook
+  const { activeStep, setAgreeStatus } = useOrderStatus(); // Updated context hook
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
