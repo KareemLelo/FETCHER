@@ -20,7 +20,7 @@ import avatar from "../assets/Icons/Avatar.png"; // Verify the path
 import { useContent } from "../ContentManagment/ContentContext";
 
 const SideBar = () => {
-  const { setContent, accountType } = useContent();
+  const { setContent, accountType, logout } = useContent();
   const [open, setOpen] = useState(true);
 
   const questMakerMenus = [
@@ -53,6 +53,15 @@ const SideBar = () => {
   const sidebarBg = useColorModeValue("brand.secondary", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
   const iconColor = useColorModeValue("brand.primary", "brand.accent");
+
+  // Handle menu click
+  const handleMenuClick = (title: string) => {
+    if (title === "Logout") {
+      logout();
+    } else {
+      setContent(title);
+    }
+  };
 
   return (
     <Box h="100vh">
@@ -96,7 +105,7 @@ const SideBar = () => {
                 alignItems="center"
                 gap="4"
                 cursor="pointer"
-                onClick={() => setContent(menu.title)}
+                onClick={() => handleMenuClick(menu.title)}
               >
                 <Icon as={menu.icon} boxSize="24px" />
                 {open && <Text color={textColor}>{menu.title}</Text>}

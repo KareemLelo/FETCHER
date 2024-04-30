@@ -5,7 +5,7 @@ import SignUp from "./SignUp"; // path to your SignUp component
 import { Box } from "@chakra-ui/react";
 
 const FirstPage = () => {
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [showSignUp] = useState(false);
 
   // Render the appropriate component based on the state
   const renderMainContent = () => {
