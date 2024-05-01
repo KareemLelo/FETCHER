@@ -1,4 +1,4 @@
-import User from '../models/user.js';
+import User from '../userManagementComponent/user.js';
 
 const validateProfileUpdate = async (req, res, next) => {
   const { userName, email, mobile } = req.body;
