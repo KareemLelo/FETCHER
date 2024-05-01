@@ -1,8 +1,6 @@
 import express from "express";
-//import authRoutes from './routes/authRoutes.mjs';
 import mongoose from "mongoose";
 import userRoutes from './routes/userRoutes.js';
-//import {connectDb} from "./config/database.mjs";
 import cors from 'cors';
 import dotenv from 'dotenv';
 

@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'; 
+/*import jwt from 'jsonwebtoken'; 
 import User from '../models/user.js';
 
 export const protectRoutes = async (req, res, next) => {
@@ -7,7 +7,7 @@ export const protectRoutes = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select('-password');
+      req.user = {_id: decoded.id};
       next();
     } catch (error) {
       console.error('Not authorized, token failed', error);
@@ -18,3 +18,4 @@ export const protectRoutes = async (req, res, next) => {
     res.status(401).send('Not authorized, no token');
   }
 };
+*/

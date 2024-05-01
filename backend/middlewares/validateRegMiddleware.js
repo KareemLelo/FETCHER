@@ -1,4 +1,4 @@
-import User from '../models/user.js';
+import User from '../userManagementComponent/user.js';
 
 async function validateRegistration(req,res,next)
 {
