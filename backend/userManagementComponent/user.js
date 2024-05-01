@@ -52,12 +52,6 @@ class User {
     this.data = data;
   }
 
-  async save() {
-    // Create a new document in the database from the data provided to the class.
-    const newUser = new this.model(this.data);
-    return newUser.save();
-  }
-
   static async findByUserName(userName) {
     // Ideally, you should be hashing the password and comparing the hashed password
     let user = await QuestMakerModel.findOne({ userName }).lean();
@@ -80,6 +74,11 @@ class User {
     }).lean();
 
     return !!questMakerExists || !!fetcherExists;// Convert to boolean
+  }
+  async save() {
+    // Create a new document in the database from the data provided to the class.
+    const newUser = new this.model(this.data);
+    return newUser.save();
   }
 }
 

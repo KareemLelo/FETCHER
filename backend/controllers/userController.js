@@ -72,7 +72,6 @@ export const getUserProfile = async (req, res) => {
   const user = await User.findByUserName(req.user.userName);
   if (user) {
     res.json({
-      //_id: user._id,
       name: user.firstName + " " + user.lastName,
       email: user.email,
       mobile: user.mobile
@@ -94,7 +93,6 @@ export const updateUserProfile = async (req, res) => {
       const updatedUser = await user.save();
 
       res.json({
-        id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
         mobile: updatedUser.mobile,

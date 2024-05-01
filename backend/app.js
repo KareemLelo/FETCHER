@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRoutes from './routes/userRoutes.js';
+import questRoutes from './routes/questRoutes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -24,7 +25,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/',userRoutes);//tells the Express. app to use the router defined in userRoutes for any HTTP requests that match the path '/api/users'
 // '/api/users': This is the base path or route prefix. The userRoutes router will handle any requests that start with this path.
-
+app.use('/',questRoutes);
 const PORT = process.env.PORT || 3500;
 
 const startServer = async () => {

@@ -27,20 +27,33 @@ const questSchema = new mongoose.Schema({
   timestamps: true, // Adds createdAt and updatedAt timestamps
   collection: 'BZKQuests'
 });
-
+const QuestModel = mongoose.model('Quest', questSchema, 'BZKQuests');
 class Quest {
     constructor(data) {
       this.data = data;
     }
-  
-    async save() {
+    
+    static async findByName(itemName) {
+      let quest = await QuestModel.findOne({ itemName }).lean();// .lean() is optional for performance
+      if (!quest) {
+        throw new Error(`no quest found with name: ${itemName}`);
+      }
+      return quest;
+    }
+
+    /*async save() {
       const newQuest = new Quest(this.data);
+      return newQuest.save();
+    }*/
+    async save() {
+      // Create a new document in the database from the data provided to the class.
+      const newQuest = new this.model(this.data);
       return newQuest.save();
     }
 }
 
 // Convert schema to model
-questSchema.loadClass(Quest);
-const QuestModel = mongoose.model('Quest', questSchema);
+//questSchema.loadClass(Quest);
+//const QuestModel = mongoose.model('Quest', questSchema);
 
-export default QuestModel;
+export default Quest;
