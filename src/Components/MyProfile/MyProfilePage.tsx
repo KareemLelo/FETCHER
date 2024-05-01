@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex, VStack, SimpleGrid } from "@chakra-ui/react";
+import { VStack, SimpleGrid } from "@chakra-ui/react";
 import MyPassport from "./MyPassport";
 import ProfileInfo from "./ProfileInfo";
 import TicketDetails from "./TicketDetails";
