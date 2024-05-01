@@ -1,4 +1,4 @@
-/*import User from '../models/user.js';
+import User from '../models/user.js';
 
 const validateProfileUpdate = async (req, res, next) => {
   const { userName, email, mobile } = req.body;
@@ -20,4 +20,4 @@ const validateProfileUpdate = async (req, res, next) => {
   }
 };
 
-export default validateProfileUpdate;*/
+export default validateProfileUpdate;
