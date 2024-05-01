@@ -15,7 +15,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Quest } from "../../Services/QuestInterface";
+import { Quest } from "../../Services/Interface";
 
 const QuestForm: React.FC = () => {
   const [quest, setQuest] = useState<Quest>({

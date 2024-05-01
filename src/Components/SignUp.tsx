@@ -42,7 +42,7 @@ const Register = () => {
     async (data) => {
       try {
         const response = await axios.post(
-          "http://localhost:3500/register",
+          "http://localhost:5050/register",
           data
         );
         toast({

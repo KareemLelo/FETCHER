@@ -8,7 +8,7 @@ import {
   Center,
   Flex,
 } from "@chakra-ui/react";
-import { Quest } from "../../Services/QuestInterface";
+import { Quest } from "../../Services/Interface";
 import { useColorModeValue } from "@chakra-ui/react";
 
 interface Props {

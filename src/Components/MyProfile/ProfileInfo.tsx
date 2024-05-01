@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import {
   Box,
   VStack,
@@ -13,47 +13,77 @@ import {
   useColorModeValue,
   Divider,
 } from "@chakra-ui/react";
-
-// Define a type for the profile state
-interface Profile {
-  name: string;
-  email: string;
-  bio: string;
-  mobileNumber: string;
-}
+import { Profile } from "../../Services/Interface";
+import { fetchProfileData, updateProfileData } from "../../Services/Api";
 
 const MyProfile = () => {
   const toast = useToast();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
-  // Initial state for the profile, using the Profile interface
+  // State management
   const [profile, setProfile] = useState<Profile>({
     name: "",
     email: "",
     bio: "",
     mobileNumber: "",
   });
-  const [profileSaved, setProfileSaved] = useState(false);
+  const [profileSaved, setProfileSaved] = useState<boolean>(true); // Start with fields disabled
+  const [editMode, setEditMode] = useState<boolean>(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setProfileSaved(true);
-    toast({
-      title: "Profile updated.",
-      description: "Your profile information has been successfully updated.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-    // Here you would send `profile` to the server for saving
-  };
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const fetchedProfile = await fetchProfileData();
+        setProfile({
+          name: fetchedProfile.name,
+          email: fetchedProfile.email,
+          mobileNumber: fetchedProfile.mobileNumber,
+          bio: "", // Start with an empty bio
+        });
+        setProfileSaved(true);
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    };
+    loadData();
+  }, []);
 
   const handleEdit = () => {
-    setProfileSaved(false); // Allow editing again
+    setEditMode(true);
+    setProfileSaved(false);
   };
 
-  // Update individual fields in the profile object
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await updateProfileData(profile);
+      setEditMode(false);
+      setProfileSaved(true);
+      toast({
+        title: "Profile Updated",
+        description: "Your profile information has been successfully updated.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error updating profile",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   const updateField = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -83,77 +113,50 @@ const MyProfile = () => {
         <Heading size="lg" mb={5}>
           My Profile
         </Heading>
-        {profileSaved ? (
-          <VStack display={"flex"} alignItems={"left"} spacing={3}>
-            <Text fontSize="lg">
-              <strong>Name:</strong> {profile.name}
-            </Text>
-            <Divider />
-            <Text fontSize="lg">
-              <strong>Email:</strong> {profile.email}
-            </Text>
-            <Divider />
-
-            <Text fontSize="lg">
-              <strong>Bio:</strong> {profile.bio}
-            </Text>
-            <Divider />
-
-            <Text fontSize="lg">
-              <strong>Mobile Number: +962</strong> {profile.mobileNumber}
-            </Text>
-            <Divider />
-
-            <Box display={"flex"} justifyContent={"center"}>
-              <Button onClick={handleEdit} colorScheme="blue">
-                Edit Profile
-              </Button>
-            </Box>
-          </VStack>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <VStack spacing={4}>
-              <FormControl isRequired>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  name="name"
-                  value={profile.name}
-                  onChange={updateField}
-                  placeholder="Enter your name"
-                  _placeholder={{ color: "white" }}
-                />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  name="email"
-                  type="email"
-                  value={profile.email}
-                  onChange={updateField}
-                  placeholder="Enter your email"
-                  _placeholder={{ color: "white" }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Bio</FormLabel>
-                <Input
-                  name="bio"
-                  value={profile.bio}
-                  onChange={updateField}
-                  placeholder="A short bio about yourself..."
-                  _placeholder={{ color: "white" }}
-                />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Mobile Number</FormLabel>
-                <Input
-                  name="mobileNumber"
-                  value={profile.mobileNumber}
-                  onChange={updateField}
-                  placeholder="Enter your mobile number"
-                  _placeholder={{ color: "white" }}
-                />
-              </FormControl>
+        <form onSubmit={handleSubmit}>
+          <VStack spacing={4}>
+            <FormControl isRequired isDisabled={!editMode}>
+              <FormLabel>Name</FormLabel>
+              <Input
+                name="name"
+                value={profile.name}
+                onChange={updateField}
+                placeholder="Enter your name"
+                _placeholder={{ color: "gray.500" }}
+              />
+            </FormControl>
+            <FormControl isRequired isDisabled={!editMode}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                name="email"
+                type="email"
+                value={profile.email}
+                onChange={updateField}
+                placeholder="Enter your email"
+                _placeholder={{ color: "gray.500" }}
+              />
+            </FormControl>
+            <FormControl isDisabled={!editMode}>
+              <FormLabel>Bio</FormLabel>
+              <Input
+                name="bio"
+                value={profile.bio}
+                onChange={updateField}
+                placeholder="A short bio about yourself..."
+                _placeholder={{ color: "gray.500" }}
+              />
+            </FormControl>
+            <FormControl isRequired isDisabled={!editMode}>
+              <FormLabel>Mobile Number</FormLabel>
+              <Input
+                name="mobileNumber"
+                value={profile.mobileNumber}
+                onChange={updateField}
+                placeholder="Enter your mobile number"
+                _placeholder={{ color: "gray.500" }}
+              />
+            </FormControl>
+            {editMode && (
               <Button
                 type="submit"
                 backgroundColor="brand.accent"
@@ -162,9 +165,14 @@ const MyProfile = () => {
               >
                 Save Changes
               </Button>
-            </VStack>
-          </form>
-        )}
+            )}
+            {!editMode && (
+              <Button onClick={handleEdit} colorScheme="blue">
+                Edit Profile
+              </Button>
+            )}
+          </VStack>
+        </form>
       </VStack>
     </Box>
   );

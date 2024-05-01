@@ -12,7 +12,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { Quest } from "../../../Services/QuestInterface"; // Adjust path as necessary
+import { Quest } from "../../../Services/Interface"; // Adjust path as necessary
 
 interface QuestListProps {
   quest: Quest;

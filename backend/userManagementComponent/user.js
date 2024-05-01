@@ -63,6 +63,14 @@ class User {
     return user;
   }
 
+  static async findById(_id) {
+    let user = await QuestMakerModel.findById(_id).lean();
+    if (!user) {
+      user = await FetcherModel.findById(_id).lean();
+    }
+    return user;
+  }
+
   // Check if the email or username already exists
   static async userNameOrEmailExists(userName, email) {
     console.log(`Checking if username: ${userName} or email: ${email} exists.`);
