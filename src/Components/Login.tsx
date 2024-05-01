@@ -92,7 +92,7 @@ const Login = () => {
                 variant="filled"
                 pr="4.5rem"
                 type={showPassword ? "text" : "password"}
-                bg="brand.primary"
+                bg="brand.background"
                 color="brand.text"
                 borderColor="brand.primary"
                 placeholder="Password"
