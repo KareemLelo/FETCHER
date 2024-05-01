@@ -12,6 +12,7 @@ import {
   useColorModeValue,
   Divider,
   HStack,
+  Flex,
 } from "@chakra-ui/react";
 
 // Define a type for the profile state
@@ -67,74 +68,82 @@ const TicketDetails = () => {
   };
 
   return (
-    <Box
-      bg={cardBg}
-      p={6}
-      boxShadow="lg"
-      borderRadius="lg"
-      color={textColor}
-      width={{ base: "80%", lg: "80%" }}
-    >
-      <VStack spacing={4} align="stretch">
-        <Heading size="lg" mb={4}>
-          Ticket Details
-        </Heading>
+    <Flex justifyContent={"center"}>
+      <Box
+        bg={cardBg}
+        p={6}
+        boxShadow="lg"
+        borderRadius="lg"
+        color={textColor}
+        width={{ base: "80%", md: "90%" }}
+      >
+        <VStack spacing={4} align="stretch">
+          <Heading size="lg" mb={4}>
+            Ticket Details
+          </Heading>
 
-        {profileSaved ? (
-          <>
-            {/* Display profile details here */}
-            <Button colorScheme="blue" onClick={handleEdit}>
-              Edit Details
-            </Button>
-          </>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <FormControl isRequired>
-              <FormLabel>Direction</FormLabel>
-              <Input
-                name="direction"
-                value={profile.direction}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Departure Date</FormLabel>
-              <Input
-                type="date"
-                name="departDate"
-                value={profile.departDate}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Arrival Date</FormLabel>
-              <Input
-                type="date"
-                name="arrivalDate"
-                value={profile.arrivalDate}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Flight Number</FormLabel>
-              <Input
-                name="flightNum"
-                value={profile.flightNum}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-            <HStack mt={4}>
-              <Button type="submit" colorScheme="blue">
-                Save Changes
+          {profileSaved ? (
+            <>
+              {/* Display profile details here */}
+              <Button colorScheme="blue" onClick={handleEdit}>
+                Edit Details
               </Button>
-              <Button colorScheme="green" onClick={handleAlreadyThere}>
-                I'm Already There
-              </Button>
-            </HStack>
-          </form>
-        )}
-      </VStack>
-    </Box>
+            </>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <FormControl isRequired>
+                <FormLabel>Direction</FormLabel>
+                <Input
+                  name="direction"
+                  value={profile.direction}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Departure Date</FormLabel>
+                <Input
+                  type="date"
+                  name="departDate"
+                  value={profile.departDate}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Arrival Date</FormLabel>
+                <Input
+                  type="date"
+                  name="arrivalDate"
+                  value={profile.arrivalDate}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel>Flight Number</FormLabel>
+                <Input
+                  name="flightNum"
+                  value={profile.flightNum}
+                  onChange={handleInputChange}
+                />
+              </FormControl>
+              <Flex justifyContent={"center"}>
+                <HStack mt={4}>
+                  <Button fontSize={"80%"} type="submit" colorScheme="blue">
+                    Save Changes
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    fontSize={"80%"}
+                    onClick={handleAlreadyThere}
+                  >
+                    I'm Already There
+                  </Button>
+                </HStack>
+              </Flex>
+            </form>
+          )}
+        </VStack>
+      </Box>
+    </Flex>
   );
 };
 
