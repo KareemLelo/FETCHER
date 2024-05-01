@@ -69,11 +69,13 @@ export const loginUser = async (req, res) => {
 
 // Get current user's profile
 export const getUserProfile = async (req, res) => {
-  const user = await User.findByUserName(req.user.userName);
+  //const user = await User.findByUserName(req.user.userName);
+  const user = await User.findById(req.params._id);
   if (user) {
     res.json({
       name: user.firstName + " " + user.lastName,
       email: user.email,
+      bio:user.bio,
       mobile: user.mobile
     });
   } else {

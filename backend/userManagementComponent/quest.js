@@ -10,7 +10,7 @@ const questSchema = new mongoose.Schema({
   itemLink: String,
   status: {
     type: String,
-    default: 'available', // or 'accepted', 'completed', etc.
+    default: 'pending', // or 'accepted', 'completed', etc.
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,

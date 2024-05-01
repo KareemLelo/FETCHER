@@ -10,6 +10,7 @@ const QuestMakerSchema = new mongoose.Schema({
   userName: String,
   password: String,
   mobile: String,
+  bio: String
 },
 //{  versionKey:false},
 {
@@ -25,6 +26,7 @@ const FetcherSchema = new mongoose.Schema({
   userName: String,
   password: String,
   mobile: String,
+  bio: String,
   flightdetails: {
     arrivalDate: Date,
     departureDate: Date,

@@ -31,7 +31,7 @@ export const acceptQuest = async (req, res) => {
       return res.status(404).json({ message: "Quest not found" });
     }
 
-    if (quest.status !== 'available') {
+    if (quest.status !== 'pending') {
       return res.status(400).json({ message: "Quest is no longer available" });
     }
 
