@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -35,7 +34,7 @@ const statusSteps = [
     colorScheme: "orange",
   },
   {
-    label: "Contact Fetcher",
+    label: "Contact QuestMaker",
     actionLabel: "Agree",
     icon: FaRegHandshake,
     colorScheme: "yellow",
@@ -61,8 +60,15 @@ const statusSteps = [
 ];
 
 const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
-  const { activeStep, setActiveStep } = useOrderStatus();
-  const [isComplete, setIsComplete] = useState(false);
+  const {
+    activeStep,
+    setActiveStep,
+    agreeStatusF,
+    agreeStatusQM,
+    setAgreeStatusF,
+    setComplete,
+    isComplete,
+  } = useOrderStatus();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
   /* const today = new Date().toISOString().slice(0, 10); */ // Assuming the date format is YYYY-MM-DD
@@ -75,10 +81,13 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
   const buttonText = statusSteps[activeStep].actionLabel;
 
   const advanceStep = () => {
-    if (activeStep < statusSteps.length - 1) {
+    if (activeStep === 2 && !agreeStatusF) {
+      setAgreeStatusF(true);
+      setActiveStep(activeStep + 1);
+    } else if (activeStep < statusSteps.length - 1) {
       setActiveStep(activeStep + 1);
     } else {
-      setIsComplete(true);
+      setComplete(true); // Mark the process as complete
     }
   };
 
@@ -111,8 +120,10 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
             {index === activeStep && (
               <Button
                 colorScheme={step.colorScheme}
-                onClick={advanceStep}
-                isDisabled={isComplete}
+                onClick={() => {
+                  advanceStep();
+                }}
+                isDisabled={isComplete || (index === 2 && !agreeStatusQM)} // Disables the button unless QuestMaker has agreed
               >
                 {buttonText}
               </Button>

@@ -41,7 +41,7 @@ interface Order {
 }
 
 const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
-  const { activeStep, setAgreeStatus } = useOrderStatus(); // Updated context hook
+  const { activeStep, setAgreeStatusQM, agreeStatusQM } = useOrderStatus(); // Updated context hook
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
@@ -69,7 +69,11 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
       </HStack>
       <Flex justify="center" mt={4}>
         {activeStep === 2 && (
-          <Button colorScheme={"yellow"} onClick={() => setAgreeStatus(true)}>
+          <Button
+            colorScheme={"yellow"}
+            onClick={() => setAgreeStatusQM(true)}
+            isDisabled={agreeStatusQM}
+          >
             Agree
           </Button>
         )}

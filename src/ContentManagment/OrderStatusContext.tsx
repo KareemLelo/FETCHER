@@ -3,10 +3,12 @@ import React, { createContext, useContext, useState, useCallback } from "react";
 interface OrderStatus {
   activeStep: number;
   isComplete: boolean;
-  agreeStatus: boolean;
+  agreeStatusF: boolean;
+  agreeStatusQM: boolean;
   setActiveStep: (step: number) => void;
   setComplete: (isComplete: boolean) => void;
-  setAgreeStatus: (status: boolean) => void;
+  setAgreeStatusF: (status: boolean) => void;
+  setAgreeStatusQM: (status: boolean) => void;
 }
 
 const OrderStatusContext = createContext<OrderStatus | undefined>(undefined);
@@ -26,10 +28,15 @@ export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [isComplete, setComplete] = useState(false);
-  const [agreeStatus, setAgreeStatus] = useState(false);
+  const [agreeStatusF, setAgreeStatusF] = useState(false);
+  const [agreeStatusQM, setAgreeStatusQM] = useState(false);
 
-  const handleSetAgreeStatus = useCallback((status: boolean) => {
-    setAgreeStatus(status);
+  const handleSetAgreeStatusQM = useCallback((status: boolean) => {
+    setAgreeStatusQM(status);
+  }, []);
+
+  const handleSetAgreeStatusF = useCallback((status: boolean) => {
+    setAgreeStatusF(status);
   }, []);
 
   const handleSetComplete = useCallback((isComplete: boolean) => {
@@ -45,10 +52,12 @@ export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         activeStep,
         isComplete,
-        agreeStatus,
+        agreeStatusF,
+        agreeStatusQM,
         setActiveStep: handleSetActiveStep,
         setComplete: handleSetComplete,
-        setAgreeStatus: handleSetAgreeStatus,
+        setAgreeStatusF: handleSetAgreeStatusF,
+        setAgreeStatusQM: handleSetAgreeStatusQM,
       }}
     >
       {children}
