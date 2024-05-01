@@ -65,7 +65,15 @@ const fetcherMenus = [
 
 const NavBar = () => {
   const { isOpen, onToggle } = useDisclosure();
-  const { setContent, accountType } = useContent();
+  const { setContent, accountType, logout } = useContent();
+
+  const handleMenuClick = (title: string) => {
+    if (title === "Logout") {
+      logout();
+    } else {
+      setContent(title);
+    }
+  };
 
   const Menus = accountType === "QuestMaker" ? questMakerMenus : fetcherMenus;
 
@@ -96,9 +104,9 @@ const NavBar = () => {
               key={item.title}
               variant="ghost"
               mx={2}
-              onClick={() => setContent(item.title)}
               color={color}
               _hover={{ bg: "brand.secondary" }}
+              onClick={() => handleMenuClick(item.title)}
             >
               {item.title}
             </Button>
@@ -142,51 +150,52 @@ const NavBar = () => {
           </Stack>
         )}
 
-        {/* Collapsible Menu for smaller screens */}
-        <Popover isOpen={isOpen} onClose={onToggle} placement="bottom-start">
-          <PopoverTrigger>
-            <IconButton
-              aria-label="Open Menu"
-              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-              display={{ base: "flex", md: "none" }}
-              onClick={onToggle}
-              variant="outline"
-              position="absolute" // Ensure the button is positioned in a way that the menu can align to it
-              left={4} // Align to the left
-              top={3} // Adjust this value as necessary to position correctly under the navbar
-              color={"white"}
-              bg={"brand.primary"}
-              _hover={{ bg: "brand.highlight" }}
-            />
-          </PopoverTrigger>
-          <Portal>
-            <PopoverContent
-              border={0}
-              boxShadow="xl"
-              bg="brand.primary"
-              mt={3}
-              p={4}
-              width="auto" // Adjust width as needed
-              maxW="sm" // Limit max width to avoid stretching across the screen
-            >
-              <Stack>
-                {Menus.map((item) => (
-                  <Box>
-                    <Icon as={item.icon} boxSize="24px" />
-                    <Button
-                      key={item.title}
-                      variant="ghost"
-                      justifyContent="start"
-                      onClick={() => setContent(item.title)}
-                    >
-                      {item.title}
-                    </Button>
-                  </Box>
-                ))}
-              </Stack>
-            </PopoverContent>
-          </Portal>
-        </Popover>
+        {accountType && (
+          <Popover isOpen={isOpen} onClose={onToggle} placement="bottom-start">
+            <PopoverTrigger>
+              <IconButton
+                aria-label="Open Menu"
+                icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                display={{ base: "flex", md: "none" }}
+                onClick={onToggle}
+                variant="outline"
+                position="absolute" // Ensure the button is positioned in a way that the menu can align to it
+                left={4} // Align to the left
+                top={3} // Adjust this value as necessary to position correctly under the navbar
+                color={"white"}
+                bg={"brand.primary"}
+                _hover={{ bg: "brand.highlight" }}
+              />
+            </PopoverTrigger>
+            <Portal>
+              <PopoverContent
+                border={0}
+                boxShadow="xl"
+                bg="brand.primary"
+                mt={3}
+                p={4}
+                width="auto" // Adjust width as needed
+                maxW="sm" // Limit max width to avoid stretching across the screen
+              >
+                <Stack>
+                  {Menus.map((item) => (
+                    <Box>
+                      <Icon as={item.icon} boxSize="24px" />
+                      <Button
+                        key={item.title}
+                        variant="ghost"
+                        justifyContent="start"
+                        onClick={() => handleMenuClick(item.title)}
+                      >
+                        {item.title}
+                      </Button>
+                    </Box>
+                  ))}
+                </Stack>
+              </PopoverContent>
+            </Portal>
+          </Popover>
+        )}
       </Flex>
     </Box>
   );
