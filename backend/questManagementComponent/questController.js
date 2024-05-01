@@ -1,4 +1,4 @@
-import Quest from '../userManagementComponent/quest.js';
+import Quest from './quest.js';
 
 export const createQuest = async (req, res) => {
   try {

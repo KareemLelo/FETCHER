@@ -1,5 +1,5 @@
-/*import jwt from 'jsonwebtoken'; 
-import User from '../models/user.js';
+import jwt from 'jsonwebtoken'; 
+//import User from '../models/user.js';
 
 export const protectRoutes = async (req, res, next) => {
   let token;
@@ -18,4 +18,3 @@ export const protectRoutes = async (req, res, next) => {
     res.status(401).send('Not authorized, no token');
   }
 };
-*/

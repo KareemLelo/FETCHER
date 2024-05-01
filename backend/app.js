@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import userRoutes from './routes/userRoutes.js';
-import questRoutes from './routes/questRoutes.js';
+import userRoutes from './userManagementComponent/userRoutes.js';
+import questRoutes from './questManagementComponent/questRoutes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 

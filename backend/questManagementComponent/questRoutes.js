@@ -1,5 +1,5 @@
 import express from 'express';
-import { createQuest, acceptQuest } from '../controllers/questController.js';
+import { createQuest, acceptQuest } from './questController.js';
 //import { protectRoutes } from '../middlewares/authMiddleware.js'; // if you want to protect the route
 
 const router = express.Router();
