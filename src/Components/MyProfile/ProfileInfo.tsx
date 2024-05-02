@@ -3,7 +3,6 @@ import {
   Box,
   VStack,
   Heading,
-  Text,
   Button,
   Avatar,
   FormControl,
@@ -11,12 +10,11 @@ import {
   Input,
   useToast,
   useColorModeValue,
-  Divider,
 } from "@chakra-ui/react";
 import { Profile } from "../../Services/Interface";
 import { fetchProfileData, updateProfileData } from "../../Services/Api";
 
-const MyProfile = () => {
+const ProfileInfo = () => {
   const toast = useToast();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
@@ -38,8 +36,8 @@ const MyProfile = () => {
         setProfile({
           name: fetchedProfile.name,
           email: fetchedProfile.email,
-          mobileNumber: fetchedProfile.mobileNumber,
-          bio: "", // Start with an empty bio
+          mobileNumber: fetchedProfile.mobile, // Make sure this matches the API response key
+          bio: fetchedProfile.bio || "",
         });
         setProfileSaved(true);
       } catch (error: any) {
@@ -52,6 +50,7 @@ const MyProfile = () => {
         });
       }
     };
+
     loadData();
   }, []);
 
@@ -178,4 +177,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default ProfileInfo;

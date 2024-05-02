@@ -2,7 +2,10 @@ import React, { createContext, useContext, useState, useCallback } from "react";
 
 interface User {
   username: string;
-  role: string; // Assuming roles like 'QuestMaker' or 'Fetcher'
+  firstName: string;
+  lastName: string;
+  email: string;
+  accCategory: string;
 }
 
 interface ContentContextType {
@@ -33,6 +36,7 @@ export const ContentContextProvider: React.FC<{
   const [user, setUser] = useState<User | null>(null);
 
   const logout = useCallback(() => {
+    localStorage.removeItem("userId");
     setUser(null);
     setContent("default");
     setAccountType("");

@@ -1,12 +1,7 @@
 import axios from 'axios';
-import { ApiResponse, Profile } from './Interface';
 
+const API_URL = "http://localhost:5050";
 
-const API_URL = "http://localhost:5050"; // Adjust based on your server setup
-
-
-
-// Set up a base instance of axios
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -14,46 +9,52 @@ const api = axios.create({
   },
 });
 
-// Add a request interceptor to include the token
 api.interceptors.request.use(config => {
-  // Assuming you store your token in localStorage or some state management
   const token = localStorage.getItem('token');
   if (token) {
-    config.headers!.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 }, error => {
   return Promise.reject(error);
 });
 
-const userId = "661308ce1a1aa40b8fcb7dbd"; 
+export const fetchProfileData = async (): Promise<any> => {
+  const userId = localStorage.getItem('userId');  // Get the user ID from localStorage
+  if (!userId) throw new Error("User ID not found");
 
-export const fetchProfileData = async (): Promise<Profile> => {
   try {
-      const response = await api.get<ApiResponse>(`/profile/${userId}`);
-      const { name, email, mobile, bio, } = response.data;
-      return {
-            // Ensure this is included
-          name,
-          email,
-          mobileNumber: mobile,
-          bio: bio || "",
-      };
+    const response = await api.get(`/profile/${userId}`);
+    return response.data;
   } catch (error: any) {
-      throw new Error(error.response?.data.message || "Error fetching profile");
+    throw new Error(error.response?.data.message || "Error fetching profile");
   }
 };
 
-
-export const updateProfileData = async (profileData: Profile): Promise<void> => {
+export const updateProfileData = async (profileData: any): Promise<void> => {
+  const userId = "661308ce1a1aa40b8fcb7dbd";
   try {
-    await api.post(`/profile/update/${userId}`, {
-      name: profileData.name,
-      email: profileData.email,
-      bio: profileData.bio,
-      mobile: profileData.mobileNumber,
-    });
+    await api.post(`/profile/update/${userId}`, profileData);
   } catch (error: any) {
     throw new Error(error.response?.data.message || "Error updating profile");
+  }
+};
+
+export const login = async (username: string, password: string) => {
+  try {
+    const response = await api.post(`/login`, {
+      userName: username,
+      password: password
+    });
+    localStorage.setItem('userId', response.data._id);
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Login API error:', error.response?.data || error.message);
+      throw error;
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred during login.');
+    }
   }
 };

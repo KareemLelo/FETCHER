@@ -6,19 +6,14 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { useContent } from "../ContentManagment/ContentContext";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-// Ensure the path is correct
+import { login as apiLogin } from "../Services/Api"; // Ensure path is correct
+import { useContent } from "../ContentManagment/ContentContext";
 
 interface LoginDetails {
   username: string;
   password: string;
 }
-
-const dummyUsers = [
-  { username: "questmaker1", password: "pass", role: "QuestMaker" },
-  { username: "fetcher1", password: "pass", role: "Fetcher" },
-];
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -34,24 +29,23 @@ const Login = () => {
     setLoginDetails((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const user = dummyUsers.find(
-      (u) =>
-        u.username === loginDetails.username &&
-        u.password === loginDetails.password
-    );
-    if (user) {
-      setAccountType(user.role); // Set user role in context
-      setContent("home"); // Navigate to home or appropriate dashboard based on role
+    try {
+      const userData = await apiLogin(
+        loginDetails.username,
+        loginDetails.password
+      );
+      setAccountType(userData.accCategory); // Assume the role is part of the response
+      setContent("home");
       toast({
         title: "Login Successful",
-        description: `Welcome ${user.username}`,
+        description: `Welcome ${userData.userName}`,
         status: "success",
         duration: 5000,
         isClosable: true,
       });
-    } else {
+    } catch (error) {
       toast({
         title: "Login Failed",
         description: "Invalid username or password",
@@ -61,7 +55,6 @@ const Login = () => {
       });
     }
   };
-
   return (
     <section className=" flex items-center justify-center m-5">
       <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">

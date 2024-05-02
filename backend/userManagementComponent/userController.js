@@ -49,13 +49,17 @@ export const loginUser = async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       console.log('successful login for:', userName);
+      console.log('Account Email is :', user.email);
+      console.log('Account Mobile is :', user.mobile);
+      console.log('Account Category is :', user.accCategory);
 
-      const token = generateToken(user._id);
+      /* const token = generateToken(user._id); */
       res.json({
         _id: user._id,
         userName: user.userName,
         email: user.email,
-        token,
+        accCategory: user.accCategory,
+        /* token, */
       });
     } else {
       console.log('login failed for:', userName);
@@ -70,24 +74,24 @@ export const loginUser = async (req, res) => {
 // Get current user's profile
 export const getUserProfile = async (req, res) => {
   try {
-      const userid = req.params._id;
-      const user = await User.findById(userid);
-
-      if (user) {
-          res.json({
-              name: user.firstName + " " + user.lastName,
-              email: user.email,
-              bio: user.bio,
-              mobile: user.mobile
-          });
-      } else {
-          res.status(404).send('User not found');
-      }
+    const userid = req.params._id;
+    const user = await User.findById(userid);
+    if (user) {
+      res.json({
+        name: user.firstName + " " + user.lastName,
+        email: user.email,
+        bio: user.bio,
+        mobile: user.mobile  // Ensure this key matches what the frontend expects
+      });
+    } else {
+      res.status(404).send('User not found');
+    }
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "An error occurred during the process" });
+    console.error(error);
+    res.status(500).json({ message: "An error occurred during the process" });
   }
 };
+
 
 export const updateUserProfile = async (req, res) => {
   try {

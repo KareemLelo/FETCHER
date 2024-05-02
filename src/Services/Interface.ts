@@ -13,7 +13,6 @@ export interface Quest {
     email: string;
     bio: string;
     mobileNumber: string;
-
   }
   
   export interface ApiResponse {
