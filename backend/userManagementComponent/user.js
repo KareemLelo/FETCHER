@@ -49,7 +49,7 @@ class User {
     } else if (data.accCategory === 'Fetcher') {
       this.model = FetcherModel;
     } else {
-      throw new Error('Invalid account category!');
+      throw Error('Invalid account category!');
     }
     this.data = data;
   }

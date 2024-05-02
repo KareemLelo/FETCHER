@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   VStack,
@@ -14,8 +13,9 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
-import axios from "axios";
-import useForm from "../Hooks/useForm"; // Ensure the path is accurate
+import { registerUser } from "../Services/Api";
+import { useState } from "react";
+import { useContent } from "../ContentManagment/ContentContext";
 
 interface RegisterData {
   firstName: string;
@@ -28,53 +28,46 @@ interface RegisterData {
 }
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    accCategory: "",
+    userName: "",
+    password: "",
+    mobile: "",
+  });
+  const { setContent, setAccountType } = useContent();
   const toast = useToast();
-  const { formData, handleInputChange, handleSubmit } = useForm<RegisterData>(
-    {
-      firstName: "",
-      lastName: "",
-      email: "",
-      accCategory: "",
-      userName: "",
-      password: "",
-      mobile: "",
-    },
-    async (data) => {
-      try {
-        const response = await axios.post(
-          "http://localhost:5050/register",
-          data
-        );
-        toast({
-          title: "Registration successful",
-          description: "You're now registered.",
-          status: "success",
-          duration: 5000,
-          isClosable: true,
-        });
-        console.log(response.data);
-        // Optionally use response data here
-      } catch (error) {
-        console.error("Error sending sign up data:", error);
-        toast({
-          title: "Registration failed",
-          description: "There was an issue with your registration.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-    }
-  );
 
-  const setAccountType = (accType: string) => {
-    handleInputChange({
-      target: { name: "accCategory", value: accType },
-    } as React.ChangeEvent<HTMLInputElement>);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const AccountTypes = ["Fetcher", "QuestMaker"];
-
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const userData = await registerUser(formData);
+      setAccountType(userData.accCategory); // Assuming accCategory is returned
+      setContent("home"); // Navigate to home
+      toast({
+        title: "Registration Successful",
+        description: "You're now registered.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Registration Failed",
+        description: "error.message",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
   // Enhanced styles for input fields
   const inputStyle = {
     p: 2,
@@ -90,6 +83,8 @@ const Register = () => {
       boxShadow: `0 0 0 1px ${"#6D9886"}`,
     }, // Focus border color and shadow
   };
+
+  const AccountTypes = ["Fetcher", "QuestMaker"];
 
   // Button styles adjusted for theme colors
   const buttonStyle = {
@@ -157,7 +152,7 @@ const Register = () => {
                   {AccountTypes.map((type) => (
                     <MenuItem
                       key={type}
-                      onClick={() => setAccountType(type)}
+                      onClick={() => (formData.accCategory = type)}
                       bg="#081A51"
                     >
                       {type}

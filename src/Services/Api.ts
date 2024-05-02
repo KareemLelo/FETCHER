@@ -60,3 +60,19 @@ export const login = async (username: string, password: string) => {
     }
   }
 };
+
+export const registerUser = async (data: any) => {
+  try {
+    const response = await api.post('/register', data);
+    localStorage.setItem('userId', response.data._id); // Assuming the server sends back the user's ID
+    return response.data; // This will now include the user ID if needed for immediate login or session tracking
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Registration API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error during registration");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred during registration.');
+    }
+  }
+};
