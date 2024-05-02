@@ -32,7 +32,9 @@ export const fetchProfileData = async (): Promise<any> => {
 };
 
 export const updateProfileData = async (profileData: any): Promise<void> => {
-  const userId = "661308ce1a1aa40b8fcb7dbd";
+  const userId = localStorage.getItem('userId');  // Dynamically get the user ID from local storage
+  if (!userId) throw new Error("No user ID found in local storage.");
+
   try {
     await api.post(`/profile/update/${userId}`, profileData);
   } catch (error: any) {
