@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = "http://localhost:5050";
-
+/* const API_URL = "http://localhost:5050"; */
+const API_URL = "https://fetcher-backend.onrender.com"
 const api = axios.create({
   baseURL: API_URL,
   headers: {
@@ -73,6 +73,21 @@ export const registerUser = async (data: any) => {
     } else {
       console.error('Unexpected error:', error);
       throw new Error('An unexpected error occurred during registration.');
+    }
+  }
+};
+
+export const fetchQuests = async (): Promise<any[]> => {
+  try {
+    const response = await api.get('/quests');
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Fetch quests API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error fetching quests");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while fetching quests.');
     }
   }
 };
