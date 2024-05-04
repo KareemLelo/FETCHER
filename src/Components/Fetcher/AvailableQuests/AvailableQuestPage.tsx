@@ -68,8 +68,6 @@ const AvailableQuestPage: React.FC = () => {
 
   return (
     <>
-      // Use Flex for outer container to leverage 'alignItems' for left
-      alignment
       <Flex
         direction="column"
         alignItems="center"
