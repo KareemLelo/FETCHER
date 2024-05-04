@@ -1,4 +1,4 @@
-// QuestList.jsx
+// QuestList.tsx
 import React, { useState } from "react";
 import {
   Box,
@@ -25,73 +25,76 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
   const textColor = useColorModeValue("brand.text", "white");
 
   return (
-    <Box
-      bg={cardBg}
-      p={paddingValue}
-      rounded="md"
-      shadow="md"
-      mb={2}
-      borderColor="brand.secondary"
-      borderWidth="1px"
-    >
-      <VStack align="stretch">
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          onClick={() => setIsOpen(!isOpen)}
-          cursor="pointer"
-        >
-          <VStack align="start">
-            <Text fontSize="lg" fontWeight="bold" color={textColor}>
-              {quest.name}
-            </Text>
-            <Text fontSize="sm" color={textColor}>
-              {quest.itemType} - {quest.price} JD
-            </Text>
-          </VStack>
-          <IconButton
-            aria-label="Expand quest details"
-            icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-            variant="ghost"
-            colorScheme="teal"
-          />
-        </Box>
-        <Collapse in={isOpen} animateOpacity>
-          <Box pt={2}>
-            <Text fontSize="sm" color={textColor}>
-              Quantity: {quest.quantity}
-            </Text>
-            <Divider pb={2} />
-            <Text fontSize="sm" color={textColor}>
-              Direction/Buying: {quest.direction}
-            </Text>
-            <Divider pb={2} />
-            <Text fontSize="sm" color={textColor}>
-              Weight: {quest.weight} Kg
-            </Text>
-            <Divider pb={2} />
-            <Text fontSize="sm" color={textColor}>
-              Link: {quest.link}
-            </Text>
-            <Divider pb={2} />
-            {/* Add any additional attributes here */}
+    <div>
+      <Box
+        bg={cardBg}
+        p={paddingValue}
+        rounded="md"
+        shadow="md"
+        mb={2}
+        borderColor="brand.secondary"
+        borderWidth="1px"
+        maxWidth={{ base: "80%", md: "80%" }}
+      >
+        <VStack align="stretch">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            onClick={() => setIsOpen(!isOpen)}
+            cursor="pointer"
+          >
+            <VStack align="start">
+              <Text fontSize="lg" fontWeight="bold" color={textColor}>
+                {quest.name}
+              </Text>
+              <Text fontSize="sm" color={textColor}>
+                {quest.itemType} - {quest.price} JD
+              </Text>
+            </VStack>
+            <IconButton
+              aria-label="Expand quest details"
+              icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              variant="ghost"
+              colorScheme="teal"
+            />
           </Box>
-          <Center>
-            <Button
-              width="200px"
-              height="50px"
-              mt={10}
-              bg={"brand.accent"}
-              color={"brand.text"}
-              _hover={{ bg: "brand.secondary" }} // Adjust hover color as needed
-            >
-              Accept Quest
-            </Button>
-          </Center>
-        </Collapse>
-      </VStack>
-    </Box>
+          <Collapse in={isOpen} animateOpacity>
+            <Box pt={2}>
+              <Text fontSize="sm" color={textColor}>
+                Quantity: {quest.quantity}
+              </Text>
+              <Divider pb={2} />
+              <Text fontSize="sm" color={textColor}>
+                Direction/Buying: {quest.direction}
+              </Text>
+              <Divider pb={2} />
+              <Text fontSize="sm" color={textColor}>
+                Weight: {quest.weight} Kg
+              </Text>
+              <Divider pb={2} />
+              <Text fontSize="sm" color={textColor}>
+                Link: {quest.link}
+              </Text>
+              <Divider pb={2} />
+              {/* Add any additional attributes here */}
+            </Box>
+            <Center>
+              <Button
+                width="200px"
+                height="50px"
+                mt={10}
+                bg={"brand.accent"}
+                color={"brand.text"}
+                _hover={{ bg: "brand.secondary" }} // Adjust hover color as needed
+              >
+                Accept Quest
+              </Button>
+            </Center>
+          </Collapse>
+        </VStack>
+      </Box>
+    </div>
   );
 };
 
