@@ -6,7 +6,11 @@ const questSchema = new mongoose.Schema({
   itemQuantity: Number,
   itemDirection: String,
   itemWeight: Number,
-  itemPrice: Number,
+  itemPrice:{
+    type: Number,
+    required: true,
+    min: [10, 'Price must be positive']
+  },
   itemLink: String,
   status: {
     type: String,

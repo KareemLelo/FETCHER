@@ -45,3 +45,13 @@ export const acceptQuest = async (req, res) => {
     res.status(500).json({ message: "Error accepting quest" });
   }
 };
+
+export const getQuests = async (req, res) => {
+  try {
+    const quests = await Quest.find({ status: 'pending' }); // Modify the query as needed
+    res.status(200).json(quests);
+  } catch (error) {
+    console.error('Error fetching quests:', error);
+    res.status(500).json({ message: 'Error fetching quests' });
+  }
+};
