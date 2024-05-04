@@ -48,8 +48,8 @@ export const loginUser = async (req, res) => {
     const user = await User.findByUserName(userName);
 
     if (user && (await bcrypt.compare(password, user.password))) {
-      console.log('successful login for:', userName);
-      /*console.log('Account Email is :', user.email);
+      /*console.log('successful login for:', userName);
+      console.log('Account Email is :', user.email);
       console.log('Account Mobile is :', user.mobile);
       console.log('Account Category is :', user.accCategory);*/
 
