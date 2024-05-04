@@ -45,7 +45,10 @@ class Quest {
       }
       return quest;
     }
-
+    static async find(criteria) {
+      return await QuestModel.find(criteria).lean(); // Use lean for performance if you don't need a full Mongoose document
+  }
+  
     /*async save() {
       const newQuest = new Quest(this.data);
       return newQuest.save();
@@ -61,4 +64,4 @@ class Quest {
 //questSchema.loadClass(Quest);
 //const QuestModel = mongoose.model('Quest', questSchema);
 
-export default QuestModel;
+export default Quest;
