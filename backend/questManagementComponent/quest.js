@@ -29,12 +29,13 @@ const questSchema = new mongoose.Schema({
 },
 {
   timestamps: true, // Adds createdAt and updatedAt timestamps
-  collection: 'BZKQuests'
+  collection: 'Quests'
 });
-const QuestModel = mongoose.model('Quest', questSchema, 'BZKQuests');
+const QuestModel = mongoose.model('Quest', questSchema, 'Quests');
 class Quest {
     constructor(data) {
       this.data = data;
+      this.model = QuestModel;
     }
     
     static async findByName(itemName) {
@@ -60,4 +61,4 @@ class Quest {
 //questSchema.loadClass(Quest);
 //const QuestModel = mongoose.model('Quest', questSchema);
 
-export default Quest;
+export default QuestModel;

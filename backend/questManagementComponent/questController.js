@@ -1,4 +1,4 @@
-import Quest from './quest.js';
+import Quest from './Quest.js';
 
 export const createQuest = async (req, res) => {
   try {
@@ -48,7 +48,9 @@ export const acceptQuest = async (req, res) => {
 
 export const getQuests = async (req, res) => {
   try {
+    console.log(Quest + '1');
     const quests = await Quest.find({ status: 'pending' }); // Modify the query as needed
+    console.log(Quest + '2');
     res.status(200).json(quests);
   } catch (error) {
     console.error('Error fetching quests:', error);

@@ -14,7 +14,7 @@ const QuestMakerSchema = new mongoose.Schema({
 },
 //{  versionKey:false},
 {
-  collection: 'BZKUsers'
+  collection: 'QuestMakers'
 });
 
 const FetcherSchema = new mongoose.Schema({
@@ -35,11 +35,11 @@ const FetcherSchema = new mongoose.Schema({
 },
 //{  versionKey:false},
 {
-  collection: 'BZKUsers'
+  collection: 'Fetchers'
 });
 // Create a Model.
-const QuestMakerModel = mongoose.model('QuestMaker', QuestMakerSchema, 'BZKUsers');
-const FetcherModel = mongoose.model('Fetcher', FetcherSchema, 'BZKUsers');
+const QuestMakerModel = mongoose.model('QuestMaker', QuestMakerSchema, 'QuestMakers');
+const FetcherModel = mongoose.model('Fetcher', FetcherSchema, 'Fetchers');
 
 // Using a class to encapsulate methods related to the User model.
 class User {

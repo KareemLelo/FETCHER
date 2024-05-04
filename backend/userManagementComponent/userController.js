@@ -49,9 +49,9 @@ export const loginUser = async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       console.log('successful login for:', userName);
-      console.log('Account Email is :', user.email);
+      /*console.log('Account Email is :', user.email);
       console.log('Account Mobile is :', user.mobile);
-      console.log('Account Category is :', user.accCategory);
+      console.log('Account Category is :', user.accCategory);*/
 
       /* const token = generateToken(user._id); */
       res.json({
