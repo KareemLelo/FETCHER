@@ -28,6 +28,10 @@ app.use('/',userRoutes);//tells the Express. app to use the router defined in us
 app.use('/',questRoutes);
 const PORT = process.env.PORT || 3500;
 
+app.get('/api/hello', (req, res) => {
+  res.status(200).send('Hello, world!');
+});
+
 const startServer = async () => {
     //await connectDb(); // Connect to database
     app.listen(PORT, () => {
