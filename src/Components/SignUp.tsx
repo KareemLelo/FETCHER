@@ -13,8 +13,8 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { BsChevronDown } from "react-icons/bs";
-import { registerUser } from "../Services/Api";
 import { useState } from "react";
+import { registerUser } from "../Services/Api";
 import { useContent } from "../ContentManagment/ContentContext";
 
 interface RegisterData {
@@ -28,7 +28,7 @@ interface RegisterData {
 }
 
 const Register = () => {
-  const [formData, setFormData] = useState({
+  const [registerData, setRegisterData] = useState<RegisterData>({
     firstName: "",
     lastName: "",
     email: "",
@@ -42,13 +42,13 @@ const Register = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setRegisterData({ ...registerData, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const userData = await registerUser(formData);
+      const userData = await registerUser(registerData);
       setAccountType(userData.accCategory); // Assuming accCategory is returned
       setContent("home"); // Navigate to home
       toast({
@@ -61,37 +61,40 @@ const Register = () => {
     } catch (error) {
       toast({
         title: "Registration Failed",
-        description: "error.message",
+        description: "Could not register.",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
     }
   };
-  // Enhanced styles for input fields
+
+  const AccountTypes = ["Fetcher", "QuestMaker"];
+  const setAccountCategory = (type: string) => {
+    setRegisterData({ ...registerData, accCategory: type });
+  };
+
+  // Styles remain unchanged
   const inputStyle = {
     p: 2,
     borderRadius: "xl",
     border: "2px solid",
-    borderColor: "brand.secondary", // Changed to theme secondary color
-    bg: "brand.light", // Very light shade for input background
-    color: "brand.dark", // Dark shade for text
-    _placeholder: { color: "brand.text" }, // Placeholder text color
-    _hover: { borderColor: "brand.highlight" }, // Hover border color
+    borderColor: "brand.secondary",
+    bg: "brand.light",
+    color: "brand.dark",
+    _placeholder: { color: "brand.text" },
+    _hover: { borderColor: "brand.highlight" },
     _focus: {
       borderColor: "brand.primary",
       boxShadow: `0 0 0 1px ${"#6D9886"}`,
-    }, // Focus border color and shadow
+    },
   };
 
-  const AccountTypes = ["Fetcher", "QuestMaker"];
-
-  // Button styles adjusted for theme colors
   const buttonStyle = {
     bg: "brand.primary",
     color: "white",
-    _hover: { bg: "brand.highlight" }, // Lighter primary color for hover state
-    _active: { bg: "brand.accent" }, // Accent color for active state
+    _hover: { bg: "brand.highlight" },
+    _active: { bg: "brand.accent" },
   };
 
   return (
@@ -120,7 +123,7 @@ const Register = () => {
                   name="firstName"
                   placeholder="First Name"
                   onChange={handleInputChange}
-                  value={formData.firstName}
+                  value={registerData.firstName}
                 />
                 <Input
                   {...inputStyle}
@@ -128,7 +131,7 @@ const Register = () => {
                   name="lastName"
                   placeholder="Last Name"
                   onChange={handleInputChange}
-                  value={formData.lastName}
+                  value={registerData.lastName}
                 />
               </HStack>
               <Input
@@ -137,7 +140,7 @@ const Register = () => {
                 name="email"
                 placeholder="Email"
                 onChange={handleInputChange}
-                value={formData.email}
+                value={registerData.email}
               />
               <Menu>
                 <MenuButton
@@ -146,14 +149,13 @@ const Register = () => {
                   {...buttonStyle}
                   borderRadius="xl"
                 >
-                  Account Category: {formData.accCategory || "Select"}
+                  Account Category: {registerData.accCategory || "Select"}
                 </MenuButton>
-                <MenuList bg="#081A51">
+                <MenuList>
                   {AccountTypes.map((type) => (
                     <MenuItem
                       key={type}
-                      onClick={() => (formData.accCategory = type)}
-                      bg="#081A51"
+                      onClick={() => setAccountCategory(type)}
                     >
                       {type}
                     </MenuItem>
@@ -166,7 +168,7 @@ const Register = () => {
                 name="userName"
                 placeholder="Username"
                 onChange={handleInputChange}
-                value={formData.userName}
+                value={registerData.userName}
               />
               <Input
                 {...inputStyle}
@@ -174,7 +176,7 @@ const Register = () => {
                 name="password"
                 placeholder="Password"
                 onChange={handleInputChange}
-                value={formData.password}
+                value={registerData.password}
               />
               <Input
                 {...inputStyle}
@@ -182,7 +184,7 @@ const Register = () => {
                 name="mobile"
                 placeholder="Mobile Number"
                 onChange={handleInputChange}
-                value={formData.mobile}
+                value={registerData.mobile}
               />
               <Button type="submit" {...buttonStyle} size="lg" px={10}>
                 Signup
