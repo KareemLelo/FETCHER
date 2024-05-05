@@ -1,13 +1,16 @@
 export interface Quest {
-  _id: string;
-  name: string;
-  itemType: string;
-  quantity: number;
-  direction: string;
-  weight: number;
-  price: number;
-  link: string;
-  }
+  
+_id:string
+itemName:string
+itemCategory:string
+itemQuantity:number;
+itemDirection:string
+itemWeight:number
+itemPrice:number
+itemLink:string
+createdBy:string
+status:string
+}
 
   export interface Profile {
     name: string;

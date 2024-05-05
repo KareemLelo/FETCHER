@@ -1,4 +1,4 @@
-// QuestList.tsx
+
 import React, { useState } from "react";
 import {
   Box,
@@ -24,6 +24,10 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
+  if (!quest) {
+    return <Text>No quest data available</Text>;
+  }
+
   return (
     <div>
       <Box
@@ -46,10 +50,10 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
           >
             <VStack align="start">
               <Text fontSize="lg" fontWeight="bold" color={textColor}>
-                {quest.name}
+                {quest.itemName || "Unknown Quest"}
               </Text>
               <Text fontSize="sm" color={textColor}>
-                {quest.itemType} - {quest.price} JD
+                {quest.itemCategory || "No Type"} - {quest.itemPrice || "No Price"} JD
               </Text>
             </VStack>
             <IconButton
@@ -62,22 +66,22 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
           <Collapse in={isOpen} animateOpacity>
             <Box pt={2}>
               <Text fontSize="sm" color={textColor}>
-                Quantity: {quest.quantity}
+                Quantity: {quest.itemQuantity || "0"}
               </Text>
               <Divider pb={2} />
               <Text fontSize="sm" color={textColor}>
-                Direction/Buying: {quest.direction}
+                Direction/Buying: {quest.itemDirection || "No Direction"}
               </Text>
               <Divider pb={2} />
               <Text fontSize="sm" color={textColor}>
-                Weight: {quest.weight} Kg
+                Weight: {quest.itemWeight || "0"} Kg
               </Text>
               <Divider pb={2} />
               <Text fontSize="sm" color={textColor}>
-                Link: {quest.link}
+                Link: {quest.itemLink || "No Link Provided"}
               </Text>
               <Divider pb={2} />
-              {/* Add any additional attributes here */}
+             
             </Box>
             <Center>
               <Button
@@ -86,7 +90,7 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
                 mt={10}
                 bg={"brand.accent"}
                 color={"brand.text"}
-                _hover={{ bg: "brand.secondary" }} // Adjust hover color as needed
+                _hover={{ bg: "brand.secondary" }}
               >
                 Accept Quest
               </Button>
