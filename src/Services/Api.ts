@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Quest } from './Interface';
 
  const API_URL = "http://localhost:5050";
 //const API_URL = "https://fetcher-backend.onrender.com"
@@ -77,7 +78,7 @@ export const registerUser = async (data: any) => {
   }
 };
 
-export const fetchQuests = async (): Promise<any[]> => {
+export const fetchQuests = async (): Promise<Quest[]> => {
   try {
     const response = await api.get('/quests');
     return response.data;
@@ -88,6 +89,21 @@ export const fetchQuests = async (): Promise<any[]> => {
     } else {
       console.error('Unexpected error:', error);
       throw new Error('An unexpected error occurred while fetching quests.');
+    }
+  }
+};
+
+export const fetchQuestByCreator = async (): Promise<Quest | null> => {
+  try {
+    const response = await api.get('/questByCreator');
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Fetch quest by creator API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error fetching quest by creator");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while fetching quest by creator.');
     }
   }
 };

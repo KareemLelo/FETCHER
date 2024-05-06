@@ -4,11 +4,11 @@ import HomeContentF from "../Components/Fetcher/HomeContentF";
 import HomeContentQM from "../Components/QuestMaker/HomeContentQM";
 import Register from "../Components/SignUp";
 import Login from "../Components/Login";
-import QuestForm from "../Components/QuestMaker/QuestForm";
 import MyProfilePage from "../Components/MyProfile/MyProfilePage";
 import TrackOrderPage from "../Components/TrackMyOrder/TrackOrderPage";
 import AvailableQuestPage from "../Components/Fetcher/AvailableQuests/AvailableQuestPage";
 import CreditCardGrid from "../Components/MyCreditCard/CreditCardPage";
+import QuestManager from "../Components/QuestMaker/Quests/QuestManager";
 
 const MainContent: React.FC = () => {
   const CheckLogedin = () => {
@@ -33,13 +33,13 @@ const MainContent: React.FC = () => {
       case "login":
         return <Login />;
       case "New Quest":
-        return <QuestForm />;
+        return <QuestManager />;
       case "My Profile":
         return <MyProfilePage />;
       case "Track My Order":
         return <TrackOrderPage />;
       case "Available Quests":
-        return <AvailableQuestPage quests={[]} />;
+        return <AvailableQuestPage />;
       case "My Credit Card":
         return <CreditCardGrid />;
       case "Track My Progress":
