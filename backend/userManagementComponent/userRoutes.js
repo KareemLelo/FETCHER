@@ -14,12 +14,14 @@ router.post('/login',loginUser);
 //router.route('/profile/:_id').get(protectRoutes,getUserProfile);
 //router.route('/profile').put(protectRoutes, validateProfileUpdate, updateUserProfile);
 
-router.get('/profile/:_id',getUserProfile)
-router.post('/profile/update/:_id',updateUserProfile)
+//router.get('/profile/:_id',getUserProfile)
+//router.post('/profile/update/:_id',updateUserProfile)
 
 //router.get('/profile',getUserProfile)
-router.get('/profile', protectRoutes, getUserProfile);
-router.post('/profile',validateProfileUpdate,updateUserProfile);
+//router.get('/profile', protectRoutes, getUserProfile);
+//router.post('/profile',validateProfileUpdate,updateUserProfile);
 
+router.get('/profile/:_id', protectRoutes, getUserProfile);
+router.post('/profile/update/:_id', protectRoutes, validateProfileUpdate, updateUserProfile);
 
 export default router;

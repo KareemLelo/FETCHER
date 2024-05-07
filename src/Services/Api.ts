@@ -13,8 +13,8 @@ const api = axios.create({
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }else{console.error("Token not found in local storage")}
   return config;
 }, error => {
   return Promise.reject(error);
@@ -31,6 +31,8 @@ export const fetchProfileData = async (): Promise<any> => {
     throw new Error(error.response?.data.message || "Error fetching profile");
   }
 };
+
+
 
 export const updateProfileData = async (profileData: any): Promise<void> => {
   const userId = localStorage.getItem('userId');  // Dynamically get the user ID from local storage
@@ -50,6 +52,7 @@ export const login = async (username: string, password: string) => {
       password: password
     });
     localStorage.setItem('userId', response.data._id);
+    localStorage.setItem('token', response.data.token);
     return response.data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
