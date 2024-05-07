@@ -29,13 +29,12 @@ export const registerUser = async (req, res) => {
     //generate a token 
     const token = generateToken(savedUser._id);
     res.status(200).json({
-      _id:savedUser._id,
+      _id: savedUser._id,
       userName: savedUser.userName,
       email: savedUser.email,
-      token
+      token,
+      message: "Signup successful"
     });
-    res.status(200).json({message:"Signup successful"});
-    console.log("Signup successful");
   } catch (error) {
     console.log("Error during signup", error);
     res.status(500).json({ message: "Error during signup" });

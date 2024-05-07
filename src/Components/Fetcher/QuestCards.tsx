@@ -13,9 +13,10 @@ import { useColorModeValue } from "@chakra-ui/react";
 
 interface Props {
   quests: Quest;
+  onAccept?: () => void;
 }
 
-const QuestCards = ({ quests }: Props) => {
+const QuestCards = ({ quests, onAccept }: Props) => {
   const cardBg = useColorModeValue("brand.background", "brand.primary"); // Assuming dark mode uses 'brand.secondary'
   const textColor = useColorModeValue("brand.text", "white");
   const buttonBg = useColorModeValue("brand.primary", "brand.accent");
@@ -39,21 +40,21 @@ const QuestCards = ({ quests }: Props) => {
             paddingBottom="4"
             color={textColor}
           >
-            {quests.name}
+            {quests.itemName}
           </Heading>
           <Text pb="1" color={textColor}>
-            Item Type: {quests.itemType}
+            Item Type: {quests.itemCategory}
           </Text>
           <Text pb="1" color={textColor}>
-            Quantity: {quests.quantity}
+            Quantity: {quests.itemQuantity}
           </Text>
           <Text pb="1" color={textColor}>
-            Direction/Buying: {quests.direction}
+            Direction/Buying: {quests.itemDirection}
           </Text>
           <Text pb="1" color={textColor}>
-            Weight: {quests.weight} Kg
+            Weight: {quests.itemWeight} Kg
           </Text>
-          <Text color={textColor}>Price: {quests.price} JD+</Text>
+          <Text color={textColor}>Price: {quests.itemPrice} JD+</Text>
         </CardBody>
         <CardFooter>
           <Center>

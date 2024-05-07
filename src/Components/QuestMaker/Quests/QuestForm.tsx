@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { Quest } from "../../../Services/Interface";
+import { createQuest } from "../../../Services/Api";
 
 const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
   onCreate,
@@ -28,7 +29,7 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
     itemWeight: 0,
     itemPrice: 0,
     itemLink: "",
-    createdBy: "", // This should be set based on authenticated user session
+    createdBy: "",
     status: "pending",
   });
   const toast = useToast();
@@ -46,8 +47,8 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/postQuest", quest);
-      onCreate(response.data);
+      const newQuest = await createQuest(quest);
+      onCreate(newQuest);
       toast({
         title: "Quest Created",
         description: "Your new quest has been successfully created.",
@@ -143,7 +144,7 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
               </NumberInput>
             </FormControl>
             <FormControl isRequired>
-              <FormLabel>Price ($)</FormLabel>
+              <FormLabel>Price (JD)</FormLabel>
               <NumberInput min={0}>
                 <NumberInputField
                   name="itemPrice"

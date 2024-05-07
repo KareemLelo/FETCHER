@@ -1,20 +1,22 @@
 import Quest from './quest.js';
 
 export const createQuest = async (req, res) => {
+  console.log(req.user);  // Check what is being set here
   try {
-    const { title, category, price, quantity, direction, weight, link } = req.body;
-
+    if (!req.user) {
+      throw new Error('User not authenticated');
+    }
+    const { itemName, itemCategory, itemPrice, itemQuantity, itemDirection, itemWeight, link } = req.body;
     const newQuest = new Quest({
-      title,
-      category,
-      price,
-      quantity,
-      direction,
-      weight,
+      itemName,
+      itemCategory,
+      itemPrice,
+      itemQuantity,
+      itemDirection,
+      itemWeight,
       link,
-      createdBy: req.user._id, // Assuming you have user information in the request
+      createdBy: req.user._id,
     });
-
     const savedQuest = await newQuest.save();
     res.status(201).json(savedQuest);
   } catch (error) {
@@ -52,6 +54,23 @@ export const getQuests = async (req, res) => {
     res.status(200).json(quests);
   } catch (error) {
     console.error('Error fetching quests:', error);
+    res.status(500).json({ message: 'Error fetching quests' });
+  }
+};
+
+export const fetchQuestByCreator = async (req, res) => {
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ message: "Unauthorized access: No user ID found." });
+  }
+
+  try {
+    const quest = await Quest.findByCreator(req.user._id).lean();
+    if (!quest) {
+      return res.status(404).json({ message: "No quests found for this user." });
+    }
+    res.status(200).json(quest);
+  } catch (error) {
+    console.error('Error fetching quests by creator:', error);
     res.status(500).json({ message: 'Error fetching quests' });
   }
 };

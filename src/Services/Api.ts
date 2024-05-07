@@ -94,7 +94,7 @@ export const fetchQuests = async (): Promise<Quest[]> => {
 
 export const fetchQuestByCreator = async (): Promise<Quest | null> => {
   try {
-    const response = await api.get('/questByCreator');
+    const response = await api.get('/questsByCreator');
     return response.data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
@@ -103,6 +103,31 @@ export const fetchQuestByCreator = async (): Promise<Quest | null> => {
     } else {
       console.error('Unexpected error:', error);
       throw new Error('An unexpected error occurred while fetching quest by creator.');
+    }
+  }
+};
+
+export const createQuest = async (questData: Quest): Promise<Quest> => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error("No token found in local storage");
+  }
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  try {
+    const response = await api.post<Quest>('/postQuest', questData, config);
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Create quest API error:', error.response?.data || error.message);
+      throw error;
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred during quest creation.');
     }
   }
 };
