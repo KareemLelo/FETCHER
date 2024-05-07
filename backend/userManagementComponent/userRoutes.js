@@ -21,7 +21,7 @@ router.post('/login',loginUser);
 //router.get('/profile', protectRoutes, getUserProfile);
 //router.post('/profile',validateProfileUpdate,updateUserProfile);
 
-router.get('/profile/:_id', protectRoutes, getUserProfile);
+router.get('/profile/me', protectRoutes, getUserProfile);
 router.post('/profile/update/:_id', protectRoutes, validateProfileUpdate, updateUserProfile);
 
 export default router;

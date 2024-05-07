@@ -21,11 +21,8 @@ api.interceptors.request.use(config => {
 });
 
 export const fetchProfileData = async (): Promise<any> => {
-  const userId = localStorage.getItem('userId');  // Get the user ID from localStorage
-  if (!userId) throw new Error("User ID not found");
-
   try {
-    const response = await api.get(`/profile/${userId}`);
+    const response = await api.get(`/profile/me`);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data.message || "Error fetching profile");
@@ -51,7 +48,6 @@ export const login = async (username: string, password: string) => {
       userName: username,
       password: password
     });
-    localStorage.setItem('userId', response.data._id);
     localStorage.setItem('token', response.data.token);
     return response.data;
   } catch (error: any) {

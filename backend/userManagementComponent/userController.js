@@ -74,14 +74,16 @@ export const loginUser = async (req, res) => {
 // Get current user's profile
 export const getUserProfile = async (req, res) => {
   try {
-    const userid = req.params._id;
-    const user = await User.findById(userid);
+    if (!req.user || !req.user._id) {
+      return res.status(404).send('User not found');
+    }
+    const user = await User.findById(req.user._id);
     if (user) {
       res.json({
         name: user.firstName + " " + user.lastName,
         email: user.email,
         bio: user.bio,
-        mobile: user.mobile  // Ensure this key matches what the frontend expects
+        mobile: user.mobile
       });
     } else {
       res.status(404).send('User not found');
