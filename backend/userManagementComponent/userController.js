@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 // it embeds the user's ID within the token's payload.
 // This ID is then used to identify the user in subsequent requests to protected routes.
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '60s'});
+  return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '300s'});
 };
 
 export const registerUser = async (req, res) => {
@@ -93,7 +93,6 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-
 export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -121,5 +120,34 @@ export const updateUserProfile = async (req, res) => {
   } catch (error) {
     console.error('Error updating user profile:', error);
     res.status(500).json({ message: 'Error updating user profile' });
+  }
+};
+
+export const acceptQuest = async (req, res) => {
+  const { questId } = req.params;
+  const userId = req.user._id;  // Assuming `req.user` is populated from the JWT middleware
+
+  try {
+    const quest = await Quest.findById(questId);
+
+    if (!quest) {
+      return res.status(404).json({ message: "Quest not found" });
+    }
+
+    // Check if the quest is already accepted
+    if (quest.status === 'accepted') {
+      return res.status(400).json({ message: "This quest has already been accepted" });
+    }
+
+    // Update the quest
+    quest.status = 'accepted';
+    quest.acceptedBy = userId;
+
+    await quest.save();
+
+    res.json({ message: "Quest accepted successfully", quest });
+  } catch (error) {
+    console.error('Failed to accept quest:', error);
+    res.status(500).json({ message: "An error occurred during the process of accepting the quest" });
   }
 };

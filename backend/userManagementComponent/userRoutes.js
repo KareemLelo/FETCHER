@@ -23,5 +23,7 @@ router.post('/login',loginUser);
 
 router.get('/profile/me', protectRoutes, getUserProfile);
 router.post('/profile/update/:_id', protectRoutes, validateProfileUpdate, updateUserProfile);
+router.post('/quest/accept/:questId', protectRoutes, acceptQuest);
+
 
 export default router;
