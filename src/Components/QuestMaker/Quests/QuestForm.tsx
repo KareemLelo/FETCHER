@@ -13,7 +13,6 @@ import {
   Select,
   Flex,
 } from "@chakra-ui/react";
-import axios from "axios";
 import { Quest } from "../../../Services/Interface";
 import { createQuest } from "../../../Services/Api";
 
@@ -73,8 +72,6 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
   const placeholderColor = useColorModeValue("brand.dark", "brand.light"); // Changed to new color set
   const buttonBg = useColorModeValue("brand.accent", "brand.accent"); // New highlight color for buttons
   const buttonTextColor = "white";
-  const cardBg = useColorModeValue("brand.primary", "brand.primary"); // Using success color for card background
-  const cardTextColor = useColorModeValue("white", "gray.800"); // Keeping high contrast text for readability
 
   return (
     <Flex justifyContent={"center"} mt={10}>

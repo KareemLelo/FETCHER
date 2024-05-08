@@ -1,62 +1,26 @@
-import { SimpleGrid, Heading, Flex, Box } from "@chakra-ui/react";
+import { SimpleGrid, Heading, Flex, Box, Text } from "@chakra-ui/react";
 import QuestCards from "./QuestCards";
+import { useEffect, useState } from "react";
+import { fetchQuests } from "../../Services/Api";
+import { Quest } from "../../Services/Interface";
 /* import { useState } from "react";
 import { Quest } from "../../Services/QuestInterface"; */
 
-/* interface Props {
-  quests: Quest[];
-} */
-
 const HomeContentF = () => {
-  /* const [quests, setQuests] = useState<Quest[]>([]); */
+  const [quests, setQuests] = useState<Quest[]>([]);
 
-  const quest = [
-    {
-      name: "MacBook",
-      itemType: "Laptop",
-      quantity: 1,
-      direction: "US",
-      weight: 1.5,
-      price: 1135,
-      link: "#",
-    },
-    {
-      name: "Nike Dunk Low",
-      itemType: "Shoes",
-      quantity: 1,
-      direction: "Dubai",
-      weight: 10,
-      price: 112,
-      link: "#",
-    },
-    {
-      name: "تنكة جبنه",
-      itemType: "Food",
-      quantity: 4,
-      direction: "Kuwait",
-      weight: 15,
-      price: 115,
-      link: "#",
-    },
-    {
-      name: "Certificate",
-      itemType: "Document",
-      quantity: 10,
-      direction: "UK",
-      weight: 0.5,
-      price: 135,
-      link: "#",
-    },
-    {
-      name: "Certificate",
-      itemType: "Document",
-      quantity: 10,
-      direction: "UK",
-      weight: 0.5,
-      price: 135,
-      link: "#",
-    },
-  ];
+  if (!quests) {
+    return <Text>No quest data available</Text>;
+  }
+
+  useEffect(() => {
+    fetchQuests()
+      .then((quests) => {
+        console.log("Fetched quests:", quests); // Add this to check the structure
+        setQuests(quests);
+      })
+      .catch((error) => console.error("Error fetching quests:", error));
+  }, []);
   return (
     <>
       <Box display="flex" justifyContent="center" width="auto" m={"10"}>
@@ -84,7 +48,7 @@ const HomeContentF = () => {
           columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}
           p={7}
         >
-          {quest.map((quest, index) => (
+          {quests.map((quest, index) => (
             <QuestCards key={index} quests={quest} />
           ))}
         </SimpleGrid>
