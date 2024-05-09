@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserProfile, registerUser,loginUser, updateUserProfile} from './userController.js';
+import { getUserProfile, registerUser,loginUser, updateUserProfile, acceptQuest} from './userController.js';
 import validateRegistration from '../middlewares/validateRegMiddleware.js'; 
 import validateProfileUpdate from '../middlewares/validateProfileUpdateMiddleware.js';
 import {protectRoutes} from '../middlewares/authMiddleware.js'

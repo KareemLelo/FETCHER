@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Card,
   CardBody,
@@ -7,20 +8,39 @@ import {
   Button,
   Center,
   Flex,
+  useToast,
 } from "@chakra-ui/react";
 import { Quest } from "../../Services/Interface";
 import { useColorModeValue } from "@chakra-ui/react";
 
 interface Props {
-  quests: Quest;
-  onAccept?: () => void;
+  quest: Quest;
+  onAccept: (questId: string) => void; // Ensure this prop is passed to handle the accept functionality
 }
 
-const QuestCards = ({ quests, onAccept }: Props) => {
-  const cardBg = useColorModeValue("brand.background", "brand.primary"); // Assuming dark mode uses 'brand.secondary'
+const QuestCards = ({ quest, onAccept }: Props) => {
+  const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
   const buttonBg = useColorModeValue("brand.primary", "brand.accent");
   const buttonTextColor = useColorModeValue("white", "brand.text");
+  const toast = useToast();
+
+  // Handler for accepting a quest
+  const handleAcceptQuest = () => {
+    // Check if the onAccept function is provided
+    if (onAccept) {
+      onAccept(quest._id);
+    } else {
+      console.error("Accept function not provided");
+      toast({
+        title: "Error",
+        description: "No accept function provided",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Flex justifyContent={"center"}>
@@ -31,7 +51,7 @@ const QuestCards = ({ quests, onAccept }: Props) => {
         overflow="hidden"
         minW="200px"
         width={{ sm: "250px" }}
-        boxShadow="xl" // Adding shadow for better visual separation
+        boxShadow="xl"
       >
         <CardBody>
           <Heading
@@ -40,21 +60,21 @@ const QuestCards = ({ quests, onAccept }: Props) => {
             paddingBottom="4"
             color={textColor}
           >
-            {quests.itemName}
+            {quest.itemName}
           </Heading>
           <Text pb="1" color={textColor}>
-            Item Type: {quests.itemCategory}
+            Item Type: {quest.itemCategory}
           </Text>
           <Text pb="1" color={textColor}>
-            Quantity: {quests.itemQuantity}
+            Quantity: {quest.itemQuantity}
           </Text>
           <Text pb="1" color={textColor}>
-            Direction/Buying: {quests.itemDirection}
+            Direction/Buying: {quest.itemDirection}
           </Text>
           <Text pb="1" color={textColor}>
-            Weight: {quests.itemWeight} Kg
+            Weight: {quest.itemWeight} Kg
           </Text>
-          <Text color={textColor}>Price: {quests.itemPrice} JD+</Text>
+          <Text color={textColor}>Price: {quest.itemPrice} JD</Text>
         </CardBody>
         <CardFooter>
           <Center>
@@ -64,7 +84,8 @@ const QuestCards = ({ quests, onAccept }: Props) => {
               mt="-10px"
               bg={buttonBg}
               color={buttonTextColor}
-              _hover={{ bg: "brand.secondary" }} // Adjust hover color as needed
+              _hover={{ bg: "brand.secondary" }}
+              onClick={handleAcceptQuest} // Use the handler here
             >
               Accept Quest
             </Button>

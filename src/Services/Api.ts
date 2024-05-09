@@ -131,3 +131,18 @@ export const createQuest = async (questData: Quest): Promise<Quest> => {
     }
   }
 };
+
+export const sendAcceptedQuest = async (questId: string): Promise<Quest> => {
+  try {
+    const response = await api.post<Quest>(`/quest/accept/${questId}`);
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Accept quest API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error accepting quest");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while accepting quest.');
+    }
+  }
+};

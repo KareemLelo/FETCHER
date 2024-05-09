@@ -40,6 +40,10 @@ class Quest {
     static findByCreator(creatorId) {
       return QuestModel.findOne({ createdBy: creatorId, status: 'pending' });
     }
+
+    static async findById(id) {
+      return await QuestModel.findById(id);
+    }
     
     static async findByName(itemName) {
       let quest = await QuestModel.findOne({ itemName });// .lean() is optional for performance
