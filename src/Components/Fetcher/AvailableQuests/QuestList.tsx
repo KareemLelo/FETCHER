@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Box,
@@ -10,35 +9,59 @@ import {
   Divider,
   Center,
   Button,
+  Icon,
+  Heading,
+  Flex,
+  useToast,
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { Quest } from "../../../Services/Interface"; // Adjust path as necessary
+import {
+  FaBoxOpen,
+  FaWeightHanging,
+  FaMoneyBillWave,
+  FaMapMarkedAlt,
+} from "react-icons/fa";
+import { Quest } from "../../../Services/Interface"; // Adjust the path as necessary
 
 interface QuestListProps {
   quest: Quest;
+  onAccept: (questId: string) => void;
 }
 
-const QuestList: React.FC<QuestListProps> = ({ quest }) => {
+const QuestList: React.FC<QuestListProps> = ({ quest, onAccept }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const paddingValue = { base: 2, md: 4 };
-  const cardBg = useColorModeValue("brand.background", "brand.primary");
-  const textColor = useColorModeValue("brand.text", "white");
+  const cardBg = useColorModeValue("gray.50", "gray.800");
+  const textColor = useColorModeValue("gray.600", "white");
+  const buttonBg = useColorModeValue("teal.500", "teal.200");
+  const hoverBg = useColorModeValue("teal.600", "teal.300");
+  const toast = useToast();
 
-  if (!quest) {
-    return <Text>No quest data available</Text>;
-  }
+  const handleAcceptQuest = () => {
+    // Check if the onAccept function is provided
+    if (onAccept) {
+      onAccept(quest._id);
+    } else {
+      console.error("Accept function not provided");
+      toast({
+        title: "Error",
+        description: "No accept function provided",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
-    <div>
+    <Flex justifyContent="center">
       <Box
         bg={cardBg}
-        p={paddingValue}
-        rounded="md"
-        shadow="md"
-        mb={2}
-        borderColor="brand.secondary"
-        borderWidth="1px"
-        maxWidth={{ base: "80%", md: "80%" }}
+        p={4}
+        rounded="lg"
+        shadow="lg"
+        border="1px"
+        borderColor={useColorModeValue("gray.200", "gray.600")}
+        width={{ sm: "60%", md: "60%" }}
       >
         <VStack align="stretch">
           <Box
@@ -48,57 +71,71 @@ const QuestList: React.FC<QuestListProps> = ({ quest }) => {
             onClick={() => setIsOpen(!isOpen)}
             cursor="pointer"
           >
-            <VStack align="start">
-              <Text fontSize="lg" fontWeight="bold" color={textColor}>
-                {quest.itemName || "Unknown Quest"}
-              </Text>
-              <Text fontSize="sm" color={textColor}>
-                {quest.itemCategory || "No Type"} - {quest.itemPrice || "No Price"} JD
-              </Text>
-            </VStack>
+            <Heading size="md" fontWeight="bold" color={textColor}>
+              {quest.itemName}
+            </Heading>
             <IconButton
-              aria-label="Expand quest details"
+              aria-label={isOpen ? "Collapse details" : "Expand details"}
               icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
               variant="ghost"
-              colorScheme="teal"
+              size="sm"
             />
           </Box>
           <Collapse in={isOpen} animateOpacity>
-            <Box pt={2}>
-              <Text fontSize="sm" color={textColor}>
-                Quantity: {quest.itemQuantity || "0"}
-              </Text>
-              <Divider pb={2} />
-              <Text fontSize="sm" color={textColor}>
-                Direction/Buying: {quest.itemDirection || "No Direction"}
-              </Text>
-              <Divider pb={2} />
-              <Text fontSize="sm" color={textColor}>
-                Weight: {quest.itemWeight || "0"} Kg
-              </Text>
-              <Divider pb={2} />
-              <Text fontSize="sm" color={textColor}>
-                Link: {quest.itemLink || "No Link Provided"}
-              </Text>
-              <Divider pb={2} />
-             
-            </Box>
-            <Center>
-              <Button
-                width="200px"
-                height="50px"
-                mt={10}
-                bg={"brand.accent"}
-                color={"brand.text"}
-                _hover={{ bg: "brand.secondary" }}
+            <VStack spacing={2} align="stretch" mt={2}>
+              <Text
+                fontSize="md"
+                color={textColor}
+                display="flex"
+                alignItems="center"
               >
-                Accept Quest
-              </Button>
-            </Center>
+                <Icon as={FaBoxOpen} mr={2} /> Type: {quest.itemCategory}
+              </Text>
+              <Divider />
+              <Text
+                fontSize="md"
+                color={textColor}
+                display="flex"
+                alignItems="center"
+              >
+                <Icon as={FaWeightHanging} mr={2} /> Weight: {quest.itemWeight}{" "}
+                Kg
+              </Text>
+              <Divider />
+              <Text
+                fontSize="md"
+                color={textColor}
+                display="flex"
+                alignItems="center"
+              >
+                <Icon as={FaMapMarkedAlt} mr={2} /> Direction:{" "}
+                {quest.itemDirection}
+              </Text>
+              <Divider />
+              <Text
+                fontSize="md"
+                color={textColor}
+                display="flex"
+                alignItems="center"
+              >
+                <Icon as={FaMoneyBillWave} mr={2} /> Price: {quest.itemPrice} JD
+              </Text>
+            </VStack>
           </Collapse>
+          <Center mt={4}>
+            <Button
+              colorScheme="teal"
+              onClick={handleAcceptQuest}
+              size="md"
+              bg={buttonBg}
+              _hover={{ bg: hoverBg }}
+            >
+              Accept Quest
+            </Button>
+          </Center>
         </VStack>
       </Box>
-    </div>
+    </Flex>
   );
 };
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Quest } from './Interface';
+import { Passport, Quest } from './Interface';
 
  const API_URL = "http://localhost:5050";
 //const API_URL = "https://fetcher-backend.onrender.com"
@@ -144,5 +144,23 @@ export const sendAcceptedQuest = async (questId: string): Promise<Quest> => {
       console.error('Unexpected error:', error);
       throw new Error('An unexpected error occurred while accepting quest.');
     }
+  }
+};
+
+export const fetchPassportData = async (): Promise<Passport> => {
+  try {
+    const response = await api.get('/passport/details'); // URL based on your API setup
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data.message || "Error fetching passport details");
+  }
+};
+
+export const savePassportData = async (passport: Passport): Promise<any> => {
+  try {
+    const response = await api.post('/passport/save', passport); // URL based on your API setup
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data.message || "Error saving passport details");
   }
 };

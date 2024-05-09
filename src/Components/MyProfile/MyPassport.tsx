@@ -1,5 +1,4 @@
-// MyPassport.tsx
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import {
   Box,
   VStack,
@@ -12,39 +11,87 @@ import {
   useToast,
   useColorModeValue,
   Flex,
+  Divider,
+  Fade,
 } from "@chakra-ui/react";
-
-interface Passport {
-  passportNumber: string;
-  nationality: string;
-  expirationDate: string;
-}
+import { fetchPassportData, savePassportData } from "../../Services/Api"; // Adjust paths as necessary
+import { Passport } from "../../Services/Interface";
 
 const MyPassport = () => {
   const toast = useToast();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
-  // Initial state for the passport
-  const [passport, setPassport] = useState<Passport>({
+  /* const [passport, setPassport] = useState<Passport>({
     passportNumber: "",
     nationality: "",
     expirationDate: "",
+  }); */
+
+  const [passport, setPassport] = useState({
+    passportNumber: "123456789",
+    nationality: "Narnia",
+    expirationDate: "2030-01-01",
   });
 
-  const [passportSaved, setPassportSaved] = useState(false);
+  const [passportSaved, setPassportSaved] = useState(true);
 
-  const handlePassportSubmit = (e: FormEvent<HTMLFormElement>) => {
+  // Load passport details on component mount
+  /* useEffect(() => {
+    const loadPassportDetails = async () => {
+      try {
+        const data = await fetchPassportData();
+        if (data) {
+          setPassport(data);
+          setPassportSaved(true);
+        }
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: error.message || "Failed to load passport details",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    };
+
+    loadPassportDetails();
+  }, [toast]); */
+
+  /* const handlePassportSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setPassportSaved(true);
+    try {
+      await savePassportData(passport);
+      setPassportSaved(true);
+      toast({
+        title: "Success",
+        description: "Passport details saved successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to save passport details",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }; */
+
+  const handlePassportSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     toast({
-      title: "Passport details updated.",
-      description: "Your passport details have been successfully updated.",
+      title: "Success",
+      description: "Passport details saved successfully.",
       status: "success",
       duration: 5000,
       isClosable: true,
     });
-    // Send `passport` to the server for saving
+    setPassportSaved(true);
   };
 
   const updatePassportField = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,82 +103,72 @@ const MyPassport = () => {
   };
 
   return (
-    <Flex justifyContent={"center"}>
+    <Flex justifyContent="center" alignItems="center">
       <Box
         bg={cardBg}
-        p={6}
+        p={8}
         borderRadius="lg"
-        boxShadow="md"
+        boxShadow="2xl"
         color={textColor}
-        width={{ base: "80%", md: "90%" }}
+        w="full"
+        maxW="md"
       >
-        <VStack spacing={5} align="stretch">
-          <Heading size="lg" mb={5}>
+        <VStack spacing={6} align="stretch">
+          <Heading size="lg" mb={2}>
             Passport Details
           </Heading>
           {!passportSaved ? (
-            <form onSubmit={handlePassportSubmit}>
-              <VStack spacing={4}>
-                {/* Passport fields here */}
-                <FormControl isRequired>
-                  <FormLabel>Passport Number</FormLabel>
-                  <Input
-                    name="passportNumber"
-                    value={passport.passportNumber}
-                    onChange={updatePassportField}
-                    placeholder="Enter Passport Number"
-                    _placeholder={{ color: "white" }}
-                  />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel>Nationality</FormLabel>
-                  <Input
-                    name="nationality"
-                    value={passport.nationality}
-                    onChange={updatePassportField}
-                    placeholder="Enter Nationality"
-                    _placeholder={{ color: "white" }}
-                    aria-label="Nationality"
-                  />
-                </FormControl>
-
-                <FormControl isRequired>
-                  <FormLabel>ExpirationDate</FormLabel>
-                  <Input
-                    name="expirationDate"
-                    value={passport.expirationDate}
-                    onChange={updatePassportField}
-                    type="date"
-                    _placeholder={{ color: "white" }}
-                  />
-                </FormControl>
-
-                <Button
-                  type="submit"
-                  backgroundColor="brand.accent"
-                  colorScheme="teal"
-                  color="brand.text"
-                >
-                  Save Passport Details
-                </Button>
-              </VStack>
-            </form>
+            <Fade in={!passportSaved}>
+              <form onSubmit={handlePassportSubmit}>
+                <VStack spacing={4}>
+                  <FormControl isRequired>
+                    <FormLabel>Passport Number</FormLabel>
+                    <Input
+                      name="passportNumber"
+                      value={passport.passportNumber}
+                      onChange={updatePassportField}
+                      placeholder="Enter Passport Number"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Nationality</FormLabel>
+                    <Input
+                      name="nationality"
+                      value={passport.nationality}
+                      onChange={updatePassportField}
+                      placeholder="Enter Nationality"
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Expiration Date</FormLabel>
+                    <Input
+                      name="expirationDate"
+                      value={passport.expirationDate}
+                      onChange={updatePassportField}
+                      type="date"
+                    />
+                  </FormControl>
+                  <Button type="submit" colorScheme="teal" size="lg" w="full">
+                    Save Passport Details
+                  </Button>
+                </VStack>
+              </form>
+            </Fade>
           ) : (
-            // If saved, display passport details
-            <VStack spacing={3}>
-              <Text fontSize="lg">
-                <strong>Passport Number:</strong> {passport.passportNumber}
+            <VStack spacing={4} align="stretch">
+              <Text fontSize="md" fontWeight={"bold"}>
+                Passport Number: {passport.passportNumber}
               </Text>
-              <Text fontSize="lg">
-                <strong>Nationality</strong> {passport.nationality}
+              <Text fontSize="md" fontWeight={"bold"}>
+                Nationality: {passport.nationality}
               </Text>
-              <Text fontSize="lg">
-                <strong>Expiration Date</strong> {passport.expirationDate}
+              <Text fontSize="md" fontWeight={"bold"}>
+                Expiration Date: {passport.expirationDate}
               </Text>
-              {/* Display other passport details */}
               <Button
                 colorScheme="blue"
                 onClick={() => setPassportSaved(false)}
+                w="full"
               >
                 Edit Passport Details
               </Button>

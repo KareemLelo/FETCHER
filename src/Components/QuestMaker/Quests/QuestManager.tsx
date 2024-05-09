@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import QuestForm from "./QuestForm";
-import QuestCard from "./QuestCard";
+import QuestCard from "./QuestCardQM";
 import { Quest } from "../../../Services/Interface";
 import { fetchQuestByCreator } from "../../../Services/Api";
 

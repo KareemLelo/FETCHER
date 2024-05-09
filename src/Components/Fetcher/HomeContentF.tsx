@@ -8,7 +8,7 @@ import {
   Button,
   Center,
 } from "@chakra-ui/react";
-import QuestCards from "./QuestCards";
+import QuestCards from "./QuestCardF";
 import { useEffect, useState } from "react";
 import { fetchQuests, sendAcceptedQuest } from "../../Services/Api";
 import { Quest } from "../../Services/Interface";
@@ -99,7 +99,7 @@ const HomeContentF = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="center" width="auto" m={"10"}>
+      <Box display="flex" justifyContent="center" width="auto" mt={"3"}>
         <Flex
           justifyContent="center"
           alignItems="center"
@@ -117,12 +117,9 @@ const HomeContentF = () => {
       <ul>
         <SimpleGrid
           minChildWidth={"250px"}
-          spacingY="20px"
-          spacingX="5px"
           width="auto"
-          className="flex justify-center mt-10"
-          columns={{ sm: 1, md: 3, lg: 4, xl: 5 }}
-          p={7}
+          className="flex justify-center mt-5"
+          columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
         >
           {quests.map((quest, index) => (
             <QuestCards key={index} quest={quest} onAccept={onAcceptQuest} />

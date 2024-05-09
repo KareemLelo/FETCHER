@@ -10,7 +10,7 @@ import bcrypt from 'bcryptjs';
 // it embeds the user's ID within the token's payload.
 // This ID is then used to identify the user in subsequent requests to protected routes.
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '300s'});
+  return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '700s'});
 };
 
 export const registerUser = async (req, res) => {

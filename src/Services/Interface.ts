@@ -32,4 +32,8 @@ export interface Quest {
   }
 
 
-  
+  export interface Passport {
+    passportNumber: string;
+    nationality: string;
+    expirationDate: string;
+  }

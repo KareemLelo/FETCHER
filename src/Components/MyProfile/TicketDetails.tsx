@@ -69,11 +69,12 @@ const TicketDetails = () => {
     <Flex justifyContent={"center"}>
       <Box
         bg={cardBg}
-        p={6}
-        boxShadow="lg"
+        p={8}
         borderRadius="lg"
+        boxShadow="2xl"
         color={textColor}
-        width={{ base: "80%", md: "90%" }}
+        w="full"
+        maxW="md"
       >
         <VStack spacing={4} align="stretch">
           <Heading size="lg" mb={4}>
