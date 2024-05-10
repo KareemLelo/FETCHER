@@ -20,7 +20,7 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { useOrderStatus } from "../../ContentManagment/OrderStatusContext";
 
 // Define the steps for the fetcher's journey
-const statusSteps = [
+const progressIndex = [
   {
     label: "Not traveled yet",
     actionLabel: "Start Travelling",
@@ -78,13 +78,13 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
     return today === departureDate;
   }; */
 
-  const buttonText = statusSteps[activeStep].actionLabel;
+  const buttonText = progressIndex[activeStep].actionLabel;
 
   const advanceStep = () => {
     if (activeStep === 2 && !agreeStatusF) {
       setAgreeStatusF(true);
       setActiveStep(activeStep + 1);
-    } else if (activeStep < statusSteps.length - 1) {
+    } else if (activeStep < progressIndex.length - 1) {
       setActiveStep(activeStep + 1);
     } else {
       setComplete(true); // Mark the process as complete
@@ -104,7 +104,7 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
       </Text>
       <Divider mb={4} />
       <VStack spacing={4}>
-        {statusSteps.map((step, index) => (
+        {progressIndex.map((step, index) => (
           <Flex key={index} align="center" direction="column" w="100%">
             <HStack justifyContent="space-between" w="100%">
               <Text fontSize="lg" color={textColor}>
