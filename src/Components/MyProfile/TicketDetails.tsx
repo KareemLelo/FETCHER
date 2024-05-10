@@ -1,3 +1,4 @@
+// TicketDetails.tsx
 import { useState, FormEvent, ChangeEvent } from "react";
 import {
   Box,
@@ -12,34 +13,27 @@ import {
   HStack,
   Flex,
 } from "@chakra-ui/react";
-
-// Define a type for the profile state
-interface Profile {
-  direction: string;
-  departDate: string;
-  arrivalDate: string;
-  flightNum: string;
-}
+import { useOrderStatus } from "../../ContentManagment/OrderStatusContext"; // Correctly import and use the custom hook
 
 const TicketDetails = () => {
   const toast = useToast();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
-  // Initial state for the profile
-  const [profile, setProfile] = useState<Profile>({
-    direction: "",
-    departDate: "",
+  const { setActiveStep } = useOrderStatus(); // Correctly use the custom hook
+
+  const [profile, setProfile] = useState({
+    DepFlightNumber: "",
+    departureDate: "",
+    arrFlightNumber: "",
     arrivalDate: "",
-    flightNum: "",
   });
   const [profileSaved, setProfileSaved] = useState(false);
+  const [isAlreadyThere, setIsAlreadyThere] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setProfileSaved(true);
-    // Implement the save functionality here
-    // After successful save, show a toast notification
     toast({
       title: "Ticket details saved.",
       description: "Your travel information has been successfully saved.",
@@ -50,19 +44,17 @@ const TicketDetails = () => {
   };
 
   const handleEdit = () => {
-    setProfileSaved(false); // Allow editing again
+    setProfileSaved(false);
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfile((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAlreadyThere = () => {
-    // Implement what happens when user clicks "I'm Already There"
+    setIsAlreadyThere(true);
+    setActiveStep(2); // Adjust the step when "I'm Already There" is clicked
   };
 
   return (
@@ -80,10 +72,8 @@ const TicketDetails = () => {
           <Heading size="lg" mb={4}>
             Ticket Details
           </Heading>
-
           {profileSaved ? (
             <>
-              {/* Display profile details here */}
               <Button colorScheme="blue" onClick={handleEdit}>
                 Edit Details
               </Button>
@@ -91,36 +81,38 @@ const TicketDetails = () => {
           ) : (
             <form onSubmit={handleSubmit}>
               <FormControl isRequired>
-                <FormLabel>Direction</FormLabel>
+                <FormLabel>Departure Flight Number</FormLabel>
                 <Input
-                  name="direction"
-                  value={profile.direction}
+                  name="DepFlightNumber"
+                  value={profile.DepFlightNumber}
                   onChange={handleInputChange}
+                  isDisabled={isAlreadyThere}
                 />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Departure Date</FormLabel>
+                <FormLabel mt={2}>Departure Date</FormLabel>
                 <Input
                   type="date"
                   name="departDate"
-                  value={profile.departDate}
+                  value={profile.departureDate}
                   onChange={handleInputChange}
+                  isDisabled={isAlreadyThere}
                 />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Arrival Date</FormLabel>
+                <FormLabel mt={2}>Arrival Flight Number</FormLabel>
                 <Input
                   type="date"
-                  name="arrivalDate"
-                  value={profile.arrivalDate}
+                  name="arrFlightNumber"
+                  value={profile.arrFlightNumber}
                   onChange={handleInputChange}
                 />
               </FormControl>
               <FormControl isRequired>
-                <FormLabel>Flight Number</FormLabel>
+                <FormLabel mt={2}>Arrival Date</FormLabel>
                 <Input
-                  name="flightNum"
-                  value={profile.flightNum}
+                  name="arrivalDate"
+                  value={profile.arrivalDate}
                   onChange={handleInputChange}
                 />
               </FormControl>

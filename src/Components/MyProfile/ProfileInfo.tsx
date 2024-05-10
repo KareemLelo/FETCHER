@@ -95,7 +95,7 @@ const ProfileInfo = () => {
   };
 
   return (
-    <Flex justifyContent={"center"} width={{ base: "90%", md: "80%" }}>
+    <Flex justifyContent={"center"} width={{ base: "90%", md: "80%" }} mt={5}>
       <Box
         bg={cardBg}
         p={6}

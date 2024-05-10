@@ -37,3 +37,11 @@ export interface Quest {
     nationality: string;
     expirationDate: string;
   }
+
+
+  export interface TicketDetails {
+    DepFlightNumber: string;
+    departureDate: string;
+    arrFlightNumber: string;
+    arrivalDate: string;
+  }
