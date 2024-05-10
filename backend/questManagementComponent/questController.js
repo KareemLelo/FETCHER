@@ -25,29 +25,6 @@ export const createQuest = async (req, res) => {
   }
 };
 
-export const acceptQuest = async (req, res) => {
-  try {
-    const quest = await Quest.findById(req.params._id);
-
-    if (!quest) {
-      return res.status(404).json({ message: "Quest not found" });
-    }
-
-    if (quest.status !== 'pending') {
-      return res.status(400).json({ message: "Quest is no longer available" });
-    }
-
-    quest.status = 'accepted';
-    quest.acceptedBy = req.user._id; // The ID from the JWT payload
-    await quest.save();
-
-    res.status(200).json({ message: "Quest accepted successfully", quest });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error accepting quest" });
-  }
-};
-
 export const getAvailableQuests = async (req, res) => {
   try {
     const quests = await Quest.find({ status: 'pending' }); // Modify the query as needed

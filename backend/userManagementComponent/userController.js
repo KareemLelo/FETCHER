@@ -127,7 +127,7 @@ export const updateUserProfile = async (req, res) => {
 export const acceptQuest = async (req, res) => {
   const { questId } = req.params;
   const userId = req.user._id;
-
+  const user = User.findById(userId);
   try {
     const quest = await Quest.findById(questId);
 
@@ -135,11 +135,17 @@ export const acceptQuest = async (req, res) => {
       return res.status(404).json({ message: "Quest not found" });
     }
 
-    if (quest.status === 'accepted') {
+    if (quest.statusIndex === 1) {
       return res.status(400).json({ message: "This quest has already been accepted" });
     }
 
-    quest.status = 'accepted';
+    quest.statusIndex = 1;
+    if(user.alreadyThere==true)
+    {
+      quest.progressIndex = 2;
+    }else{
+      quest.progressIndex=0;
+    }
     quest.acceptedBy = userId;
 
     await quest.save();
@@ -148,5 +154,68 @@ export const acceptQuest = async (req, res) => {
   } catch (error) {
     console.error('Failed to accept quest:', error);
     res.status(500).json({ message: "An error occurred during the process of accepting the quest" });
+  }
+};
+
+// userController.js
+export const updatePassportDetails = async (req, res) => {
+  const userId = req.user._id; // This ID comes from the JWT token after being decoded by the `protectRoutes` middleware.
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      
+      if (user._id.toString() !== userId) {
+        return res.status(403).json({ message: 'Unauthorized to update these details' });
+    }
+      // Update passport details from the request body
+      user.passportDetails = {
+          passportNumber: req.body.passportNumber,
+          nationality: req.body.nationality,
+          passportExpDate: new Date(req.body.passportExpDate) // Ensure date is properly formatted
+      };
+
+      await user.save();
+
+      res.status(200).json({
+          message: 'Passport details updated successfully',
+          passportDetails: user.passportDetails
+      });
+  } catch (error) {
+      console.error('Failed to update passport details:', error);
+      res.status(500).json({ message: 'Error updating passport details' });
+  }
+};
+
+// userController.js
+export const updateFlightDetails = async (req, res) => {
+  const userId = req.user._id; // This is the ID from the JWT payload
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Update flight details from the request body
+      user.flightDetails = {
+          departureDate: new Date(req.body.departureDate),
+          arrivalDate: new Date(req.body.arrivalDate),
+          depFlightNumber: req.body.depFlightNumber,
+          arrFlightNumber: req.body.arrFlightNumber,
+          alreadyThere: req.body.alreadyThere || false // Default to false unless specified
+      };
+
+      await user.save();
+
+      res.status(200).json({
+          message: 'Flight details updated successfully',
+          flightDetails: user.flightDetails
+      });
+  } catch (error) {
+      console.error('Failed to update flight details:', error);
+      res.status(500).json({ message: 'Error updating flight details' });
   }
 };
