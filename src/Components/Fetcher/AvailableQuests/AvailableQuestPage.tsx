@@ -91,7 +91,28 @@ const AvailableQuestPage: React.FC = () => {
         <Text fontSize="lg" marginBottom="16px">
           It looks like there are no available quests right now.
         </Text>
-        <Button colorScheme="blue" onClick={() => window.location.reload()}>
+        <Button
+          colorScheme="blue"
+          onClick={() =>
+            setTimeout(() => {
+              fetchQuests()
+                .then((quests) => {
+                  setQuests(quests);
+                  console.log("Updated quests after acceptance:", quests);
+                })
+                .catch((error) => {
+                  console.error("Error re-fetching quests:", error);
+                  toast({
+                    title: "Error",
+                    description: "Failed to refresh quests",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                });
+            }, 2100)
+          }
+        >
           Refresh
         </Button>
       </Center>
