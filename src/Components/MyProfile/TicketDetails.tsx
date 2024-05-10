@@ -102,7 +102,6 @@ const TicketDetails = () => {
               <FormControl isRequired>
                 <FormLabel mt={2}>Arrival Flight Number</FormLabel>
                 <Input
-                  type="date"
                   name="arrFlightNumber"
                   value={profile.arrFlightNumber}
                   onChange={handleInputChange}
@@ -111,6 +110,7 @@ const TicketDetails = () => {
               <FormControl isRequired>
                 <FormLabel mt={2}>Arrival Date</FormLabel>
                 <Input
+                  type="date"
                   name="arrivalDate"
                   value={profile.arrivalDate}
                   onChange={handleInputChange}
