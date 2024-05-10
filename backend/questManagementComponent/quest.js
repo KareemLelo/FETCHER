@@ -12,9 +12,15 @@ const questSchema = new mongoose.Schema({
     min: [10, 'Price must be positive']
   },
   link: String,
-  status: {
-    type: String,
-    default: 'pending',  // or 'accepted', 'completed', etc.
+  statusIndex: {
+    type: Number,
+    default:0
+  },
+  progresIndex:
+  {
+     type: Number,
+     default:0
+
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +36,7 @@ const questSchema = new mongoose.Schema({
   timestamps: true,  // Adds createdAt and updatedAt timestamps
   collection: 'Quests'
 });
+
 const QuestModel = mongoose.model('Quest', questSchema, 'Quests');
 class Quest {
     constructor(data) {

@@ -27,10 +27,17 @@ const FetcherSchema = new mongoose.Schema({
   password: String,
   mobile: String,
   bio: String,
-  flightdetails: {
-    arrivalDate: Date,
+  flightDetails: {
     departureDate: Date,
-    flightNumber: String
+    arrivalDate: Date,
+    depFlightNumber: String,
+    arrFlightNumber: String,
+    alreadyThere: Boolean
+  },
+  passportDetails: {
+    passportNumber: String,
+    nationality: String,
+    passportExpDate: Date
   }
 },
 //{  versionKey:false},

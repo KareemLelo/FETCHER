@@ -48,7 +48,7 @@ export const acceptQuest = async (req, res) => {
   }
 };
 
-export const getQuests = async (req, res) => {
+export const getAvailableQuests = async (req, res) => {
   try {
     const quests = await Quest.find({ status: 'pending' }); // Modify the query as needed
     res.status(200).json(quests);
