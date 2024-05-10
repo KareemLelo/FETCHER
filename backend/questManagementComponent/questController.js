@@ -6,7 +6,7 @@ export const createQuest = async (req, res) => {
     if (!req.user) {
       throw new Error('User not authenticated');
     }
-    const { itemName, itemCategory, itemPrice, itemQuantity, itemDirection, itemWeight, link } = req.body;
+    const { itemName, itemCategory, itemPrice, itemQuantity, itemDirection, itemWeight, itemLink, statusIndex, progressIndex} = req.body;
     const newQuest = new Quest({
       itemName,
       itemCategory,
@@ -14,8 +14,11 @@ export const createQuest = async (req, res) => {
       itemQuantity,
       itemDirection,
       itemWeight,
-      link,
+      itemLink,
+      statusIndex: statusIndex,
+      progressIndex: progressIndex,
       createdBy: req.user._id,
+      acceptedBy: null
     });
     const savedQuest = await newQuest.save();
     res.status(201).json(savedQuest);
@@ -27,7 +30,7 @@ export const createQuest = async (req, res) => {
 
 export const getAvailableQuests = async (req, res) => {
   try {
-    const quests = await Quest.find({ status: 'pending' }); // Modify the query as needed
+    const quests = await Quest.find({ statusIndex: 0 }); // Modify the query as needed
     res.status(200).json(quests);
   } catch (error) {
     console.error('Error fetching quests:', error);
@@ -35,7 +38,7 @@ export const getAvailableQuests = async (req, res) => {
   }
 };
 
-export const fetchQuestByCreator = async (req, res) => {
+export const getQuestByCreator = async (req, res) => {
   if (!req.user || !req.user._id) {
     return res.status(401).json({ message: "Unauthorized access: No user ID found." });
   }

@@ -82,8 +82,10 @@ export const getUserProfile = async (req, res) => {
       res.json({
         name: user.firstName + " " + user.lastName,
         email: user.email,
+        mobile: user.mobile,
         bio: user.bio,
-        mobile: user.mobile
+        passportDetails: user.passportDetails, // Ensure passport details are included
+        flightDetails: user.flightDetails // Ensure flight details are included
       });
     } else {
       res.status(404).send('User not found');

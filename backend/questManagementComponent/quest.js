@@ -6,31 +6,24 @@ const questSchema = new mongoose.Schema({
   itemQuantity: Number,
   itemDirection: String,
   itemWeight: Number,
-  itemPrice: {
+  itemPrice:
+  {
     type: Number,
     required: true,
     min: [10, 'Price must be positive']
   },
-  link: String,
-  statusIndex: {
-    type: Number,
-    default:0
-  },
-  progressIndex:
-  {
-     type: Number,
-     default:0
-
-  },
+  itemLink: String,
+  statusIndex: Number,
+  progressIndex: Number,
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',  // Assuming you have a User model and each quest is associated with a user
+    ref: 'QuestMakers',  // Assuming you have a User model and each quest is associated with a user
     required: true
   },
   acceptedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',  // Assuming you use the 'User' model for Fetchers as well
-    default: null,  // Indicates that the quest is not accepted yet
+    ref: 'Fetchers',  // Assuming you use the 'User' model for Fetchers as well
+    default: null,  
   },
 }, {
   timestamps: true,  // Adds createdAt and updatedAt timestamps
