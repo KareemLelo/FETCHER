@@ -16,7 +16,7 @@ const questSchema = new mongoose.Schema({
     type: Number,
     default:0
   },
-  progresIndex:
+  progressIndex:
   {
      type: Number,
      default:0

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUserProfile, registerUser,loginUser, updateUserProfile, acceptQuest} from './userController.js';
+import { getUserProfile, registerUser, loginUser, updateUserProfile, updatePassportDetails, updateFlightDetails, acceptQuest} from './userController.js';
 import validateRegistration from '../middlewares/validateRegMiddleware.js'; 
 import validateProfileUpdate from '../middlewares/validateProfileUpdateMiddleware.js';
 import {protectRoutes} from '../middlewares/authMiddleware.js'
@@ -24,6 +24,8 @@ router.post('/login',loginUser);
 router.get('/profile/me', protectRoutes, getUserProfile);
 router.post('/profile/update/:_id', protectRoutes, validateProfileUpdate, updateUserProfile);
 router.post('/quest/accept/:questId', protectRoutes, acceptQuest);
+router.post('/profile/passport', protectRoutes, updatePassportDetails);
+router.post('/profile/flightDetails', protectRoutes, updateFlightDetails);
 
 
 export default router;
