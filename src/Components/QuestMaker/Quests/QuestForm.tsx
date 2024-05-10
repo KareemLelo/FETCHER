@@ -29,7 +29,8 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
     itemPrice: 0,
     itemLink: "",
     createdBy: "",
-    status: "pending",
+    statusIndex: 0,
+    progressIndex: 0,
   });
   const toast = useToast();
 
@@ -119,15 +120,14 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Direction</FormLabel>
-              <Select
+              <Input
                 name="itemDirection"
                 value={quest.itemDirection}
                 onChange={handleChange}
+                placeholder="Enter Item Place..."
                 borderColor={borderColor}
-              >
-                <option value="">Select direction</option>
-                <option value="Buying">Buying</option>
-              </Select>
+                _placeholder={{ color: placeholderColor }}
+              />
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Weight (kg)</FormLabel>

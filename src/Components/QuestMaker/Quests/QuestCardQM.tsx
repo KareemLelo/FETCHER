@@ -18,7 +18,6 @@ import {
   FaMoneyBillWave,
   FaMapMarkedAlt,
 } from "react-icons/fa";
-import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { Quest } from "../../../Services/Interface";
 
 interface QuestCardProps {
