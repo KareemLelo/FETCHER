@@ -38,22 +38,22 @@ class Quest {
     }
     
     static findByCreator(creatorId) {
-      return QuestModel.findOne({ createdBy: creatorId, status: 'pending' });
+      return QuestModel.findOne({ createdBy: creatorId, statusIndex: 0 });
     }
 
     static async findById(id) {
-      return await QuestModel.findById(id);
+      return await QuestModel.findById(id).lean();
     }
     
     static async findByName(itemName) {
-      let quest = await QuestModel.findOne({ itemName });// .lean() is optional for performance
+      let quest = await QuestModel.findOne({ itemName }).lean();// .lean() is optional for performance
       if (!quest) {
         throw new Error(`no quest found with name: ${itemName}`);
       }
       return quest;
     }
     static async find(criteria) {
-      return await QuestModel.find(criteria); // Use lean for performance if you don't need a full Mongoose document
+      return await QuestModel.find(criteria).lean(); // Use lean for performance if you don't need a full Mongoose document
   }
   
     /*async save() {
