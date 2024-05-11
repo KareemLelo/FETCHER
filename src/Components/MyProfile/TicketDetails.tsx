@@ -1,5 +1,4 @@
-// TicketDetails.tsx
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import {
   Box,
   VStack,
@@ -10,38 +9,61 @@ import {
   Input,
   useToast,
   useColorModeValue,
-  HStack,
   Flex,
 } from "@chakra-ui/react";
-import { useOrderStatus } from "../../ContentManagment/OrderStatusContext"; // Correctly import and use the custom hook
+import { useOrderStatus } from "../../ContentManagment/OrderStatusContext";
 
-const TicketDetails = () => {
+interface TicketDetailsProps {
+  departureFlightNumber: string;
+  departureDate: string;
+  arrivalFlightNumber: string;
+  arrivalDate: string;
+}
+
+const formatDate = (dateString: string | number | Date) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const TicketDetails: React.FC<TicketDetailsProps> = ({
+  departureFlightNumber: initialDepartureFlightNumber,
+  departureDate: initialDepartureDate,
+  arrivalFlightNumber: initialArrivalFlightNumber,
+  arrivalDate: initialArrivalDate,
+}) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("brand.background", "brand.primary");
+  const cardBg = useColorModeValue("brand.primary", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
-  const { setActiveStep } = useOrderStatus(); // Correctly use the custom hook
+  const { setActiveStep } = useOrderStatus();
 
   const [profile, setProfile] = useState({
-    DepFlightNumber: "",
-    departureDate: "",
-    arrFlightNumber: "",
-    arrivalDate: "",
+    departureFlightNumber: initialDepartureFlightNumber,
+    departureDate: formatDate(initialDepartureDate),
+    arrivalFlightNumber: initialArrivalFlightNumber,
+    arrivalDate: formatDate(initialArrivalDate),
   });
-  const [profileSaved, setProfileSaved] = useState(false);
+  const [profileSaved, setProfileSaved] = useState(true);
   const [isAlreadyThere, setIsAlreadyThere] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setProfileSaved(true);
-    toast({
-      title: "Ticket details saved.",
-      description: "Your travel information has been successfully saved.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
+  // Update the profile whenever initial props change
+  useEffect(() => {
+    setProfile({
+      departureFlightNumber: initialDepartureFlightNumber,
+      departureDate: formatDate(initialDepartureDate),
+      arrivalFlightNumber: initialArrivalFlightNumber,
+      arrivalDate: formatDate(initialArrivalDate),
     });
-  };
+  }, [
+    initialDepartureFlightNumber,
+    initialDepartureDate,
+    initialArrivalFlightNumber,
+    initialArrivalDate,
+  ]);
 
   const handleEdit = () => {
     setProfileSaved(false);
@@ -49,87 +71,149 @@ const TicketDetails = () => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfile((prev) => ({ ...prev, [name]: value }));
+    setProfile((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleAlreadyThere = () => {
     setIsAlreadyThere(true);
-    setActiveStep(2); // Adjust the step when "I'm Already There" is clicked
+    setActiveStep(1);
+    toast({
+      title: "Status Updated",
+      description: "You've indicated that you're already at your destination.",
+      status: "info",
+      duration: 4000,
+      isClosable: true,
+    });
   };
 
   return (
-    <Flex justifyContent={"center"}>
+    <Flex justifyContent={"center"} width="100%" mt={5}>
       <Box
         bg={cardBg}
-        p={8}
+        p={6}
         borderRadius="lg"
-        boxShadow="2xl"
+        boxShadow="lg"
         color={textColor}
-        w="full"
-        maxW="md"
+        width={{ base: "90%", md: "80%" }}
       >
         <VStack spacing={4} align="stretch">
-          <Heading size="lg" mb={4}>
+          <Heading size="xl" textAlign="center">
             Ticket Details
           </Heading>
+          <Flex justifyContent={"center"}>
+            <Button
+              colorScheme="green"
+              onClick={handleAlreadyThere}
+              w="60%"
+              mb={4}
+            >
+              I'm Already There
+            </Button>
+          </Flex>
+
           {profileSaved ? (
-            <>
-              <Button colorScheme="blue" onClick={handleEdit}>
-                Edit Details
-              </Button>
-            </>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <FormControl isRequired>
+            <VStack spacing={5}>
+              <FormControl>
                 <FormLabel>Departure Flight Number</FormLabel>
                 <Input
-                  name="DepFlightNumber"
-                  value={profile.DepFlightNumber}
-                  onChange={handleInputChange}
-                  isDisabled={isAlreadyThere}
+                  type="text"
+                  name="departureFlightNumber"
+                  value={profile.departureFlightNumber}
+                  placeholder="Departure Flight Number"
+                  isReadOnly={true}
                 />
               </FormControl>
-              <FormControl isRequired>
-                <FormLabel mt={2}>Departure Date</FormLabel>
+
+              <FormControl>
+                <FormLabel>Departure Date</FormLabel>
                 <Input
                   type="date"
-                  name="departDate"
+                  name="departureDate"
                   value={profile.departureDate}
-                  onChange={handleInputChange}
-                  isDisabled={isAlreadyThere}
+                  placeholder="Departure Date"
+                  isReadOnly={true}
                 />
               </FormControl>
-              <FormControl isRequired>
-                <FormLabel mt={2}>Arrival Flight Number</FormLabel>
+
+              <FormControl>
+                <FormLabel>Arrival Flight Number</FormLabel>
                 <Input
-                  name="arrFlightNumber"
-                  value={profile.arrFlightNumber}
-                  onChange={handleInputChange}
+                  type="text"
+                  name="arrivalFlightNumber"
+                  value={profile.arrivalFlightNumber}
+                  placeholder="Arrival Flight Number"
+                  isReadOnly={true}
                 />
               </FormControl>
-              <FormControl isRequired>
-                <FormLabel mt={2}>Arrival Date</FormLabel>
+
+              <FormControl>
+                <FormLabel>Arrival Date</FormLabel>
                 <Input
                   type="date"
                   name="arrivalDate"
                   value={profile.arrivalDate}
-                  onChange={handleInputChange}
+                  placeholder="Arrival Date"
+                  isReadOnly={true}
                 />
               </FormControl>
-              <Flex justifyContent={"center"}>
-                <HStack mt={4}>
-                  <Button fontSize={"80%"} type="submit" colorScheme="blue">
+
+              <Button colorScheme="blue" onClick={handleEdit} w="60%">
+                Edit Details
+              </Button>
+            </VStack>
+          ) : (
+            <form>
+              <VStack spacing={4}>
+                <FormControl isRequired>
+                  <FormLabel>Departure Flight Number</FormLabel>
+                  <Input
+                    name="departureFlightNumber"
+                    value={profile.departureFlightNumber}
+                    onChange={handleInputChange}
+                    isDisabled={isAlreadyThere}
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Departure Date</FormLabel>
+                  <Input
+                    type="date"
+                    name="departureDate"
+                    value={profile.departureDate}
+                    onChange={handleInputChange}
+                    isDisabled={isAlreadyThere}
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Arrival Flight Number</FormLabel>
+                  <Input
+                    name="arrivalFlightNumber"
+                    value={profile.arrivalFlightNumber}
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Arrival Date</FormLabel>
+                  <Input
+                    type="date"
+                    name="arrivalDate"
+                    value={profile.arrivalDate}
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+                <Flex justifyContent={"center"}>
+                  <Button
+                    fontSize={"sm"}
+                    type="submit"
+                    colorScheme="blue"
+                    w="60%"
+                  >
                     Save Changes
                   </Button>
-                  <Button
-                    colorScheme="green"
-                    fontSize={"80%"}
-                    onClick={handleAlreadyThere}
-                  >
-                    I'm Already There
-                  </Button>
-                </HStack>
-              </Flex>
+                </Flex>
+              </VStack>
             </form>
           )}
         </VStack>

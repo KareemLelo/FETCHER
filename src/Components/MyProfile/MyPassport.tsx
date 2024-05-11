@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import {
   Box,
   VStack,
@@ -11,88 +11,52 @@ import {
   useToast,
   useColorModeValue,
   Flex,
-  Divider,
   Fade,
+  Avatar, // Added for the avatar
 } from "@chakra-ui/react";
-import { fetchPassportData, savePassportData } from "../../Services/Api"; // Adjust paths as necessary
 import { Passport } from "../../Services/Interface";
 
-const MyPassport = () => {
+interface MyPassportProps {
+  passportNumber: string;
+  nationality: string;
+  expirationDate: string;
+}
+
+const formatDate = (dateString: string | number | Date) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const MyPassport: React.FC<MyPassportProps> = ({
+  passportNumber: initialPassportNumber,
+  nationality: initialNationality,
+  expirationDate: initialExpirationDate,
+}) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("brand.background", "brand.primary");
+  const cardBg = useColorModeValue("brand.primary", "brand.primary"); // Adjusted to match ProfileInfo
   const textColor = useColorModeValue("brand.text", "white");
 
-  /* const [passport, setPassport] = useState<Passport>({
-    passportNumber: "",
-    nationality: "",
-    expirationDate: "",
-  }); */
-
-  const [passport, setPassport] = useState({
-    passportNumber: "123456789",
-    nationality: "Narnia",
-    expirationDate: "2030-01-01",
+  // Initialize state with the initial props
+  const [passport, setPassport] = useState<Passport>({
+    passportNumber: initialPassportNumber,
+    nationality: initialNationality,
+    expirationDate: initialExpirationDate,
   });
 
-  const [passportSaved, setPassportSaved] = useState(true);
-
-  // Load passport details on component mount
-  /* useEffect(() => {
-    const loadPassportDetails = async () => {
-      try {
-        const data = await fetchPassportData();
-        if (data) {
-          setPassport(data);
-          setPassportSaved(true);
-        }
-      } catch (error: any) {
-        toast({
-          title: "Error",
-          description: error.message || "Failed to load passport details",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-    };
-
-    loadPassportDetails();
-  }, [toast]); */
-
-  /* const handlePassportSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      await savePassportData(passport);
-      setPassportSaved(true);
-      toast({
-        title: "Success",
-        description: "Passport details saved successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to save passport details",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  }; */
-
-  const handlePassportSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    toast({
-      title: "Success",
-      description: "Passport details saved successfully.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
+  // Effect hook to update state when props change
+  useEffect(() => {
+    setPassport({
+      passportNumber: initialPassportNumber,
+      nationality: initialNationality,
+      expirationDate: formatDate(initialExpirationDate),
     });
-    setPassportSaved(true);
-  };
+  }, [initialPassportNumber, initialNationality, initialExpirationDate]);
+
+  const [editMode, setEditMode] = useState(false);
 
   const updatePassportField = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -103,23 +67,20 @@ const MyPassport = () => {
   };
 
   return (
-    <Flex justifyContent="center" alignItems="center">
+    <Flex justifyContent={"center"} mt={5}>
       <Box
         bg={cardBg}
-        p={8}
+        p={6}
         borderRadius="lg"
-        boxShadow="2xl"
+        boxShadow="lg"
         color={textColor}
-        w="full"
-        maxW="md"
+        width={{ base: "90%", md: "80%" }}
       >
-        <VStack spacing={6} align="stretch">
-          <Heading size="lg" mb={2}>
-            Passport Details
-          </Heading>
-          {!passportSaved ? (
-            <Fade in={!passportSaved}>
-              <form onSubmit={handlePassportSubmit}>
+        <VStack spacing={4} align="stretch">
+          <Heading size="xl">Passport Details</Heading>
+          {editMode ? (
+            <Fade in={editMode}>
+              <form /* onSubmit={handlePassportSubmit} */>
                 <VStack spacing={4}>
                   <FormControl isRequired>
                     <FormLabel>Passport Number</FormLabel>
@@ -148,30 +109,57 @@ const MyPassport = () => {
                       type="date"
                     />
                   </FormControl>
-                  <Button type="submit" colorScheme="teal" size="lg" w="full">
-                    Save Passport Details
-                  </Button>
+                  <Flex justifyContent={"center"}>
+                    <Button type="submit" colorScheme="teal" size="lg" w="60%">
+                      Save Passport Details
+                    </Button>
+                  </Flex>
                 </VStack>
               </form>
             </Fade>
           ) : (
-            <VStack spacing={4} align="stretch">
-              <Text fontSize="md" fontWeight={"bold"}>
-                Passport Number: {passport.passportNumber}
-              </Text>
-              <Text fontSize="md" fontWeight={"bold"}>
-                Nationality: {passport.nationality}
-              </Text>
-              <Text fontSize="md" fontWeight={"bold"}>
-                Expiration Date: {passport.expirationDate}
-              </Text>
-              <Button
-                colorScheme="blue"
-                onClick={() => setPassportSaved(false)}
-                w="full"
-              >
-                Edit Passport Details
-              </Button>
+            <VStack spacing={5} align="stretch">
+              <FormControl>
+                <FormLabel>Passport Number</FormLabel>
+                <Input
+                  type="text"
+                  name="passportNumber"
+                  value={passport.passportNumber}
+                  placeholder="Passport Number"
+                  isReadOnly={true}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Nationality</FormLabel>
+                <Input
+                  type="text"
+                  name="nationality"
+                  value={passport.nationality}
+                  placeholder="Nationality"
+                  isReadOnly={true}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Expiration Date</FormLabel>
+                <Input
+                  type="text"
+                  name="expirationDate"
+                  value={passport.expirationDate}
+                  placeholder="Expiration Date"
+                  isReadOnly={true}
+                />
+              </FormControl>
+              <Flex justifyContent={"center"}>
+                <Button
+                  colorScheme="blue"
+                  onClick={() => setEditMode(true)}
+                  w="60%"
+                >
+                  Edit Passport Details
+                </Button>
+              </Flex>
             </VStack>
           )}
         </VStack>

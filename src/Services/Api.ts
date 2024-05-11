@@ -29,19 +29,6 @@ export const fetchProfileData = async (): Promise<any> => {
   }
 };
 
-
-
-export const updateProfileData = async (profileData: any): Promise<void> => {
-  const userId = localStorage.getItem('userId');  // Dynamically get the user ID from local storage
-  if (!userId) throw new Error("No user ID found in local storage.");
-
-  try {
-    await api.post(`/profile/update/${userId}`, profileData);
-  } catch (error: any) {
-    throw new Error(error.response?.data.message || "Error updating profile");
-  }
-};
-
 export const login = async (username: string, password: string) => {
   try {
     const response = await api.post(`/login`, {
@@ -147,20 +134,62 @@ export const sendAcceptedQuest = async (questId: string): Promise<Quest> => {
   }
 };
 
-export const fetchPassportData = async (): Promise<Passport> => {
+export const updatePassportDetails = async (passportDetails: {
+  passportNumber: string;
+  nationality: string;
+  passportExpDate: string;
+}): Promise<any> => {
   try {
-    const response = await api.get('/passport/details'); // URL based on your API setup
+    const response = await api.post('/profile/passport', passportDetails);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data.message || "Error fetching passport details");
+    if (axios.isAxiosError(error)) {
+      console.error('Update passport details API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error updating passport details");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while updating passport details.');
+    }
   }
 };
 
-export const savePassportData = async (passport: Passport): Promise<any> => {
+export const updateFlightDetails = async (flightDetails: {
+  departureDate: string;
+  arrivalDate: string;
+  departureFlightNumber: string;
+  arrivalFlightNumber: string;
+  alreadyThere?: boolean;
+}): Promise<any> => {
   try {
-    const response = await api.post('/passport/save', passport); // URL based on your API setup
+    const response = await api.post('/profile/flightDetails', flightDetails);
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data.message || "Error saving passport details");
+    if (axios.isAxiosError(error)) {
+      console.error('Update flight details API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error updating flight details");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while updating flight details.');
+    }
+  }
+};
+
+export const updateUserProfile = async (userId: string, profileData: {
+  name?: string;
+  email?: string;
+  mobile?: string;
+  bio?: string;
+}): Promise<any> => {
+  try {
+    const response = await api.post(`/profile/update/${userId}`, profileData);
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Update user profile API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error updating user profile");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while updating the user profile.');
+    }
   }
 };

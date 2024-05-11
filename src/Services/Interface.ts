@@ -7,18 +7,29 @@ export interface Quest {
   itemWeight: number;
   itemPrice: number;
   itemLink: string;
-  createdBy: string; // Assuming this will always be present as quests must have a creator
-  acceptedBy?: string; // This should be optional as it may not be set initially
+  createdBy: string; 
+  acceptedBy?: string; 
   statusIndex: number;
   progressIndex: number;
 }
 
-  export interface Profile {
-    name: string;
-    email: string;
-    bio: string;
-    mobileNumber: string;
-  }
+export interface Profile {
+  name: string;
+  email: string;
+  mobileNumber: string;
+  bio: string;
+  passportDetails: {
+    passportNumber: string;
+    nationality: string;
+    expirationDate: string;
+  };
+  flightDetails: {
+    departureDate: string;
+    arrivalDate: string;
+    depFlightNumber: string;
+    arrFlightNumber: string;
+  };
+}
   
   export interface ApiResponse {
     name: string;
