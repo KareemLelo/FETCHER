@@ -1,9 +1,6 @@
 import React from "react";
 import {
   Box,
-  Button,
-  useDisclosure,
-  Collapse,
   Flex,
   Heading,
   Text,

@@ -46,7 +46,7 @@ class Quest {
     }
     
     static async findByName(itemName) {
-      let quest = await QuestModel.findOne({ itemName }).lean();// .lean() is optional for performance
+      let quest = await QuestModel.findOne({ itemName }).lean();
       if (!quest) {
         throw new Error(`no quest found with name: ${itemName}`);
       }

@@ -1,4 +1,4 @@
-import { Center, Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import "@fontsource/poppins";
 import NavBar from "./Components/NavBar";
