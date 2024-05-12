@@ -22,10 +22,10 @@ router.post('/login',loginUser);
 //router.post('/profile',validateProfileUpdate,updateUserProfile);
 
 router.get('/profile/me', protectRoutes, getUserProfile);
-router.post('/profile/update/:_id', protectRoutes, validateProfileUpdate, updateUserProfile);
-router.post('/quest/accept/:questId', protectRoutes, acceptQuest);
-router.post('/profile/passport', protectRoutes, updatePassportDetails);
-router.post('/profile/flightDetails', protectRoutes, updateFlightDetails);
+router.put('/profile/me', protectRoutes, validateProfileUpdate, updateUserProfile);
+router.put('/profile/passport', protectRoutes, updatePassportDetails);
+router.put('/profile/flightDetails', protectRoutes, updateFlightDetails);
+router.put('/quest/accept/:questId', protectRoutes, acceptQuest);
 
 
 export default router;

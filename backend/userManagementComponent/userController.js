@@ -113,18 +113,16 @@ export const getUserProfile = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const user = await User.findById(userId);  // Find user by ID
-
+    const user = await User.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Update fields if they exist in the request body
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.mobile = req.body.mobile || user.mobile;
-    user.bio = req.body.bio || user.bio;  // Assume bio can be updated to be empty
+  // Update profile fields
+  const updates = req.body;
+  for (let key in updates) {
+    if (key in user) user[key] = updates[key];
+  }
 
     const updatedUser = await user.save();  // Save the updated user info
 
@@ -141,72 +139,34 @@ export const updateUserProfile = async (req, res) => {
   }
 };
 
-export const acceptQuest = async (req, res) => {
-  const { questId } = req.params;
-  const userId = req.user._id;
-  const user = User.findById(userId);
-  try {
-    const quest = await Quest.findById(questId);
-
-    if (!quest) {
-      return res.status(404).json({ message: "Quest not found" });
-    }
-
-    if (quest.statusIndex === 1) {
-      return res.status(400).json({ message: "This quest has already been accepted" });
-    }
-
-    quest.statusIndex = 1;
-    if(user.alreadyThere==true)
-    {
-      quest.progressIndex = 2;
-    }else{
-      quest.progressIndex=0;
-    }
-    quest.acceptedBy = userId;
-
-    await quest.save();
-
-    res.json({ message: "Quest accepted successfully", quest });
-  } catch (error) {
-    console.error('Failed to accept quest:', error);
-    res.status(500).json({ message: "An error occurred during the process of accepting the quest" });
-  }
-};
-
-// userController.js
 export const updatePassportDetails = async (req, res) => {
-  const userId = req.user._id; // This ID comes from the JWT token after being decoded by the `protectRoutes` middleware.
-
   try {
-      const user = await User.findById(userId);
+      const user = await User.findById(req.user._id);
       if (!user) {
           return res.status(404).json({ message: 'User not found' });
       }
       
-      if (user._id.toString() !== userId) {
+      if (user._id.toString() !== req.user._id) {
         return res.status(403).json({ message: 'Unauthorized to update these details' });
     }
-      // Update passport details from the request body
-      user.passportDetails = {
-          passportNumber: req.body.passportNumber,
-          nationality: req.body.nationality,
-          passportExpDate: new Date(req.body.passportExpDate) // Ensure date is properly formatted
-      };
+    // Update passport details
+    user.passportDetails = {
+      ...user.passportDetails,
+      ...req.body
+    };
 
-      await user.save();
+    await user.save();
 
-      res.status(200).json({
-          message: 'Passport details updated successfully',
-          passportDetails: user.passportDetails
-      });
+    res.status(200).json({
+        message: 'Passport details updated successfully',
+        passportDetails: user.passportDetails
+    });
   } catch (error) {
       console.error('Failed to update passport details:', error);
       res.status(500).json({ message: 'Error updating passport details' });
   }
 };
 
-// userController.js
 export const updateFlightDetails = async (req, res) => {
   const userId = req.user._id; // This is the ID from the JWT payload
 
@@ -216,17 +176,13 @@ export const updateFlightDetails = async (req, res) => {
           return res.status(404).json({ message: 'User not found' });
       }
 
-      // Update flight details from the request body
-      user.flightDetails = {
-          departureDate: new Date(req.body.departureDate),
-          arrivalDate: new Date(req.body.arrivalDate),
-          depFlightNumber: req.body.depFlightNumber,
-          arrFlightNumber: req.body.arrFlightNumber,
-          alreadyThere: req.body.alreadyThere || false // Default to false unless specified
-      };
+      // Update flight details
+    user.flightDetails = {
+      ...user.flightDetails,
+      ...req.body
+    };
 
       await user.save();
-
       res.status(200).json({
           message: 'Flight details updated successfully',
           flightDetails: user.flightDetails
@@ -234,5 +190,44 @@ export const updateFlightDetails = async (req, res) => {
   } catch (error) {
       console.error('Failed to update flight details:', error);
       res.status(500).json({ message: 'Error updating flight details' });
+  }
+};
+
+export const acceptQuest = async (req, res) => {
+  const questId = req.params;
+  const userId = req.user._id;
+  try {
+    const quest = await Quest.findById(questId);
+    if (!quest) {
+      return res.status(404).json({ message: "Quest not found" });
+    }
+
+    if (quest.statusIndex === 1) {
+      return res.status(400).json({ message: "This quest has already been accepted" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    quest.statusIndex = 1;
+
+    if(req.body.alreadyThere)
+    {
+      user.alreadyThere= true;
+      quest.progressIndex= 2;
+    }else{
+      quest.progressIndex=0;
+    }
+    quest.acceptedBy = userId;
+
+    await user.save();
+    await quest.save();
+
+    res.json({ message: "Quest accepted successfully", quest });
+  } catch (error) {
+    console.error('Failed to accept quest:', error);
+    res.status(500).json({ message: "An error occurred during the process of accepting the quest" });
   }
 };
