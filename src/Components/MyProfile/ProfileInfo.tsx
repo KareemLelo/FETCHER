@@ -24,7 +24,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   mobileNumber,
   bio,
 }) => {
-  const cardBg = useColorModeValue("brand.primary", "brand.primary");
+  const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
   return (

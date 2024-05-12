@@ -10,6 +10,7 @@ import {
   Icon,
   useToast,
   ScaleFade,
+  Link,
 } from "@chakra-ui/react";
 import {
   FaBoxOpen,
@@ -17,8 +18,10 @@ import {
   FaMoneyBillWave,
   FaMapMarkedAlt,
   FaHandHolding,
+  FaBan,
 } from "react-icons/fa";
 import { Quest } from "../../Services/Interface";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 interface Props {
   quest: Quest;
@@ -109,6 +112,33 @@ const QuestCards: React.FC<Props> = ({ quest, onAccept }) => {
               >
                 <Icon as={FaMoneyBillWave} mr={2} /> Price: {quest.itemPrice} JD
               </Text>
+              {quest.itemLink ? (
+                <>
+                  <Text
+                    fontSize="lg"
+                    color={textColor}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={ExternalLinkIcon} mr={2} />
+                    <Link pl={1} href={quest.itemLink} target="_blank">
+                      Item Link
+                    </Link>
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Text
+                    fontSize="lg"
+                    color={textColor}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={FaBan} mr={2} />
+                    <Text pl={1}>Item Link</Text>
+                  </Text>
+                </>
+              )}
             </VStack>
             <Button
               mt={4}

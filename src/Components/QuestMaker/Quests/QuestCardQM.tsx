@@ -8,6 +8,7 @@ import {
   useColorModeValue,
   Icon,
   Divider,
+  Link,
 } from "@chakra-ui/react";
 import {
   FaBoxOpen,
@@ -15,6 +16,7 @@ import {
   FaMoneyBillWave,
   FaMapMarkedAlt,
 } from "react-icons/fa";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Quest } from "../../../Services/Interface";
 
 interface QuestCardProps {
@@ -87,6 +89,23 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
             >
               <Icon as={FaMoneyBillWave} mr={2} /> Price: {quest.itemPrice} JD+
             </Text>
+            {quest.itemLink && (
+              <>
+                <Divider my={2} />
+                <Text
+                  fontSize="lg"
+                  color={textColor}
+                  display="flex"
+                  alignItems="center"
+                >
+                  <Icon as={ExternalLinkIcon} mr={2} /> Item Link:{""}
+                  <Link pl={1} href={quest.itemLink} target="_blank">
+                    {" "}
+                    {quest.itemLink}
+                  </Link>
+                </Text>
+              </>
+            )}
           </Box>
         </VStack>
       </Box>

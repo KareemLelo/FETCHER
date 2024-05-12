@@ -37,7 +37,7 @@ const MyPassport: React.FC<MyPassportProps> = ({
   expirationDate: initialExpirationDate,
 }) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("brand.primary", "brand.primary"); // Adjusted to match ProfileInfo
+  const cardBg = useColorModeValue("brand.background", "brand.primary"); // Adjusted to match ProfileInfo
   const textColor = useColorModeValue("brand.text", "white");
 
   // Initialize state with the initial props

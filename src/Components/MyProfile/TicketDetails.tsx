@@ -36,7 +36,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   arrivalDate: initialArrivalDate,
 }) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("brand.primary", "brand.primary");
+  const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
   const { setActiveStep } = useOrderStatus();

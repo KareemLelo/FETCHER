@@ -13,8 +13,13 @@ import {
   Heading,
   Flex,
   useToast,
+  Link,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExternalLinkIcon,
+} from "@chakra-ui/icons";
 import {
   FaBoxOpen,
   FaWeightHanging,
@@ -120,6 +125,23 @@ const QuestList: React.FC<QuestListProps> = ({ quest, onAccept }) => {
               >
                 <Icon as={FaMoneyBillWave} mr={2} /> Price: {quest.itemPrice} JD
               </Text>
+              {quest.itemLink && (
+                <>
+                  <Divider my={2} />
+                  <Text
+                    fontSize="lg"
+                    color={textColor}
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Icon as={ExternalLinkIcon} mr={2} /> Item Link:{""}
+                    <Link pl={1} href={quest.itemLink} target="_blank">
+                      {" "}
+                      {quest.itemLink}
+                    </Link>
+                  </Text>
+                </>
+              )}
             </VStack>
           </Collapse>
           <Center mt={4}>
