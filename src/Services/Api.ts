@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Passport, Quest } from './Interface';
+import { PassportUpdateData, Quest } from './Interface';
 
  const API_URL = "http://localhost:5050";
 //const API_URL = "https://fetcher-backend.onrender.com"
@@ -121,7 +121,7 @@ export const createQuest = async (questData: Quest): Promise<Quest> => {
 
 export const sendAcceptedQuest = async (questId: string): Promise<Quest> => {
   try {
-    const response = await api.post<Quest>(`/quest/accept/${questId}`);
+    const response = await api.put<Quest>(`/quest/accept/${questId}`);
     return response.data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
@@ -140,7 +140,7 @@ export const updatePassportDetails = async (passportDetails: {
   passportExpDate: string;
 }): Promise<any> => {
   try {
-    const response = await api.post('/profile/passport', passportDetails);
+    const response = await api.put('/profile/passport', passportDetails);
     return response.data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
@@ -156,12 +156,12 @@ export const updatePassportDetails = async (passportDetails: {
 export const updateFlightDetails = async (flightDetails: {
   departureDate: string;
   arrivalDate: string;
-  departureFlightNumber: string;
-  arrivalFlightNumber: string;
+  depFlightNumber: string;
+  arrFlightNumber: string;
   alreadyThere?: boolean;
 }): Promise<any> => {
   try {
-    const response = await api.post('/profile/flightDetails', flightDetails);
+    const response = await api.put('/profile/flightDetails', flightDetails);
     return response.data;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {

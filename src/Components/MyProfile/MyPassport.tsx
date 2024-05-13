@@ -3,7 +3,6 @@ import {
   Box,
   VStack,
   Heading,
-  Text,
   Button,
   FormControl,
   FormLabel,
@@ -12,43 +11,40 @@ import {
   useColorModeValue,
   Flex,
   Fade,
-  Avatar, // Added for the avatar
 } from "@chakra-ui/react";
-import { Passport } from "../../Services/Interface";
 
-interface MyPassportProps {
+interface PassportUpdateData {
   passportNumber: string;
   nationality: string;
   expirationDate: string;
 }
 
-const formatDate = (dateString: string | number | Date) => {
-  if (!dateString) return "";
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
+interface MyPassportProps extends PassportUpdateData {
+  onSave: (data: PassportUpdateData) => void;
+}
 
 const MyPassport: React.FC<MyPassportProps> = ({
   passportNumber: initialPassportNumber,
   nationality: initialNationality,
   expirationDate: initialExpirationDate,
+  onSave,
 }) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("brand.background", "brand.primary"); // Adjusted to match ProfileInfo
-  const textColor = useColorModeValue("brand.text", "white");
+  const cardBg = useColorModeValue("gray.200", "gray.700");
+  const textColor = useColorModeValue("black", "white");
 
-  // Initialize state with the initial props
-  const [passport, setPassport] = useState<Passport>({
-    passportNumber: initialPassportNumber,
-    nationality: initialNationality,
-    expirationDate: initialExpirationDate,
+  // Initially determine if the user should be in edit mode
+  const [editMode, setEditMode] = useState(false);
+
+  // Initialize state with the initial props or default values
+  const [passport, setPassport] = useState<PassportUpdateData>({
+    passportNumber: initialPassportNumber || "",
+    nationality: initialNationality || "",
+    expirationDate: initialExpirationDate || "",
   });
 
-  // Effect hook to update state when props change
   useEffect(() => {
+    // Update the local state with the initial props from the parent component
     setPassport({
       passportNumber: initialPassportNumber,
       nationality: initialNationality,
@@ -56,14 +52,31 @@ const MyPassport: React.FC<MyPassportProps> = ({
     });
   }, [initialPassportNumber, initialNationality, initialExpirationDate]);
 
-  const [editMode, setEditMode] = useState(false);
-
+  // Handle changes in the input fields
   const updatePassportField = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPassport((prevPassport) => ({
       ...prevPassport,
       [name]: value,
     }));
+  };
+
+  // Handle the submission of the form
+  const handlePassportSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    onSave({
+      passportNumber: passport.passportNumber,
+      nationality: passport.nationality,
+      expirationDate: passport.expirationDate,
+    });
+    setEditMode(false); // Turn off edit mode after saving
+    toast({
+      title: "Passport Updated",
+      description: "Your passport details have been successfully updated.",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   return (
@@ -77,10 +90,10 @@ const MyPassport: React.FC<MyPassportProps> = ({
         width={{ base: "90%", md: "80%" }}
       >
         <VStack spacing={4} align="stretch">
-          <Heading size="xl">Passport Details</Heading>
+          <Heading size="lg">Passport Details</Heading>
           {editMode ? (
             <Fade in={editMode}>
-              <form /* onSubmit={handlePassportSubmit} */>
+              <form onSubmit={handlePassportSubmit}>
                 <VStack spacing={4}>
                   <FormControl isRequired>
                     <FormLabel>Passport Number</FormLabel>
@@ -109,9 +122,9 @@ const MyPassport: React.FC<MyPassportProps> = ({
                       type="date"
                     />
                   </FormControl>
-                  <Flex justifyContent={"center"}>
-                    <Button type="submit" colorScheme="teal" size="lg" w="60%">
-                      Save Passport Details
+                  <Flex justifyContent={"center"} w="60%">
+                    <Button type="submit" colorScheme="teal">
+                      Save Details
                     </Button>
                   </Flex>
                 </VStack>
@@ -169,3 +182,9 @@ const MyPassport: React.FC<MyPassportProps> = ({
 };
 
 export default MyPassport;
+
+function formatDate(dateString: string | number | Date) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toISOString().split("T")[0];
+}

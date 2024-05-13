@@ -9,6 +9,11 @@ import {
   updatePassportDetails,
   updateFlightDetails,
 } from "../../Services/Api";
+import {
+  FlightUpdateData,
+  PassportUpdateData,
+  ProfileUpdateData,
+} from "../../Services/Interface";
 
 const MyProfilePage: React.FC = () => {
   const [profile, setProfile] = useState({
@@ -25,8 +30,8 @@ const MyProfilePage: React.FC = () => {
     flightDetails: {
       departureDate: "",
       arrivalDate: "",
-      departureFlightNumber: "",
-      arrivalFlightNumber: "",
+      depFlightNumber: "",
+      arrFlightNumber: "",
       alreadyThere: false,
     },
   });
@@ -36,12 +41,12 @@ const MyProfilePage: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await fetchProfileData();
-        console.log("Fetched data:", data); // Log the full structure
+        console.log("Fetched data:", data);
         setProfile({
           id: data.id,
           name: data.name,
           email: data.email,
-          mobileNumber: data.mobile,
+          mobileNumber: data.mobileNumber, // Adjust the key if necessary
           bio: data.bio,
           passportDetails: data.passportDetails || {
             passportNumber: "",
@@ -51,8 +56,8 @@ const MyProfilePage: React.FC = () => {
           flightDetails: data.flightDetails || {
             departureDate: "",
             arrivalDate: "",
-            departureFlightNumber: "",
-            arrivalFlightNumber: "",
+            depFlightNumber: "",
+            arrFlightNumber: "",
             alreadyThere: false,
           },
         });
@@ -70,12 +75,7 @@ const MyProfilePage: React.FC = () => {
     fetchData();
   }, [toast]);
 
-  const handleUpdateProfile = async (updatedData: {
-    name?: string;
-    email?: string;
-    mobileNumber?: string;
-    bio?: string;
-  }) => {
+  const handleUpdateProfile = async (updatedData: ProfileUpdateData) => {
     try {
       const data = await updateUserProfile(profile.id, updatedData);
       setProfile((prevProfile) => ({ ...prevProfile, ...data }));
@@ -97,19 +97,21 @@ const MyProfilePage: React.FC = () => {
     }
   };
 
-  const handleUpdatePassportDetails = async (passportData: {
-    passportNumber: string;
-    nationality: string;
-    expirationDate: string;
-  }) => {
+  const handleUpdatePassportDetails = async (
+    passportData: PassportUpdateData
+  ) => {
     try {
       const data = await updatePassportDetails({
-        ...passportData,
-        passportExpDate: passportData.expirationDate, // Adjust according to your API if needed
+        passportNumber: passportData.passportNumber,
+        nationality: passportData.nationality,
+        passportExpDate: passportData.expirationDate, // Make sure this matches your backend model
       });
       setProfile((prevProfile) => ({
         ...prevProfile,
-        passportDetails: { ...prevProfile.passportDetails, ...data },
+        passportDetails: {
+          ...prevProfile.passportDetails,
+          ...data.passportDetails,
+        },
       }));
       toast({
         title: "Passport Updated",
@@ -129,18 +131,12 @@ const MyProfilePage: React.FC = () => {
     }
   };
 
-  const handleUpdateFlightDetails = async (flightData: {
-    departureFlightNumber: string;
-    departureDate: string;
-    arrivalFlightNumber: string;
-    arrivalDate: string;
-    alreadyThere?: boolean;
-  }) => {
+  const handleUpdateFlightDetails = async (flightData: FlightUpdateData) => {
     try {
       const data = await updateFlightDetails(flightData);
       setProfile((prevProfile) => ({
         ...prevProfile,
-        flightDetails: data.flightDetails,
+        flightDetails: { ...prevProfile.flightDetails, ...data },
       }));
       toast({
         title: "Flight Details Updated",
@@ -175,14 +171,11 @@ const MyProfilePage: React.FC = () => {
           passportNumber={profile.passportDetails.passportNumber}
           nationality={profile.passportDetails.nationality}
           expirationDate={profile.passportDetails.passportExpDate} // Ensure this matches the expected prop in MyPassportProps
-          /* onSave={handleUpdatePassportDetails} */
+          onSave={handleUpdatePassportDetails}
         />
         <TicketDetails
-          departureFlightNumber={profile.flightDetails.departureFlightNumber}
-          departureDate={profile.flightDetails.departureDate}
-          arrivalFlightNumber={profile.flightDetails.arrivalFlightNumber}
-          arrivalDate={profile.flightDetails.arrivalDate}
-          /* onSave={handleUpdateFlightDetails} */ // Ensure handleUpdateFlightDetails expects the adjusted structure
+          flightData={profile.flightDetails}
+          onSave={handleUpdateFlightDetails}
         />
       </SimpleGrid>
     </VStack>

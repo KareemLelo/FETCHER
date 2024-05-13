@@ -42,18 +42,18 @@ class Quest {
     }
 
     static async findById(id) {
-      return await QuestModel.findById(id).lean();
+      return await QuestModel.findById(id);
     }
     
     static async findByName(itemName) {
-      let quest = await QuestModel.findOne({ itemName }).lean();
+      let quest = await QuestModel.findOne({ itemName });
       if (!quest) {
         throw new Error(`no quest found with name: ${itemName}`);
       }
       return quest;
     }
     static async find(criteria) {
-      return await QuestModel.find(criteria).lean(); // Use lean for performance if you don't need a full Mongoose document
+      return await QuestModel.find(criteria); // Use lean for performance if you don't need a full Mongoose document
   }
   
     /*async save() {

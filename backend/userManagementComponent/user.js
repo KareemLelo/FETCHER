@@ -70,10 +70,18 @@ class User {
     return user;
   }
 
-  static async findById(_id) {
+  static async findByIdLean(_id) {
     let user = await QuestMakerModel.findById(_id).lean();
     if (!user) {
       user = await FetcherModel.findById(_id).lean();
+    }
+    return user;
+  }
+  
+  static async findById(_id) {
+    let user = await QuestMakerModel.findById(_id);
+    if (!user) {
+      user = await FetcherModel.findById(_id);
     }
     return user;
   }

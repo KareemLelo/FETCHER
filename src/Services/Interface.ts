@@ -44,16 +44,31 @@ export interface Profile {
   }
 
 
-  export interface Passport {
-    passportNumber: string;
-    nationality: string;
-    expirationDate: string;
-  }
-
-
   export interface TicketDetails {
     DepFlightNumber: string;
     departureDate: string;
     arrFlightNumber: string;
     arrivalDate: string;
   }
+  
+
+  export interface ProfileUpdateData {
+    name?: string;
+    email?: string;
+    mobileNumber?: string;
+    bio?: string;
+  }
+
+  export interface PassportUpdateData {
+    passportNumber: string;
+    nationality: string;
+    expirationDate: string; // Use consistent field naming with your frontend if needed
+  }
+
+  export interface FlightUpdateData {
+    depFlightNumber: string;
+    departureDate: string;
+    arrFlightNumber: string;
+    arrivalDate: string;
+    alreadyThere?: boolean;
+}
