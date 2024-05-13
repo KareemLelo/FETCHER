@@ -79,8 +79,20 @@ const MyProfilePage: React.FC = () => {
 
   const handleUpdateProfile = async (updatedData: ProfileUpdateData) => {
     try {
-      const data = await updateUserProfile(profile.id, updatedData);
-      setProfile((prevProfile) => ({ ...prevProfile, ...data }));
+      // Adjust this call to match the function definition
+      const data = await updateUserProfile({
+        name: updatedData.name,
+        email: updatedData.email,
+        mobile: updatedData.mobileNumber, // Make sure the key matches what updateUserProfile expects
+        bio: updatedData.bio,
+      });
+      setProfile((prevProfile) => ({
+        ...prevProfile,
+        name: data.name,
+        email: data.email,
+        mobileNumber: data.mobile, // Convert 'mobile' back to 'mobileNumber' in state
+        bio: data.bio,
+      }));
       toast({
         title: "Profile Updated",
         description: "Your profile was successfully updated.",
@@ -167,6 +179,7 @@ const MyProfilePage: React.FC = () => {
         email={profile.email}
         mobileNumber={profile.mobileNumber} // Make sure this matches the state structure
         bio={profile.bio}
+        onSave={handleUpdateProfile}
       />
       {accountType === "Fetcher" && (
         <SimpleGrid columns={{ base: 1, md: 1, lg: 2 }} gap={4} width="60%">

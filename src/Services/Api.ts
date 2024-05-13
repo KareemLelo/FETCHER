@@ -174,22 +174,17 @@ export const updateFlightDetails = async (flightDetails: {
   }
 };
 
-export const updateUserProfile = async (userId: string, profileData: {
+export const updateUserProfile = async (profileData: {
   name?: string;
   email?: string;
   mobile?: string;
   bio?: string;
 }): Promise<any> => {
   try {
-    const response = await api.post(`/profile/update/${userId}`, profileData);
+    const response = await api.put('/profile/me', profileData);
     return response.data;
   } catch (error: any) {
-    if (axios.isAxiosError(error)) {
-      console.error('Update user profile API error:', error.response?.data || error.message);
-      throw new Error(error.response?.data.message || "Error updating user profile");
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred while updating the user profile.');
-    }
+    console.error('Update user profile API error:', error.response?.data || error.message);
+    throw new Error(error.response?.data.message || "Error updating user profile");
   }
 };

@@ -11,7 +11,6 @@ import {
   useColorModeValue,
   Flex,
   Fade,
-  background,
 } from "@chakra-ui/react";
 import { FlightUpdateData } from "../../Services/Interface";
 
@@ -27,7 +26,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   const toast = useToast();
   const cardBg = useColorModeValue("brand.background", "gray.700");
   const textColor = useColorModeValue("brand.text", "white");
-  const buttonColor = useColorModeValue("brand.accent", "brand.accent");
+  const buttonColor = useColorModeValue("brand.accent", "teal");
 
   const [editMode, setEditMode] = useState(false);
   const [ticket, setTicket] = useState<FlightUpdateData>(flightData);
@@ -38,7 +37,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       departureDate: formatDate(flightData.departureDate),
       arrFlightNumber: flightData.arrFlightNumber || "",
       arrivalDate: formatDate(flightData.arrivalDate),
-      alreadyThere: flightData.alreadyThere,
+      alreadyThere: flightData.alreadyThere || false,
     });
   }, [flightData]);
 
@@ -74,6 +73,35 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
     }
   };
 
+  const handleAlreadyThere = async () => {
+    try {
+      const updatedData = {
+        ...ticket,
+        alreadyThere: true,
+      };
+
+      await onSave(updatedData);
+      setTicket(updatedData); // Update the local view immediately
+
+      toast({
+        title: "Update Successful",
+        description: "You have marked yourself as already there!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (error) {
+      console.error("Error updating status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update your status.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Flex justifyContent={"center"} mt={5}>
       <Box
@@ -86,6 +114,16 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       >
         <VStack spacing={4} align="stretch">
           <Heading size="lg">Flight Details</Heading>
+          <Flex justifyContent={"center"} w={"100%"}>
+            <Button
+              background="red.400"
+              onClick={handleAlreadyThere}
+              w="70%"
+              isDisabled={ticket.alreadyThere}
+            >
+              I'm Already There
+            </Button>
+          </Flex>
           {editMode ? (
             <Fade in={editMode}>
               <form onSubmit={handleTicketSubmit}>
@@ -97,6 +135,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       value={ticket.depFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Departure Flight Number"
+                      isDisabled={ticket.alreadyThere}
                     />
                   </FormControl>
                   <FormControl isRequired>
@@ -106,6 +145,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       name="departureDate"
                       value={ticket.departureDate}
                       onChange={updateTicketField}
+                      isDisabled={ticket.alreadyThere}
                     />
                   </FormControl>
                   <FormControl isRequired>
@@ -143,6 +183,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="depFlightNumber"
                   value={ticket.depFlightNumber}
                   isReadOnly={true}
+                  isDisabled={ticket.alreadyThere}
                 />
               </FormControl>
               <FormControl>
@@ -152,6 +193,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="departureDate"
                   value={ticket.departureDate}
                   isReadOnly={true}
+                  isDisabled={ticket.alreadyThere}
                 />
               </FormControl>
               <FormControl>
@@ -172,11 +214,11 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   isReadOnly={true}
                 />
               </FormControl>
-              <Flex justifyContent={"center"}>
+              <Flex justifyContent={"center"} mt={4} w={"100%"}>
                 <Button
                   background={buttonColor}
                   onClick={() => setEditMode(true)}
-                  w="60%"
+                  w="70%"
                 >
                   Edit Details
                 </Button>

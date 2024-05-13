@@ -29,7 +29,6 @@ const MyPassport: React.FC<MyPassportProps> = ({
   expirationDate: initialExpirationDate,
   onSave,
 }) => {
-  const toast = useToast();
   const cardBg = useColorModeValue("brand.background", "gray.700");
   const textColor = useColorModeValue("brand.text", "white");
   const buttonColor = useColorModeValue("brand.accent", "brand.accent");
@@ -162,7 +161,7 @@ const MyPassport: React.FC<MyPassportProps> = ({
                 <Button
                   background={buttonColor}
                   onClick={() => setEditMode(true)}
-                  w="60%"
+                  w="70%"
                 >
                   Edit Passport
                 </Button>
