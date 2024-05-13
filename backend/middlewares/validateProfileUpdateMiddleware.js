@@ -4,7 +4,7 @@ const validateProfileUpdate = async (req, res, next) => {
   const { userName, email, mobile } = req.body;
   const userId = req.user._id; // The ID from the JWT payload
 
-  // Make sure new email and username are unique
+  // Make sure new email, username, and mobile are unique
   const userNameExists = await User.findOne({ userName, _id: { $ne: userId } });
   const emailExists = await User.findOne({ email, _id: { $ne: userId } });
   const mobileExists = await User.findOne({ mobile, _id: { $ne: userId } });

@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 // Create a Schema corresponding to the document interface.
 const QuestMakerSchema = new mongoose.Schema({
- // _id: Number,
   firstName: String,
   lastName: String,
   email: String,
@@ -12,13 +11,11 @@ const QuestMakerSchema = new mongoose.Schema({
   mobile: String,
   bio: String
 },
-//{  versionKey:false},
 {
   collection: 'QuestMakers'
 });
 
 const FetcherSchema = new mongoose.Schema({
-  //_id: Number,
   firstName: String,
   lastName: String,
   email: String,
@@ -40,10 +37,10 @@ const FetcherSchema = new mongoose.Schema({
     alreadyThere: Boolean
   }
 },
-//{  versionKey:false},
 {
   collection: 'Fetchers'
 });
+
 // Create a Model.
 const QuestMakerModel = mongoose.model('QuestMaker', QuestMakerSchema, 'QuestMakers');
 const FetcherModel = mongoose.model('Fetcher', FetcherSchema, 'Fetchers');
@@ -62,7 +59,6 @@ class User {
   }
 
   static async findByUserName(userName) {
-    // Ideally, you should be hashing the password and comparing the hashed password
     let user = await QuestMakerModel.findOne({ userName }).lean();
     if (!user) {
       user = await FetcherModel.findOne({ userName }).lean();// .lean() is optional for performance
@@ -86,7 +82,6 @@ class User {
     return user;
   }
 
-  // Check if the email or username already exists
   static async userNameOrEmailExists(userName, email) {
     console.log(`Checking if username: ${userName} or email: ${email} exists.`);
 
@@ -100,6 +95,15 @@ class User {
 
     return !!questMakerExists || !!fetcherExists;// Convert to boolean
   }
+
+  static async findOne(conditions) {
+    let user = await QuestMakerModel.findOne(conditions).lean();
+    if (!user) {
+      user = await FetcherModel.findOne(conditions).lean();
+    }
+    return user;
+  }
+  
   async save() {
     // Create a new document in the database from the data provided to the class.
     const newUser = new this.model(this.data);

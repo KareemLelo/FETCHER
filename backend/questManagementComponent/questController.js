@@ -42,7 +42,6 @@ export const getQuestByCreator = async (req, res) => {
   if (!req.user || !req.user._id) {
     return res.status(401).json({ message: "Unauthorized access: No user ID found." });
   }
-
   try {
     const quest = await Quest.findByCreator(req.user._id).lean();
     if (!quest) {

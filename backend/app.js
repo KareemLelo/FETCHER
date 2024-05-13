@@ -20,7 +20,7 @@ const corsOptions =
     origin: org, // This is the client's URL
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
@@ -35,7 +35,6 @@ app.get('/api/hello', (req, res) => {
 });
 
 const startServer = async () => {
-    //await connectDb(); // Connect to database
     app.listen(PORT, () => {
       console.log(`Server running on ${PORT}`);
     });

@@ -26,7 +26,7 @@ const questSchema = new mongoose.Schema({
     default: null,  
   },
 }, {
-  timestamps: true,  // Adds createdAt and updatedAt timestamps
+  timestamps: true,
   collection: 'Quests'
 });
 
@@ -56,10 +56,6 @@ class Quest {
       return await QuestModel.find(criteria); // Use lean for performance if you don't need a full Mongoose document
   }
   
-    /*async save() {
-      const newQuest = new Quest(this.data);
-      return newQuest.save();
-    }*/
     async save() {
       // Create a new document in the database from the data provided to the class.
       const newQuest = new this.model(this.data);
@@ -67,9 +63,5 @@ class Quest {
     }
     
 }
-
-// Convert schema to model
-//questSchema.loadClass(Quest);
-//const QuestModel = mongoose.model('Quest', questSchema);
 
 export default Quest;
