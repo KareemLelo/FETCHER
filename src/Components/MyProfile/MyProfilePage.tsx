@@ -14,8 +14,10 @@ import {
   PassportUpdateData,
   ProfileUpdateData,
 } from "../../Services/Interface";
+import { useContent } from "../../ContentManagment/ContentContext";
 
 const MyProfilePage: React.FC = () => {
+  const { accountType } = useContent();
   const [profile, setProfile] = useState({
     id: "",
     name: "",
@@ -166,18 +168,20 @@ const MyProfilePage: React.FC = () => {
         mobileNumber={profile.mobileNumber} // Make sure this matches the state structure
         bio={profile.bio}
       />
-      <SimpleGrid columns={{ base: 1, md: 1, lg: 2 }} gap={4} width="60%">
-        <MyPassport
-          passportNumber={profile.passportDetails.passportNumber}
-          nationality={profile.passportDetails.nationality}
-          expirationDate={profile.passportDetails.passportExpDate} // Ensure this matches the expected prop in MyPassportProps
-          onSave={handleUpdatePassportDetails}
-        />
-        <TicketDetails
-          flightData={profile.flightDetails}
-          onSave={handleUpdateFlightDetails}
-        />
-      </SimpleGrid>
+      {accountType === "Fetcher" && (
+        <SimpleGrid columns={{ base: 1, md: 1, lg: 2 }} gap={4} width="60%">
+          <MyPassport
+            passportNumber={profile.passportDetails.passportNumber}
+            nationality={profile.passportDetails.nationality}
+            expirationDate={profile.passportDetails.passportExpDate} // Ensure this matches the expected prop in MyPassportProps
+            onSave={handleUpdatePassportDetails}
+          />
+          <TicketDetails
+            flightData={profile.flightDetails}
+            onSave={handleUpdateFlightDetails}
+          />
+        </SimpleGrid>
+      )}
     </VStack>
   );
 };

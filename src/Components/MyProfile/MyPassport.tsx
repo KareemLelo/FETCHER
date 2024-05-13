@@ -30,8 +30,9 @@ const MyPassport: React.FC<MyPassportProps> = ({
   onSave,
 }) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("gray.200", "gray.700");
-  const textColor = useColorModeValue("black", "white");
+  const cardBg = useColorModeValue("brand.background", "gray.700");
+  const textColor = useColorModeValue("brand.text", "white");
+  const buttonColor = useColorModeValue("brand.accent", "brand.accent");
 
   // Initially determine if the user should be in edit mode
   const [editMode, setEditMode] = useState(false);
@@ -70,13 +71,6 @@ const MyPassport: React.FC<MyPassportProps> = ({
       expirationDate: passport.expirationDate,
     });
     setEditMode(false); // Turn off edit mode after saving
-    toast({
-      title: "Passport Updated",
-      description: "Your passport details have been successfully updated.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
   };
 
   return (
@@ -122,8 +116,8 @@ const MyPassport: React.FC<MyPassportProps> = ({
                       type="date"
                     />
                   </FormControl>
-                  <Flex justifyContent={"center"} w="60%">
-                    <Button type="submit" colorScheme="teal">
+                  <Flex justifyContent={"center"} w="100%">
+                    <Button type="submit" background={buttonColor}>
                       Save Details
                     </Button>
                   </Flex>
@@ -164,13 +158,13 @@ const MyPassport: React.FC<MyPassportProps> = ({
                   isReadOnly={true}
                 />
               </FormControl>
-              <Flex justifyContent={"center"}>
+              <Flex justifyContent={"center"} mt={20} w="100%">
                 <Button
-                  colorScheme="blue"
+                  background={buttonColor}
                   onClick={() => setEditMode(true)}
                   w="60%"
                 >
-                  Edit Passport Details
+                  Edit Passport
                 </Button>
               </Flex>
             </VStack>

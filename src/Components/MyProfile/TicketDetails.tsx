@@ -11,6 +11,7 @@ import {
   useColorModeValue,
   Flex,
   Fade,
+  background,
 } from "@chakra-ui/react";
 import { FlightUpdateData } from "../../Services/Interface";
 
@@ -24,14 +25,14 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   onSave,
 }) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("gray.200", "gray.700");
-  const textColor = useColorModeValue("black", "white");
+  const cardBg = useColorModeValue("brand.background", "gray.700");
+  const textColor = useColorModeValue("brand.text", "white");
+  const buttonColor = useColorModeValue("brand.accent", "brand.accent");
 
   const [editMode, setEditMode] = useState(false);
   const [ticket, setTicket] = useState<FlightUpdateData>(flightData);
 
   useEffect(() => {
-    console.log("TicketDetails received new flightData:", flightData);
     setTicket({
       depFlightNumber: flightData.depFlightNumber || "",
       departureDate: formatDate(flightData.departureDate),
@@ -61,13 +62,6 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       await onSave(updatedData);
       setTicket(updatedData); // Update the local view immediately
       setEditMode(false);
-      toast({
-        title: "Flight Details Updated",
-        description: "Your flight details have been successfully updated.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
     } catch (error) {
       console.error("Error saving flight details:", error);
       toast({
@@ -133,7 +127,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                     />
                   </FormControl>
                   <Flex justifyContent={"center"} w="60%">
-                    <Button type="submit" colorScheme="teal">
+                    <Button type="submit" background={buttonColor}>
                       Save Changes
                     </Button>
                   </Flex>
@@ -180,7 +174,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
               </FormControl>
               <Flex justifyContent={"center"}>
                 <Button
-                  colorScheme="blue"
+                  background={buttonColor}
                   onClick={() => setEditMode(true)}
                   w="60%"
                 >
