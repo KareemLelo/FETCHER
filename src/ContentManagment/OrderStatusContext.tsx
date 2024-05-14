@@ -2,10 +2,12 @@ import React, { createContext, useContext, useState, useCallback } from "react";
 
 interface OrderStatus {
   activeStep: number;
+  statusIndex: number;
   isComplete: boolean;
   agreeStatusF: boolean;
   agreeStatusQM: boolean;
   setActiveStep: (step: number) => void;
+  setStatusIndex: (index: number) => void;
   setComplete: (isComplete: boolean) => void;
   setAgreeStatusF: (status: boolean) => void;
   setAgreeStatusQM: (status: boolean) => void;
@@ -27,6 +29,7 @@ export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [statusIndex, setStatusIndex] = useState(0);
   const [isComplete, setComplete] = useState(false);
   const [agreeStatusF, setAgreeStatusF] = useState(false);
   const [agreeStatusQM, setAgreeStatusQM] = useState(false);
@@ -47,14 +50,20 @@ export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
     setActiveStep(step);
   }, []);
 
+  const handleSetStatusIndex = useCallback((index: number) => {
+    setStatusIndex(index);
+  }, []);
+
   return (
     <OrderStatusContext.Provider
       value={{
         activeStep,
+        statusIndex,
         isComplete,
         agreeStatusF,
         agreeStatusQM,
         setActiveStep: handleSetActiveStep,
+        setStatusIndex: handleSetStatusIndex,
         setComplete: handleSetComplete,
         setAgreeStatusF: handleSetAgreeStatusF,
         setAgreeStatusQM: handleSetAgreeStatusQM,

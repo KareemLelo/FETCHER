@@ -26,20 +26,12 @@ const colors = {
     },
   };
 
-  const styles = {
-    global: {
-      '.chakra-collapse': {
-        transitionDuration: '1s', // Customize the transition duration for the Collapse component
-      },
-      // You can add more global styles here
-    },
-  };
 
 // Extend the default theme
 const theme = extendTheme({
   breakpoints,
   colors,
-  styles
+  
   // Add any other custom theme configurations here
 });
 

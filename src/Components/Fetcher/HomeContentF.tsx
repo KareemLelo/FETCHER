@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   SimpleGrid,
   Heading,
@@ -7,13 +8,17 @@ import {
   useToast,
   Button,
   Center,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import QuestCards from "./QuestCardF";
-import { useEffect, useState } from "react";
 import { fetchQuests, sendAcceptedQuest } from "../../Services/Api";
 import { Quest } from "../../Services/Interface";
 import Lottie from "lottie-react";
 import animationData from "../../assets/Animations/Animation - 1715269984072.json";
+import { motion } from "framer-motion";
+
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 const HomeContentF = () => {
   const [quests, setQuests] = useState<Quest[]>([]);
@@ -22,11 +27,9 @@ const HomeContentF = () => {
   useEffect(() => {
     fetchQuests()
       .then((quests) => {
-        console.log("Fetched quests:", quests);
         setQuests(quests);
       })
       .catch((error) => {
-        console.error("Error fetching quests:", error);
         toast({
           title: "Error",
           description: "Failed to fetch quests",
@@ -37,7 +40,6 @@ const HomeContentF = () => {
       });
   }, []);
 
-  // Function to handle quest acceptance
   const onAcceptQuest = async (questId: string) => {
     try {
       await sendAcceptedQuest(questId);
@@ -48,15 +50,12 @@ const HomeContentF = () => {
         duration: 2000,
         isClosable: true,
       });
-      // Re-fetch the quests to update the list after a short delay
       setTimeout(() => {
         fetchQuests()
           .then((quests) => {
             setQuests(quests);
-            console.log("Updated quests after acceptance:", quests);
           })
           .catch((error) => {
-            console.error("Error re-fetching quests:", error);
             toast({
               title: "Error",
               description: "Failed to refresh quests",
@@ -67,7 +66,6 @@ const HomeContentF = () => {
           });
       }, 2100);
     } catch (error) {
-      console.error("Error accepting quest:", error);
       toast({
         title: "Error",
         description: "Failed to accept quest",
@@ -81,26 +79,29 @@ const HomeContentF = () => {
   if (!quests || quests.length === 0) {
     return (
       <Center minHeight="60vh" flexDirection="column">
-        <Box height="300px" width="300px">
+        <MotionBox
+          height="300px"
+          width="300px"
+          animate={{ scale: 1.1 }}
+          transition={{ duration: 1, yoyo: Infinity }}
+        >
           <Lottie animationData={animationData} loop autoplay />
-        </Box>
+        </MotionBox>
         <Heading size="lg" marginBottom="8px">
           No Quests Available
         </Heading>
         <Text fontSize="lg" marginBottom="16px">
           It looks like there are no available quests right now.
         </Text>
-        <Button
+        <MotionButton
           colorScheme="blue"
           onClick={() =>
             setTimeout(() => {
               fetchQuests()
                 .then((quests) => {
                   setQuests(quests);
-                  console.log("Updated quests after acceptance:", quests);
                 })
                 .catch((error) => {
-                  console.error("Error re-fetching quests:", error);
                   toast({
                     title: "Error",
                     description: "Failed to refresh quests",
@@ -111,16 +112,26 @@ const HomeContentF = () => {
                 });
             }, 2100)
           }
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           Refresh
-        </Button>
+        </MotionButton>
       </Center>
     );
   }
 
   return (
     <>
-      <Box display="flex" justifyContent="center" width="auto" mt={"3"}>
+      <MotionBox
+        display="flex"
+        justifyContent="center"
+        width="auto"
+        mt="3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
         <Flex
           justifyContent="center"
           alignItems="center"
@@ -134,19 +145,12 @@ const HomeContentF = () => {
             Available Quests Awaiting for You to Fetch!
           </Heading>
         </Flex>
-      </Box>
-      <ul>
-        <SimpleGrid
-          minChildWidth={"250px"}
-          width="auto"
-          className="flex justify-center mt-5"
-          columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
-        >
-          {quests.map((quest, index) => (
-            <QuestCards key={index} quest={quest} onAccept={onAcceptQuest} />
-          ))}
-        </SimpleGrid>
-      </ul>
+      </MotionBox>
+      <SimpleGrid minChildWidth="250px" spacing="20px" p={5}>
+        {quests.map((quest, index) => (
+          <QuestCards key={index} quest={quest} onAccept={onAcceptQuest} />
+        ))}
+      </SimpleGrid>
     </>
   );
 };

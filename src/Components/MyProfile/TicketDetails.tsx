@@ -11,8 +11,19 @@ import {
   useColorModeValue,
   Flex,
   Fade,
+  Icon,
 } from "@chakra-ui/react";
 import { FlightUpdateData } from "../../Services/Interface";
+import { motion } from "framer-motion";
+import {
+  FaPlaneDeparture,
+  FaPlaneArrival,
+  FaSuitcaseRolling,
+} from "react-icons/fa";
+import { EditIcon, CheckIcon, CalendarIcon } from "@chakra-ui/icons";
+
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 interface TicketDetailsProps {
   flightData: FlightUpdateData;
@@ -24,12 +35,15 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   onSave,
 }) => {
   const toast = useToast();
-  const cardBg = useColorModeValue("brand.background", "gray.700");
-  const textColor = useColorModeValue("brand.text", "white");
+  const cardBg = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.700", "white");
   const buttonColor = useColorModeValue("brand.accent", "teal");
+  const inputBg = useColorModeValue("white", "gray.600");
+  const buttonHoverBg = useColorModeValue("brand.primary", "teal.300");
+  const buttonHover = useColorModeValue("brand.accent", "teal.300");
 
   const [editMode, setEditMode] = useState(false);
-  const [ticket, setTicket] = useState<FlightUpdateData>(flightData);
+  const [ticket, setTicket] = useState(flightData);
 
   useEffect(() => {
     setTicket({
@@ -43,8 +57,8 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
 
   const updateTicketField = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setTicket((prevTicket) => ({
-      ...prevTicket,
+    setTicket((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
@@ -59,8 +73,15 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       };
 
       await onSave(updatedData);
-      setTicket(updatedData); // Update the local view immediately
+      setTicket(updatedData);
       setEditMode(false);
+      toast({
+        title: "Flight Details Updated",
+        description: "Your flight details were successfully updated.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       console.error("Error saving flight details:", error);
       toast({
@@ -81,8 +102,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       };
 
       await onSave(updatedData);
-      setTicket(updatedData); // Update the local view immediately
-
+      setTicket(updatedData);
       toast({
         title: "Update Successful",
         description: "You have marked yourself as already there!",
@@ -104,24 +124,33 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
 
   return (
     <Flex justifyContent={"center"} mt={5}>
-      <Box
+      <MotionBox
+        borderWidth="1px"
+        borderColor={useColorModeValue("gray.300", "gray.600")}
         bg={cardBg}
         p={6}
         borderRadius="lg"
         boxShadow="lg"
         color={textColor}
         width={{ base: "90%", md: "80%" }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.4 }}
       >
         <VStack spacing={4} align="stretch">
-          <Heading size="lg">Flight Details</Heading>
+          <Heading size="lg">
+            <Icon as={FaSuitcaseRolling} mr={2} /> Flight Details
+          </Heading>
           <Flex justifyContent={"center"} w={"100%"}>
             <Button
-              background="red.400"
+              background="brand.primary"
               onClick={handleAlreadyThere}
               w="70%"
               isDisabled={ticket.alreadyThere}
+              _hover={{ bg: buttonHover }}
             >
-              I'm Already There
+              <FaPlaneArrival style={{ marginRight: 8 }} /> I'm Already There
             </Button>
           </Flex>
           {editMode ? (
@@ -129,47 +158,69 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
               <form onSubmit={handleTicketSubmit}>
                 <VStack spacing={4}>
                   <FormControl isRequired>
-                    <FormLabel>Departure Flight Number</FormLabel>
+                    <FormLabel>
+                      <Icon as={FaPlaneDeparture} mr={2} /> Departure Flight
+                      Number
+                    </FormLabel>
                     <Input
                       name="depFlightNumber"
                       value={ticket.depFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Departure Flight Number"
                       isDisabled={ticket.alreadyThere}
+                      bg={inputBg}
                     />
                   </FormControl>
+
                   <FormControl isRequired>
-                    <FormLabel>Departure Date</FormLabel>
+                    <FormLabel>
+                      <CalendarIcon mr={2} /> Departure Date
+                    </FormLabel>
                     <Input
                       type="date"
                       name="departureDate"
                       value={ticket.departureDate}
                       onChange={updateTicketField}
                       isDisabled={ticket.alreadyThere}
+                      bg={inputBg}
                     />
                   </FormControl>
+
                   <FormControl isRequired>
-                    <FormLabel>Arrival Flight Number</FormLabel>
+                    <FormLabel>
+                      <Icon as={FaPlaneArrival} mr={2} /> Arrival Flight Number
+                    </FormLabel>
                     <Input
                       name="arrFlightNumber"
                       value={ticket.arrFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Arrival Flight Number"
+                      bg={inputBg}
                     />
                   </FormControl>
+
                   <FormControl isRequired>
-                    <FormLabel>Arrival Date</FormLabel>
+                    <FormLabel>
+                      <CalendarIcon mr={2} /> Arrival Date
+                    </FormLabel>
                     <Input
                       type="date"
                       name="arrivalDate"
                       value={ticket.arrivalDate}
                       onChange={updateTicketField}
+                      bg={inputBg}
                     />
                   </FormControl>
-                  <Flex justifyContent={"center"} w="60%">
-                    <Button type="submit" background={buttonColor}>
-                      Save Changes
-                    </Button>
+                  <Flex justifyContent={"center"} w="100%">
+                    <MotionButton
+                      type="submit"
+                      background={buttonColor}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      _hover={{ bg: buttonHoverBg }}
+                    >
+                      <CheckIcon mr={2} /> Save Changes
+                    </MotionButton>
                   </Flex>
                 </VStack>
               </form>
@@ -177,56 +228,73 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
           ) : (
             <VStack spacing={5} align="stretch">
               <FormControl>
-                <FormLabel>Departure Flight Number</FormLabel>
+                <FormLabel>
+                  <FaPlaneDeparture style={{ marginRight: 8 }} /> Departure
+                  Flight Number
+                </FormLabel>
                 <Input
                   type="text"
                   name="depFlightNumber"
                   value={ticket.depFlightNumber}
                   isReadOnly={true}
                   isDisabled={ticket.alreadyThere}
+                  bg={inputBg}
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Departure Date</FormLabel>
+                <FormLabel>
+                  <CalendarIcon mr={2} /> Departure Date
+                </FormLabel>
                 <Input
                   type="date"
                   name="departureDate"
                   value={ticket.departureDate}
                   isReadOnly={true}
                   isDisabled={ticket.alreadyThere}
+                  bg={inputBg}
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Arrival Flight Number</FormLabel>
+                <FormLabel>
+                  <FaPlaneArrival style={{ marginRight: 8 }} /> Arrival Flight
+                  Number
+                </FormLabel>
                 <Input
                   type="text"
                   name="arrFlightNumber"
                   value={ticket.arrFlightNumber}
                   isReadOnly={true}
+                  bg={inputBg}
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Arrival Date</FormLabel>
+                <FormLabel>
+                  <CalendarIcon mr={2} /> Arrival Date
+                </FormLabel>
                 <Input
                   type="date"
                   name="arrivalDate"
                   value={ticket.arrivalDate}
                   isReadOnly={true}
+                  bg={inputBg}
                 />
               </FormControl>
               <Flex justifyContent={"center"} mt={4} w={"100%"}>
-                <Button
+                <MotionButton
                   background={buttonColor}
                   onClick={() => setEditMode(true)}
                   w="70%"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  _hover={{ bg: buttonHoverBg }}
                 >
-                  Edit Details
-                </Button>
+                  <EditIcon mr={2} /> Edit Details
+                </MotionButton>
               </Flex>
             </VStack>
           )}
         </VStack>
-      </Box>
+      </MotionBox>
     </Flex>
   );
 };

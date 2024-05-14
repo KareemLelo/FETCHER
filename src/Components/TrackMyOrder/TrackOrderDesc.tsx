@@ -18,7 +18,7 @@ const TrackOrderDesc: React.FC<{
     estimatedDelivery: string;
   };
 }> = ({ order }) => {
-  const { setActiveStep, isComplete } = useOrderStatus();
+  const { isComplete, setStatusIndex } = useOrderStatus();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
@@ -40,7 +40,7 @@ const TrackOrderDesc: React.FC<{
         <Flex justifyContent={"center"}>
           <Button
             colorScheme="red"
-            onClick={() => setActiveStep(0)}
+            onClick={() => setStatusIndex(2)}
             isDisabled={isComplete}
             w={"150px"}
           >

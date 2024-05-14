@@ -62,6 +62,8 @@ const progressIndex = [
 const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
   const {
     activeStep,
+    statusIndex,
+    setStatusIndex,
     setActiveStep,
     agreeStatusF,
     agreeStatusQM,
@@ -80,14 +82,18 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
 
   const buttonText = progressIndex[activeStep].actionLabel;
 
+  const isOrderCancelled = statusIndex === 2;
+
   const advanceStep = () => {
-    if (activeStep === 2 && !agreeStatusF) {
-      setAgreeStatusF(true);
-      setActiveStep(activeStep + 1);
-    } else if (activeStep < progressIndex.length - 1) {
-      setActiveStep(activeStep + 1);
-    } else {
-      setComplete(true); // Mark the process as complete
+    if (!isOrderCancelled) {
+      if (activeStep === 2 && !agreeStatusF) {
+        setAgreeStatusF(true);
+        setActiveStep(activeStep + 1);
+      } else if (activeStep < progressIndex.length - 1) {
+        setActiveStep(activeStep + 1);
+      } else {
+        setComplete(true);
+      }
     }
   };
 

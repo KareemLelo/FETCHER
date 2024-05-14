@@ -10,13 +10,13 @@ import {
   updateFlightDetails,
 } from "../../Services/Api";
 import {
-  FlightUpdateData,
-  PassportUpdateData,
   ProfileUpdateData,
+  PassportUpdateData,
+  FlightUpdateData,
 } from "../../Services/Interface";
 import { useContent } from "../../ContentManagment/ContentContext";
 
-const MyProfilePage: React.FC = () => {
+const MyProfilePage = () => {
   const { accountType } = useContent();
   const [profile, setProfile] = useState({
     id: "",
@@ -43,12 +43,11 @@ const MyProfilePage: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await fetchProfileData();
-        console.log("Fetched data:", data);
         setProfile({
           id: data.id,
           name: data.name,
           email: data.email,
-          mobileNumber: data.mobileNumber, // Adjust the key if necessary
+          mobileNumber: data.mobileNumber,
           bio: data.bio,
           passportDetails: data.passportDetails || {
             passportNumber: "",
@@ -66,9 +65,9 @@ const MyProfilePage: React.FC = () => {
       } catch (error) {
         toast({
           title: "Error",
-          description: (error as any).message,
+          description: "Failed to fetch profile data.",
           status: "error",
-          duration: 9000,
+          duration: 5000,
           isClosable: true,
         });
       }
@@ -79,18 +78,17 @@ const MyProfilePage: React.FC = () => {
 
   const handleUpdateProfile = async (updatedData: ProfileUpdateData) => {
     try {
-      // Adjust this call to match the function definition
       const data = await updateUserProfile({
         name: updatedData.name,
         email: updatedData.email,
-        mobile: updatedData.mobileNumber, // Make sure the key matches what updateUserProfile expects
+        mobile: updatedData.mobileNumber,
         bio: updatedData.bio,
       });
       setProfile((prevProfile) => ({
         ...prevProfile,
         name: data.name,
         email: data.email,
-        mobileNumber: data.mobile, // Convert 'mobile' back to 'mobileNumber' in state
+        mobileNumber: data.mobile,
         bio: data.bio,
       }));
       toast({
@@ -103,9 +101,9 @@ const MyProfilePage: React.FC = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: (error as any).message,
+        description: "Failed to update profile.",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -118,7 +116,7 @@ const MyProfilePage: React.FC = () => {
       const data = await updatePassportDetails({
         passportNumber: passportData.passportNumber,
         nationality: passportData.nationality,
-        passportExpDate: passportData.expirationDate, // Make sure this matches your backend model
+        passportExpDate: passportData.expirationDate,
       });
       setProfile((prevProfile) => ({
         ...prevProfile,
@@ -137,9 +135,9 @@ const MyProfilePage: React.FC = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: (error as any).message,
+        description: "Failed to update passport details.",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
@@ -162,31 +160,29 @@ const MyProfilePage: React.FC = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: (error as any).message,
+        description: "Failed to update flight details.",
         status: "error",
-        duration: 9000,
+        duration: 5000,
         isClosable: true,
       });
     }
   };
-
-  console.log("Passing to MyPassport:", profile.passportDetails);
 
   return (
     <VStack mb={4} width={"100%"}>
       <ProfileInfo
         name={profile.name}
         email={profile.email}
-        mobileNumber={profile.mobileNumber} // Make sure this matches the state structure
+        mobileNumber={profile.mobileNumber}
         bio={profile.bio}
         onSave={handleUpdateProfile}
       />
       {accountType === "Fetcher" && (
-        <SimpleGrid columns={{ base: 1, md: 1, lg: 2 }} gap={4} width="60%">
+        <SimpleGrid columns={{ base: 1, md: 1, lg: 2 }} gap={4} width="full">
           <MyPassport
             passportNumber={profile.passportDetails.passportNumber}
             nationality={profile.passportDetails.nationality}
-            expirationDate={profile.passportDetails.passportExpDate} // Ensure this matches the expected prop in MyPassportProps
+            expirationDate={profile.passportDetails.passportExpDate}
             onSave={handleUpdatePassportDetails}
           />
           <TicketDetails

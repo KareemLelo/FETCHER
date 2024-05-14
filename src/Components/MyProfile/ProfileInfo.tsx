@@ -12,7 +12,21 @@ import {
   Flex,
   Button,
   useToast,
+  Icon,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import {
+  EditIcon,
+  CheckIcon,
+  InfoOutlineIcon,
+  EmailIcon,
+  PhoneIcon,
+  ChatIcon,
+} from "@chakra-ui/icons";
+import { FaUserAlt } from "react-icons/fa";
+
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 interface ProfileInfoProps {
   name: string;
@@ -43,12 +57,12 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   });
 
   const toast = useToast();
-  const cardBg = useColorModeValue("brand.background", "brand.primary");
-  const textColor = useColorModeValue("brand.text", "white");
+  const cardBg = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.700", "white");
+  const inputBg = useColorModeValue("white", "gray.700");
+  const buttonHoverBg = useColorModeValue("brand.primary", "teal.300");
 
   useEffect(() => {
-    // This effect ensures that the state is updated when initial props are changed.
-    // Useful for when data is fetched asynchronously.
     setProfile({
       name: initialName,
       email: initialEmail,
@@ -57,22 +71,11 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
     });
   }, [initialName, initialEmail, initialMobileNumber, initialBio]);
 
-  // Effect to check if we should start in edit mode
   useEffect(() => {
     if (!initialName || !initialEmail || !initialMobileNumber) {
-      setEditMode(true); // If any essential info is missing, start in edit mode
-    } else {
-      setEditMode(false); // Otherwise, start in view mode
+      setEditMode(true);
     }
   }, [initialName, initialEmail, initialMobileNumber, initialBio]);
-
-  console.log(
-    "info in intial:",
-    initialBio,
-    initialEmail,
-    initialMobileNumber,
-    initialName
-  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -80,7 +83,6 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   };
 
   const handleSubmit = () => {
-    // Check for required fields before saving
     if (!profile.name || !profile.email || !profile.mobileNumber) {
       toast({
         title: "Error",
@@ -92,7 +94,6 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
       return;
     }
 
-    // Save the updated profile
     onSave({
       name: profile.name,
       email: profile.email,
@@ -100,103 +101,132 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
       bio: profile.bio,
     });
 
-    setEditMode(false); // Exit edit mode after saving
+    setEditMode(false);
   };
 
   return (
-    <Flex justifyContent={"center"} width={{ base: "90%", md: "80%" }} mt={5}>
-      <Box
-        bg={cardBg}
-        p={6}
-        borderRadius="lg"
-        boxShadow="lg"
-        color={textColor}
-        width={{ base: "90%", md: "80%" }}
-      >
-        <VStack spacing={4} align="stretch">
-          <Flex justifyContent="center">
-            <Avatar
-              size="2xl"
-              name={profile.name || "User Name"}
-              src="/path/to/your-profile-picture.jpg"
-            />
-          </Flex>
-          <Heading size="xl" textAlign="center">
-            My Profile
-          </Heading>
-          <Stack spacing={5}>
-            <FormControl isRequired>
-              <FormLabel>Name</FormLabel>
-              <Input
-                type="text"
-                name="name"
-                value={profile.name}
-                onChange={handleInputChange}
-                placeholder="Enter your name"
-                isReadOnly={!editMode}
+    <MotionBox
+      justifyContent={"center"}
+      width={{ base: "90%", md: "80%" }}
+      mt={5}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Flex justifyContent={"center"}>
+        <Box
+          borderWidth="1px"
+          borderColor={useColorModeValue("gray.300", "gray.600")}
+          bg={cardBg}
+          p={6}
+          borderRadius="lg"
+          boxShadow="lg"
+          color={textColor}
+          width={{ base: "90%", md: "80%" }}
+        >
+          <VStack spacing={4} align="stretch">
+            <Flex justifyContent="center">
+              <Avatar
+                size="2xl"
+                name={profile.name || "User Name"}
+                src="/path/to/your-profile-picture.jpg"
               />
-            </FormControl>
+            </Flex>
+            <Heading size="xl" textAlign="center" mb={4}>
+              <Icon as={InfoOutlineIcon} mr={2} /> My Profile
+            </Heading>
+            <Stack spacing={5}>
+              <FormControl isRequired>
+                <FormLabel>
+                  <Icon as={FaUserAlt} mr={2} /> Name
+                </FormLabel>
+                <Input
+                  type="text"
+                  name="name"
+                  value={profile.name}
+                  onChange={handleInputChange}
+                  placeholder="Enter your name"
+                  isReadOnly={!editMode}
+                  bg={inputBg}
+                />
+              </FormControl>
 
-            <FormControl isRequired>
-              <FormLabel>Email</FormLabel>
-              <Input
-                type="email"
-                name="email"
-                value={profile.email}
-                onChange={handleInputChange}
-                placeholder="Enter your email"
-                isReadOnly={!editMode}
-              />
-            </FormControl>
+              <FormControl isRequired>
+                <FormLabel>
+                  <EmailIcon mr={2} /> Email
+                </FormLabel>
+                <Input
+                  type="email"
+                  name="email"
+                  value={profile.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email"
+                  isReadOnly={!editMode}
+                  bg={inputBg}
+                />
+              </FormControl>
 
-            <FormControl isRequired>
-              <FormLabel>Mobile Number</FormLabel>
-              <Input
-                type="text"
-                name="mobileNumber"
-                value={profile.mobileNumber}
-                onChange={handleInputChange}
-                placeholder="Enter your mobile number"
-                isReadOnly={!editMode}
-              />
-            </FormControl>
-            <Box>
-              <FormLabel>Bio</FormLabel>
-              <Input
-                type="text"
-                name="bio"
-                value={profile.bio}
-                onChange={handleInputChange}
-                placeholder="Enter your bio"
-                isReadOnly={!editMode}
-              />
-            </Box>
+              <FormControl isRequired>
+                <FormLabel>
+                  <PhoneIcon mr={2} /> Mobile Number
+                </FormLabel>
+                <Input
+                  type="text"
+                  name="mobileNumber"
+                  value={profile.mobileNumber}
+                  onChange={handleInputChange}
+                  placeholder="Enter your mobile number"
+                  isReadOnly={!editMode}
+                  bg={inputBg}
+                />
+              </FormControl>
+              <Box>
+                <FormLabel>
+                  <ChatIcon mr={2} /> Bio
+                </FormLabel>
+                <Input
+                  type="text"
+                  name="bio"
+                  value={profile.bio}
+                  onChange={handleInputChange}
+                  placeholder="Enter your bio"
+                  isReadOnly={!editMode}
+                  bg={inputBg}
+                />
+              </Box>
 
-            {editMode ? (
-              <Flex justifyContent={"center"} mt={4} w="100%">
-                <Button
-                  onClick={handleSubmit}
-                  background="brand.accent"
-                  w="60%"
-                >
-                  Save Profile
-                </Button>
-              </Flex>
-            ) : (
-              <Flex justifyContent={"center"} mt={4} w="100%">
-                <Button
-                  onClick={() => setEditMode(true)}
-                  background="brand.accent"
-                  w="60%"
-                >
-                  Edit Profile
-                </Button>
-              </Flex>
-            )}
-          </Stack>
-        </VStack>
-      </Box>
-    </Flex>
+              {editMode ? (
+                <Flex justifyContent={"center"} mt={4} w="100%">
+                  <MotionButton
+                    onClick={handleSubmit}
+                    background="brand.accent"
+                    w="60%"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    _hover={{ bg: buttonHoverBg }}
+                  >
+                    <CheckIcon mr={2} /> Save Profile
+                  </MotionButton>
+                </Flex>
+              ) : (
+                <Flex justifyContent={"center"} mt={4} w="100%">
+                  <MotionButton
+                    onClick={() => setEditMode(true)}
+                    background="brand.accent"
+                    w="60%"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <EditIcon mr={2} /> Edit Profile
+                  </MotionButton>
+                </Flex>
+              )}
+            </Stack>
+          </VStack>
+        </Box>
+      </Flex>
+    </MotionBox>
   );
 };
 

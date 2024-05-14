@@ -7,17 +7,18 @@ import {
   FormControl,
   FormLabel,
   Input,
-  useToast,
   useColorModeValue,
   Flex,
   Fade,
+  Icon,
 } from "@chakra-ui/react";
+import { PassportUpdateData } from "../../Services/Interface";
+import { EditIcon, CheckIcon, CalendarIcon } from "@chakra-ui/icons";
+import { FaPassport, FaGlobeAmericas } from "react-icons/fa";
+import { motion } from "framer-motion";
 
-interface PassportUpdateData {
-  passportNumber: string;
-  nationality: string;
-  expirationDate: string;
-}
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 interface MyPassportProps extends PassportUpdateData {
   onSave: (data: PassportUpdateData) => void;
@@ -29,22 +30,19 @@ const MyPassport: React.FC<MyPassportProps> = ({
   expirationDate: initialExpirationDate,
   onSave,
 }) => {
-  const cardBg = useColorModeValue("brand.background", "gray.700");
-  const textColor = useColorModeValue("brand.text", "white");
-  const buttonColor = useColorModeValue("brand.accent", "brand.accent");
+  const cardBg = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.700", "white");
+  const buttonColor = useColorModeValue("brand.accent", "teal");
+  const inputBg = useColorModeValue("white", "gray.600");
 
-  // Initially determine if the user should be in edit mode
   const [editMode, setEditMode] = useState(false);
-
-  // Initialize state with the initial props or default values
-  const [passport, setPassport] = useState<PassportUpdateData>({
+  const [passport, setPassport] = useState({
     passportNumber: initialPassportNumber || "",
     nationality: initialNationality || "",
     expirationDate: initialExpirationDate || "",
   });
 
   useEffect(() => {
-    // Update the local state with the initial props from the parent component
     setPassport({
       passportNumber: initialPassportNumber,
       nationality: initialNationality,
@@ -52,16 +50,11 @@ const MyPassport: React.FC<MyPassportProps> = ({
     });
   }, [initialPassportNumber, initialNationality, initialExpirationDate]);
 
-  // Handle changes in the input fields
   const updatePassportField = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setPassport((prevPassport) => ({
-      ...prevPassport,
-      [name]: value,
-    }));
+    setPassport((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle the submission of the form
   const handlePassportSubmit = (e: FormEvent) => {
     e.preventDefault();
     onSave({
@@ -69,56 +62,78 @@ const MyPassport: React.FC<MyPassportProps> = ({
       nationality: passport.nationality,
       expirationDate: passport.expirationDate,
     });
-    setEditMode(false); // Turn off edit mode after saving
+    setEditMode(false);
   };
 
   return (
     <Flex justifyContent={"center"} mt={5}>
-      <Box
+      <MotionBox
         bg={cardBg}
         p={6}
         borderRadius="lg"
         boxShadow="lg"
         color={textColor}
         width={{ base: "90%", md: "80%" }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.4 }}
+        borderWidth="1px"
+        borderColor={useColorModeValue("gray.300", "gray.600")}
       >
         <VStack spacing={4} align="stretch">
-          <Heading size="lg">Passport Details</Heading>
+          <Heading size="lg">
+            <Icon as={FaPassport} mr={2} /> Passport Details
+          </Heading>
           {editMode ? (
             <Fade in={editMode}>
               <form onSubmit={handlePassportSubmit}>
                 <VStack spacing={4}>
                   <FormControl isRequired>
-                    <FormLabel>Passport Number</FormLabel>
+                    <FormLabel>
+                      <Icon as={FaPassport} mr={2} /> Passport Number
+                    </FormLabel>
                     <Input
                       name="passportNumber"
                       value={passport.passportNumber}
                       onChange={updatePassportField}
                       placeholder="Enter Passport Number"
+                      bg={inputBg}
                     />
                   </FormControl>
                   <FormControl isRequired>
-                    <FormLabel>Nationality</FormLabel>
+                    <FormLabel>
+                      <Icon as={FaGlobeAmericas} mr={2} /> Nationality
+                    </FormLabel>
                     <Input
                       name="nationality"
                       value={passport.nationality}
                       onChange={updatePassportField}
                       placeholder="Enter Nationality"
+                      bg={inputBg}
                     />
                   </FormControl>
                   <FormControl isRequired>
-                    <FormLabel>Expiration Date</FormLabel>
+                    <FormLabel>
+                      <CalendarIcon mr={2} /> Expiration Date
+                    </FormLabel>
                     <Input
+                      type="date"
                       name="expirationDate"
                       value={passport.expirationDate}
                       onChange={updatePassportField}
-                      type="date"
+                      bg={inputBg}
                     />
                   </FormControl>
                   <Flex justifyContent={"center"} w="100%">
-                    <Button type="submit" background={buttonColor}>
-                      Save Details
-                    </Button>
+                    <MotionButton
+                      type="submit"
+                      background={buttonColor}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <CheckIcon mr={2} /> Save Details
+                    </MotionButton>
                   </Flex>
                 </VStack>
               </form>
@@ -126,50 +141,58 @@ const MyPassport: React.FC<MyPassportProps> = ({
           ) : (
             <VStack spacing={5} align="stretch">
               <FormControl>
-                <FormLabel>Passport Number</FormLabel>
+                <FormLabel>
+                  <Icon as={FaPassport} mr={2} /> Passport Number
+                </FormLabel>
                 <Input
                   type="text"
                   name="passportNumber"
                   value={passport.passportNumber}
-                  placeholder="Passport Number"
                   isReadOnly={true}
+                  bg={inputBg}
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel>Nationality</FormLabel>
+                <FormLabel>
+                  <Icon as={FaGlobeAmericas} mr={2} /> Nationality
+                </FormLabel>
                 <Input
                   type="text"
                   name="nationality"
                   value={passport.nationality}
-                  placeholder="Nationality"
                   isReadOnly={true}
+                  bg={inputBg}
                 />
               </FormControl>
 
               <FormControl>
-                <FormLabel>Expiration Date</FormLabel>
+                <FormLabel>
+                  <CalendarIcon mr={2} /> Expiration Date
+                </FormLabel>
                 <Input
-                  type="text"
+                  type="date"
                   name="expirationDate"
                   value={passport.expirationDate}
-                  placeholder="Expiration Date"
                   isReadOnly={true}
+                  bg={inputBg}
                 />
               </FormControl>
-              <Flex justifyContent={"center"} mt={20} w="100%">
-                <Button
+              <Flex justifyContent={"center"} mt={4} w="100%">
+                <MotionButton
                   background={buttonColor}
                   onClick={() => setEditMode(true)}
                   w="70%"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  Edit Passport
-                </Button>
+                  <EditIcon mr={2} /> Edit Details
+                </MotionButton>
               </Flex>
             </VStack>
           )}
         </VStack>
-      </Box>
+      </MotionBox>
     </Flex>
   );
 };
