@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Flex,
@@ -17,6 +18,7 @@ import {
 } from "react-icons/fa";
 import { MdShoppingCart } from "react-icons/md";
 import { BsFillCheckCircleFill } from "react-icons/bs";
+import { motion, AnimatePresence } from "framer-motion";
 import { useOrderStatus } from "../../ContentManagment/OrderStatusContext";
 
 // Define the steps for the fetcher's journey
@@ -72,7 +74,7 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
     isComplete,
   } = useOrderStatus();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
-  const textColor = useColorModeValue("brand.text", "white");
+  const textColor = useColorModeValue("gray.600", "white");
   /* const today = new Date().toISOString().slice(0, 10); */ // Assuming the date format is YYYY-MM-DD
 
   // Check if current date matches the departure date
@@ -103,8 +105,21 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
     advanceStep();
   }; */
 
+  const MotionBox = motion(Box);
+  const MotionButton = motion(Button);
+
   return (
-    <Box background={cardBg} p={5} rounded="md" shadow="lg" maxWidth="full">
+    <MotionBox
+      background={cardBg}
+      p={5}
+      rounded="md"
+      shadow="lg"
+      maxWidth="full"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.5 }}
+    >
       <Text fontWeight="bold" color={textColor} mb={4}>
         Order ID: {order.id}
       </Text>
@@ -124,20 +139,24 @@ const TrackOrderF: React.FC<{ order: { id: string } }> = ({ order }) => {
               />
             </HStack>
             {index === activeStep && (
-              <Button
+              <MotionButton
+                mt={2}
                 colorScheme={step.colorScheme}
-                onClick={() => {
-                  advanceStep();
-                }}
-                isDisabled={isComplete || (index === 2 && !agreeStatusQM)} // Disables the button unless QuestMaker has agreed
+                onClick={advanceStep}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.9 }}
+                isDisabled={isComplete || (index === 2 && !agreeStatusQM)}
               >
-                {buttonText}
-              </Button>
+                {step.actionLabel}
+              </MotionButton>
             )}
           </Flex>
         ))}
       </VStack>
-    </Box>
+    </MotionBox>
   );
 };
 
