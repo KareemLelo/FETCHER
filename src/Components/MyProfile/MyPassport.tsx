@@ -34,6 +34,7 @@ const MyPassport: React.FC<MyPassportProps> = ({
   const textColor = useColorModeValue("gray.700", "white");
   const buttonColor = useColorModeValue("brand.accent", "teal");
   const inputBg = useColorModeValue("white", "gray.600");
+  const buttonHoverBg = useColorModeValue("brand.primary", "teal.300");
 
   const [editMode, setEditMode] = useState(false);
   const [passport, setPassport] = useState({
@@ -131,6 +132,7 @@ const MyPassport: React.FC<MyPassportProps> = ({
                       background={buttonColor}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      _hover={{ bg: buttonHoverBg }}
                     >
                       <CheckIcon mr={2} /> Save Details
                     </MotionButton>
@@ -178,13 +180,14 @@ const MyPassport: React.FC<MyPassportProps> = ({
                   bg={inputBg}
                 />
               </FormControl>
-              <Flex justifyContent={"center"} mt={4} w="100%">
+              <Flex justifyContent={"center"} mt={10} w="100%">
                 <MotionButton
                   background={buttonColor}
                   onClick={() => setEditMode(true)}
                   w="70%"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  _hover={{ bg: buttonHoverBg }}
                 >
                   <EditIcon mr={2} /> Edit Details
                 </MotionButton>
