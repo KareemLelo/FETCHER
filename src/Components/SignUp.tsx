@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Button,
   VStack,
@@ -11,11 +12,23 @@ import {
   Text,
   Input,
   Box,
+  Icon,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
-import { BsChevronDown } from "react-icons/bs";
-import { useState } from "react";
+import {
+  BsChevronDown,
+  BsPerson,
+  BsEnvelope,
+  BsTelephone,
+} from "react-icons/bs";
+import { MdLockOutline } from "react-icons/md";
 import { registerUser } from "../Services/Api";
 import { useContent } from "../ContentManagment/ContentContext";
+import { motion } from "framer-motion";
+
+const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 interface RegisterData {
   firstName: string;
@@ -50,7 +63,7 @@ const Register = () => {
     try {
       const userData = await registerUser(registerData);
       setAccountType(userData.accCategory); // Assuming accCategory is returned
-      setContent("home"); // Navigate to home
+      setContent("home");
       toast({
         title: "Registration Successful",
         description: "You're now registered.",
@@ -74,19 +87,12 @@ const Register = () => {
     setRegisterData({ ...registerData, accCategory: type });
   };
 
-  // Styles remain unchanged
+  // Enhanced styles
   const inputStyle = {
-    p: 2,
-    borderRadius: "xl",
-    border: "2px solid",
-    borderColor: "brand.secondary",
-    bg: "brand.light",
-    color: "brand.dark",
-    _placeholder: { color: "brand.text" },
+    variant: "filled",
     _hover: { borderColor: "brand.highlight" },
     _focus: {
-      borderColor: "brand.primary",
-      boxShadow: `0 0 0 1px ${"#6D9886"}`,
+      boxShadow: "0 0 0 1px var(--chakra-colors-brand-primary)",
     },
   };
 
@@ -98,8 +104,19 @@ const Register = () => {
   };
 
   return (
-    <section className="flex items-center justify-center m-5">
-      <Box bg="brand.background" p={5} rounded="2xl" shadow="xl" maxW="3xl">
+    <section className="flex items-center justify-center  ">
+      <MotionBox
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.5 }}
+        bg="white"
+        p={8}
+        rounded="2xl"
+        shadow="2xl"
+        maxW="xl"
+        w="full"
+      >
         <VStack spacing={4}>
           <Text
             fontSize="2xl"
@@ -110,44 +127,60 @@ const Register = () => {
             Register
           </Text>
           <Text fontSize="md" color="brand.text" mt={2}>
-            Be Fetcher Or QuestMaker With Us
+            Be a Fetcher or QuestMaker With Us
           </Text>
           <Divider borderColor="brand.text" my={3} />
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <VStack spacing={4}>
               <HStack spacing={3}>
-                <Input
-                  {...inputStyle}
-                  type="text"
-                  name="firstName"
-                  placeholder="First Name"
-                  onChange={handleInputChange}
-                  value={registerData.firstName}
-                />
-                <Input
-                  {...inputStyle}
-                  type="text"
-                  name="lastName"
-                  placeholder="Last Name"
-                  onChange={handleInputChange}
-                  value={registerData.lastName}
-                />
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={BsPerson} color="gray.500" />
+                  </InputLeftElement>
+                  <Input
+                    {...inputStyle}
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    onChange={handleInputChange}
+                    value={registerData.firstName}
+                  />
+                </InputGroup>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={BsPerson} color="gray.500" />
+                  </InputLeftElement>
+                  <Input
+                    {...inputStyle}
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name"
+                    onChange={handleInputChange}
+                    value={registerData.lastName}
+                  />
+                </InputGroup>
               </HStack>
-              <Input
-                {...inputStyle}
-                type="email"
-                name="email"
-                placeholder="Email"
-                onChange={handleInputChange}
-                value={registerData.email}
-              />
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={BsEnvelope} color="gray.500" />
+                </InputLeftElement>
+                <Input
+                  {...inputStyle}
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  onChange={handleInputChange}
+                  value={registerData.email}
+                />
+              </InputGroup>
               <Menu>
                 <MenuButton
-                  as={Button}
-                  rightIcon={<BsChevronDown />}
+                  as={MotionButton}
                   {...buttonStyle}
-                  borderRadius="xl"
+                  rightIcon={<BsChevronDown />}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Account Category: {registerData.accCategory || "Select"}
                 </MenuButton>
@@ -162,37 +195,59 @@ const Register = () => {
                   ))}
                 </MenuList>
               </Menu>
-              <Input
-                {...inputStyle}
-                type="text"
-                name="userName"
-                placeholder="Username"
-                onChange={handleInputChange}
-                value={registerData.userName}
-              />
-              <Input
-                {...inputStyle}
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={handleInputChange}
-                value={registerData.password}
-              />
-              <Input
-                {...inputStyle}
-                type="text"
-                name="mobile"
-                placeholder="Mobile Number"
-                onChange={handleInputChange}
-                value={registerData.mobile}
-              />
-              <Button type="submit" {...buttonStyle} size="lg" px={10}>
-                Signup
-              </Button>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={BsPerson} color="gray.500" />
+                </InputLeftElement>
+                <Input
+                  {...inputStyle}
+                  type="text"
+                  name="userName"
+                  placeholder="Username"
+                  onChange={handleInputChange}
+                  value={registerData.userName}
+                />
+              </InputGroup>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={MdLockOutline} color="gray.500" />
+                </InputLeftElement>
+                <Input
+                  {...inputStyle}
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  onChange={handleInputChange}
+                  value={registerData.password}
+                />
+              </InputGroup>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={BsTelephone} color="gray.500" />
+                </InputLeftElement>
+                <Input
+                  {...inputStyle}
+                  type="text"
+                  name="mobile"
+                  placeholder="Mobile Number"
+                  onChange={handleInputChange}
+                  value={registerData.mobile}
+                />
+              </InputGroup>
+              <MotionButton
+                type="submit"
+                {...buttonStyle}
+                size="lg"
+                px={10}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Sign Up
+              </MotionButton>
             </VStack>
           </form>
         </VStack>
-      </Box>
+      </MotionBox>
     </section>
   );
 };

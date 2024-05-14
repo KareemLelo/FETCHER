@@ -5,10 +5,13 @@ import {
   Button,
   InputGroup,
   InputRightElement,
+  Box,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { login as apiLogin } from "../Services/Api"; // Ensure path is correct
 import { useContent } from "../ContentManagment/ContentContext";
+import Lottie from "lottie-react";
+import loginAnimation from "../assets/Animations/Animation - 1715715544544.json";
 
 interface LoginDetails {
   username: string;
@@ -57,7 +60,7 @@ const Login = () => {
   };
   return (
     <section className=" flex items-center justify-center m-5">
-      <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 items-center">
+      <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 min-h-max items-center">
         <div className="md:w-1/2 px-8 md:px-16">
           <h2 className="font-bold text-2xl text-[#6D9886]">Login</h2>
           <p className="text-xs mt-4 text-[#333333]">
@@ -133,10 +136,19 @@ const Login = () => {
         </div>
 
         <div className="md:block hidden w-1/2">
-          <img
-            className="rounded-2xl"
-            src="https://images.unsplash.com/photo-1616606103915-dea7be788566?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80"
-          />
+          <Box
+            w={["full", "full", "100%"]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Lottie
+              animationData={loginAnimation}
+              loop
+              autoplay
+              style={{ width: "500px", height: "500px" }}
+            />
+          </Box>
         </div>
       </div>
     </section>

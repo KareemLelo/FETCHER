@@ -71,19 +71,21 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
     });
   }, [initialName, initialEmail, initialMobileNumber, initialBio]);
 
-  useEffect(() => {
-    if (!initialName || !initialEmail || !initialMobileNumber) {
-      setEditMode(true);
-    }
-  }, [initialName, initialEmail, initialMobileNumber, initialBio]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = () => {
-    if (!profile.name || !profile.email || !profile.mobileNumber) {
+    const { name, email, mobileNumber } = profile;
+
+    // Trim values to remove any extra spaces
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedMobileNumber = mobileNumber.trim();
+
+    // Check if any of the required fields are empty
+    if (!trimmedName || !trimmedEmail || !trimmedMobileNumber) {
       toast({
         title: "Error",
         description: "Please fill in all required fields before saving.",
@@ -95,9 +97,9 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
     }
 
     onSave({
-      name: profile.name,
-      email: profile.email,
-      mobileNumber: profile.mobileNumber,
+      name: trimmedName,
+      email: trimmedEmail,
+      mobileNumber: trimmedMobileNumber,
       bio: profile.bio,
     });
 
