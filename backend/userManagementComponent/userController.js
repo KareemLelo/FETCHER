@@ -72,11 +72,8 @@ export const getUserProfile = async (req, res) => {
     if (!req.user || !req.user._id) {
       return res.status(404).send('User not found');
     }
-    const user = await User.findById(req.user._id);
-    
-    console.log("Passport Details:", user.passportDetails);
-    console.log("Flight Details:", user.flightDetails);
 
+    const user = await User.findById(req.user._id);
     if (user) {
       const userProfile = {
         id: user._id,
