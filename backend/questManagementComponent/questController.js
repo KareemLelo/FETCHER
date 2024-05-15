@@ -91,7 +91,8 @@ export const getQuestByAcceptor = async (req, res) => {
 
 export const updateQuestIndices = async (req, res) => {
   const { questId } = req.params;
-  const { statusIndex, progressIndex } = req.body;
+  const { statusIndex} = req.body.statusIndex;
+  const {progressIndex} = req.body.progressIndex;
 
   try {
     const quest = await Quest.findById(questId);
