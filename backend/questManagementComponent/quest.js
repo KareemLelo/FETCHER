@@ -23,8 +23,20 @@ const questSchema = new mongoose.Schema({
   acceptedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Fetchers',  // Assuming you use the 'User' model for Fetchers as well
-    default: null,  
+    default: null  
   },
+  agreeStatusF:{
+    type: Boolean,
+    default: true
+  },
+  agreeStatusQ: {
+    type: Boolean,
+    default: true
+  },
+  canceledBy: {
+    type : String,
+    default: null
+  }
 }, {
   timestamps: true,
   collection: 'Quests'
@@ -37,8 +49,8 @@ class Quest {
       this.model = QuestModel;
     }
     
-    static findByCreator(creatorId) {
-      return QuestModel.findOne({ createdBy: creatorId, statusIndex: 0 });
+    static async findByCreator(creatorId, statusIndex) {
+      return await QuestModel.findOne({ createdBy: creatorId, statusIndex: statusIndex });
     }
 
     static async findById(id) {
@@ -54,7 +66,13 @@ class Quest {
     }
     static async find(criteria) {
       return await QuestModel.find(criteria); // Use lean for performance if you don't need a full Mongoose document
-  }
+    }
+    static async getQuestByAcceptor(acceptedById, statusIndex) {
+      return await QuestModel.findOne({
+        acceptedBy: mongoose.Types.ObjectId(acceptedById),
+        statusIndex: statusIndex
+      }).lean();
+    }  
   
     async save() {
       // Create a new document in the database from the data provided to the class.
