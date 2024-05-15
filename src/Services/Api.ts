@@ -188,3 +188,60 @@ export const updateUserProfile = async (profileData: {
     throw new Error(error.response?.data.message || "Error updating user profile");
   }
 };
+
+export const fetchQuestByCreatorTrackOrder = async (): Promise<Quest | null> => {
+  try {
+    const response = await api.get('/questsByCreatorTrackOrder');
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Fetch quest by creator track order API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error fetching quest by creator track order");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while fetching quest by creator track order.');
+    }
+  }
+};
+
+export const fetchQuestByAcceptor = async (): Promise<Quest | null> => {
+  try {
+    const response = await api.get(`/questsByAcceptedBy`);
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Fetch quest by acceptor API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error fetching quest by acceptor");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while fetching quest by acceptor.');
+    }
+  }
+};
+
+
+export const updateQuestIndices = async (questId:string, statusIndex:number, progressIndex:number) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error("No token found in local storage");
+    }
+    
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
+    const response = await axios.put(`http://localhost:5050/updateQuest/${questId}`, { statusIndex, progressIndex }, config);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Update quest API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error updating quest");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while updating quest.');
+    }
+  }
+};

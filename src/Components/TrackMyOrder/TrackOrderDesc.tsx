@@ -10,24 +10,37 @@ import {
 } from "@chakra-ui/react";
 import { FaBox, FaDollarSign, FaShippingFast, FaBan } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useOrderStatus } from "../../Hooks/OrderStatusContext"; // Adjust the import based on your actual structure
 
-import { useOrderStatus } from "../../ContentManagment/OrderStatusContext";
+import { updateQuestIndices } from "../../Services/Api";
+import { Order } from "../../Services/Interface";
+import { useContent } from "../../Hooks/ContentContext";
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
 
-const TrackOrderDesc: React.FC<{
-  order: {
-    id?: string;
-    name: string;
-    price: string;
-    estimatedDelivery: string;
-  };
-}> = ({ order }) => {
-  const { isComplete, setStatusIndex } = useOrderStatus();
+const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
+  const { setStatusIndex, setCanceledBy, isComplete, progressIndex } =
+    useOrderStatus();
+  const { accountType } = useContent(); // Use your content hook to determine if it's QuestMaker or Fetcher
+
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("gray.600", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+
+  const cancelQuest = async () => {
+    console.log(`Canceling quest by ${accountType}`);
+    setStatusIndex(2);
+    setCanceledBy(accountType); // Set who canceled the quest
+
+    // Send the update to the backend
+    try {
+      const updatedQuest = await updateQuestIndices(order.id, 2, progressIndex); // Assuming you reset progressIndex to 0 on cancel
+      console.log("Database updated on cancel:", updatedQuest);
+    } catch (error) {
+      console.error("Failed to cancel quest:", error);
+    }
+  };
 
   return (
     <MotionBox
@@ -64,15 +77,28 @@ const TrackOrderDesc: React.FC<{
         <Divider my={3} />
         <Flex alignItems="center">
           <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
-          <Text color={textColor}>
-            Estimated Delivery: {order.estimatedDelivery}
-          </Text>
+          <Text color={textColor}>Quantity: {order.quantity}</Text>
+        </Flex>
+        <Divider my={3} />
+        <Flex alignItems="center">
+          <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
+          <Text color={textColor}>Weight: {order.weight}kg</Text>
+        </Flex>
+        <Divider my={3} />
+        <Flex alignItems="center">
+          <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
+          <Text color={textColor}>Direction: {order.direction}</Text>
+        </Flex>
+        <Divider my={3} />
+        <Flex alignItems="center">
+          <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
+          <Text color={textColor}>Category: {order.category}</Text>
         </Flex>
         <Divider my={3} />
         <Flex justifyContent="center" mt={4}>
           <MotionButton
             colorScheme="red"
-            onClick={() => setStatusIndex(2)}
+            onClick={cancelQuest}
             isDisabled={isComplete}
             w="150px"
             whileHover={{ scale: 1.05 }}

@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { login as apiLogin } from "../Services/Api"; // Ensure path is correct
-import { useContent } from "../ContentManagment/ContentContext";
+import { useContent } from "../Hooks/ContentContext";
 import Lottie from "lottie-react";
 import loginAnimation from "../assets/Animations/Animation - 1715715544544.json";
 

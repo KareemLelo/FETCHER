@@ -16,42 +16,44 @@ import {
   FaRegHandshake,
 } from "react-icons/fa";
 import { MdShoppingCart } from "react-icons/md";
-import { useOrderStatus } from "../../ContentManagment/OrderStatusContext";
-// Assuming the separated context
-
-const statusSteps = [
-  { label: "Not traveled yet", icon: FaPlaneDeparture, colorScheme: "red" },
-  {
-    label: "Arriving at destination",
-    icon: FaPlaneArrival,
-    colorScheme: "orange",
-  },
-  { label: "Contact Fetcher", icon: FaRegHandshake, colorScheme: "yellow" },
-  { label: "Item Purchased", icon: MdShoppingCart, colorScheme: "green" },
-  { label: "Flying Back", icon: FaPlaneArrival, colorScheme: "blue" },
-  {
-    label: "Quest Accomplished",
-    icon: BsFillCheckCircleFill,
-    colorScheme: "purple",
-  },
-];
-
-interface Order {
-  id: string;
-}
+import { useOrderStatus } from "../../Hooks/OrderStatusContext";
+import { Order, Quest } from "../../Services/Interface";
+import { updateQuestIndices } from "../../Services/Api";
 
 const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
   const { activeStep, setAgreeStatusQM, agreeStatusQM, statusIndex } =
-    useOrderStatus(); // Updated context hook
+    useOrderStatus();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
-  const isOrderCancelled = statusIndex === 2;
+  const statusSteps = [
+    { label: "Not traveled yet", icon: FaPlaneDeparture, colorScheme: "red" },
+    {
+      label: "Arriving at destination",
+      icon: FaPlaneArrival,
+      colorScheme: "orange",
+    },
+    { label: "Contact Fetcher", icon: FaRegHandshake, colorScheme: "yellow" },
+    { label: "Item Purchased", icon: MdShoppingCart, colorScheme: "green" },
+    { label: "Flying Back", icon: FaPlaneArrival, colorScheme: "blue" },
+    {
+      label: "Quest Accomplished",
+      icon: BsFillCheckCircleFill,
+      colorScheme: "purple",
+    },
+  ];
+
+  const updateStatus = async () => {
+    if (activeStep === 2 && !agreeStatusQM) {
+      setAgreeStatusQM(true);
+      await updateQuestIndices(order.id, statusIndex, activeStep); // Assuming a direct mapping
+    }
+  };
 
   return (
     <Box background={cardBg} p={5} roundedTop="md" shadow="lg">
       <Text fontWeight="bold" color={textColor} mb={4}>
-        Order ID: {order.id}
+        Quest ID: {order.id}
       </Text>
       <Divider mb={4} />
       <HStack spacing={8} justify="center">
@@ -70,17 +72,15 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
           </Flex>
         ))}
       </HStack>
-      {activeStep === 2 && !isOrderCancelled && (
+      {activeStep === 2 && (
         <Flex justify="center" mt={4}>
-          {activeStep === 2 && (
-            <Button
-              colorScheme={"yellow"}
-              onClick={() => setAgreeStatusQM(true)}
-              isDisabled={agreeStatusQM}
-            >
-              Agree
-            </Button>
-          )}
+          <Button
+            colorScheme={"yellow"}
+            onClick={updateStatus}
+            isDisabled={agreeStatusQM}
+          >
+            Agree
+          </Button>
         </Flex>
       )}
     </Box>

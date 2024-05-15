@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import SideBar from "./Components/SideBar";
-import { useContent } from "./ContentManagment/ContentContext";
+import { useContent } from "./Hooks/ContentContext";
 
 const SidebarAppear: React.FC = () => {
   const { accountType } = useContent();

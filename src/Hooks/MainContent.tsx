@@ -1,5 +1,5 @@
 import React from "react";
-import { useContent } from "./ContentContext";
+import { useContent } from "../Hooks/ContentContext";
 import HomeContentF from "../Components/Fetcher/HomeContentF";
 import HomeContentQM from "../Components/QuestMaker/HomeContentQM";
 import Register from "../Components/SignUp";

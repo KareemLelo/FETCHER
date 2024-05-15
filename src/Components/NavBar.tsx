@@ -26,7 +26,7 @@ import { RiFileUserLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa";
 import { CgCopy } from "react-icons/cg";
 import { motion } from "framer-motion";
-import { useContent } from "../ContentManagment/ContentContext";
+import { useContent } from "../Hooks/ContentContext";
 
 const MotionFlex = motion(Flex);
 const MotionButton = motion(Button);
