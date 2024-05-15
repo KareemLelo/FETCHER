@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/postQuest', protectRoutes, createQuest);
 
 router.get('/quests', getAvailableQuests);
-router.get('/questsByCreator', getQuestByCreator);
+router.get('/questsByCreator', protectRoutes, getQuestByCreator);
 router.get('/questsByAcceptedBy/:acceptedById', getQuestByAcceptor);
 router.put('/updateQuest/:questId', protectRoutes, updateQuestIndices);
 

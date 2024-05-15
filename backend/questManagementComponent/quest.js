@@ -49,7 +49,7 @@ class Quest {
       this.model = QuestModel;
     }
     
-    static async findByCreator(creatorId,) {
+    static async findByCreator(creatorId) {
       return await QuestModel.findOne({ createdBy: creatorId, statusIndex: 0 });
     }
     static async findByCreatorTrackOrder(creatorId, statusIndex) {
