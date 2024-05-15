@@ -6,7 +6,7 @@ export const createQuest = async (req, res) => {
     if (!req.user) {
       throw new Error('User not authenticated');
     }
-    const { itemName, itemCategory, itemPrice, itemQuantity, itemDirection, itemWeight, itemLink, statusIndex, progressIndex} = req.body;
+    const { itemName, itemCategory, itemPrice, itemQuantity, itemDirection, itemWeight, itemLink} = req.body;
     const newQuest = new Quest({
       itemName,
       itemCategory,
@@ -15,8 +15,8 @@ export const createQuest = async (req, res) => {
       itemDirection,
       itemWeight,
       itemLink,
-      statusIndex: statusIndex,
-      progressIndex: progressIndex,
+      statusIndex: 0,
+      progressIndex: 0,
       createdBy: req.user._id,
       acceptedBy: null
     });
@@ -91,7 +91,7 @@ export const getQuestByAcceptor = async (req, res) => {
 
 export const updateQuestIndices = async (req, res) => {
   const { questId } = req.params;
-  const { statusIndex} = req.body.statusIndex;
+  const {statusIndex} = req.body.statusIndex;
   const {progressIndex} = req.body.progressIndex;
 
   try {
