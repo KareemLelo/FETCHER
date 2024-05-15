@@ -43,8 +43,25 @@ export const getQuestByCreator = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized access: No user ID found." });
   }
   try {
+    const quest = await Quest.findByCreator(req.user._id);
+
+    if (!quest) {
+      return res.status(404).json({ message: "No quests found for this user." });
+    }
+    res.status(200).json(quest);
+  } catch (error) {
+    console.error('Error fetching quests by creator:', error);
+    res.status(500).json({ message: 'Error fetching quests' });
+  }
+};
+
+export const getQuestByCreatorTrackOrder = async (req, res) => {
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ message: "Unauthorized access: No user ID found." });
+  }
+  try {
     const statusIndex = 1;
-    const quest = await Quest.findByCreator(req.user._id, statusIndex);
+    const quest = await Quest.findByCreatorTrackOrder(req.user._id, statusIndex);
 
     if (!quest) {
       return res.status(404).json({ message: "No quests found for this user." });
@@ -61,7 +78,7 @@ export const getQuestByAcceptor = async (req, res) => {
     const acceptedById = req.params.acceptedById;  // Or extract from req.user if it's the logged-in user
     const statusIndex = 1;
 
-    const quest = await Quest.getQuestByAcceptor(acceptedById, statusIndex);
+    const quest = await Quest.findQuestByAcceptor(acceptedById, statusIndex);
     if (!quest) {
       return res.status(404).json({ message: "No matching quest found." });
     }

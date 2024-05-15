@@ -49,7 +49,10 @@ class Quest {
       this.model = QuestModel;
     }
     
-    static async findByCreator(creatorId, statusIndex) {
+    static async findByCreator(creatorId,) {
+      return await QuestModel.findOne({ createdBy: creatorId, statusIndex: 0 });
+    }
+    static async findByCreatorTrackOrder(creatorId, statusIndex) {
       return await QuestModel.findOne({ createdBy: creatorId, statusIndex: statusIndex });
     }
 
@@ -67,7 +70,7 @@ class Quest {
     static async find(criteria) {
       return await QuestModel.find(criteria); // Use lean for performance if you don't need a full Mongoose document
     }
-    static async getQuestByAcceptor(acceptedById, statusIndex) {
+    static async findQuestByAcceptor(acceptedById, statusIndex) {
       return await QuestModel.findOne({
         acceptedBy: mongoose.Types.ObjectId(acceptedById),
         statusIndex: statusIndex
