@@ -71,10 +71,7 @@ class Quest {
       return await QuestModel.find(criteria); // Use lean for performance if you don't need a full Mongoose document
     }
     static async findQuestByAcceptor(acceptedById, statusIndex) {
-      return await QuestModel.findOne({
-        acceptedBy: mongoose.Types.ObjectId(acceptedById),
-        statusIndex: statusIndex
-      }).lean();
+      return await QuestModel.findOne({acceptedBy: acceptedById,statusIndex: statusIndex});
     }  
   
     async save() {

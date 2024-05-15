@@ -30,7 +30,7 @@ export const createQuest = async (req, res) => {
 
 export const getAvailableQuests = async (req, res) => {
   try {
-    const quests = await Quest.find({ statusIndex: 0 }); // Modify the query as needed
+    const quests = await Quest.find({ statusIndex: 0 });
     res.status(200).json(quests);
   } catch (error) {
     console.error('Error fetching quests:', error);
@@ -75,7 +75,7 @@ export const getQuestByCreatorTrackOrder = async (req, res) => {
 
 export const getQuestByAcceptor = async (req, res) => {
   try {
-    const acceptedById = req.params.acceptedById;  // Or extract from req.user if it's the logged-in user
+    const acceptedById = req.params.acceptedById;
     const statusIndex = 1;
 
     const quest = await Quest.findQuestByAcceptor(acceptedById, statusIndex);
@@ -89,31 +89,43 @@ export const getQuestByAcceptor = async (req, res) => {
   }
 };
 
-// Function to update quest's statusIndex and progressIndex
 export const updateQuestIndices = async (req, res) => {
-  const { questId } = req.params; // Get the quest ID from the URL parameters
-  const { statusIndex, progressIndex } = req.body; // Extract statusIndex and progressIndex from the request body
+  const { questId } = req.params;
+  const { statusIndex, progressIndex } = req.body;
 
   try {
-    // Find the quest by ID and update it
     const quest = await Quest.findById(questId);
 
     if (!quest) {
       return res.status(404).json({ message: "Quest not found" });
     }
 
-    // Check if the current user is allowed to update this quest
-    if (quest.createdBy.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Unauthorized to update this quest" });
-    }
-
-    // Update the quest
     quest.statusIndex = statusIndex;
     quest.progressIndex = progressIndex;
 
-    await quest.save(); // Save the updated quest
+    await quest.save();
 
-    res.json(quest); // Send back the updated quest
+    res.json(quest);
+  } catch (error) {
+    console.error('Failed to update quest:', error);
+    res.status(500).json({ message: "An error occurred while updating the quest" });
+  }
+};
+
+export const updateCanceledBy = async (req, res) => {
+  const { questId } = req.params;
+  const { canceledBy } = req.body;
+
+  try {
+    const quest = await Quest.findById(questId);
+
+    if (!quest) {
+      return res.status(404).json({ message: "Quest not found" });
+    }
+    quest.canceledBy = canceledBy;
+
+    await quest.save();
+    res.json(quest);
   } catch (error) {
     console.error('Failed to update quest:', error);
     res.status(500).json({ message: "An error occurred while updating the quest" });
