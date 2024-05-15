@@ -49,7 +49,7 @@ class Quest {
       this.model = QuestModel;
     }
     
-    static async findByCreator(creatorId,) {
+    static async findByCreator(creatorId) {
       return await QuestModel.findOne({ createdBy: creatorId, statusIndex: 0 });
     }
     static async findByCreatorTrackOrder(creatorId, statusIndex) {
@@ -82,7 +82,7 @@ class Quest {
       const newQuest = new this.model(this.data);
       return newQuest.save();
     }
-    
+    //hi bana
 }
 
 export default Quest;
