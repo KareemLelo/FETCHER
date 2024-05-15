@@ -82,8 +82,6 @@ class Quest {
       const newQuest = new this.model(this.data);
       return newQuest.save();
     }
-    //hi bana
 }
 
 export default Quest;
-//zaid
