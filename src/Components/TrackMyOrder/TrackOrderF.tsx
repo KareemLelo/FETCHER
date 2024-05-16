@@ -20,7 +20,7 @@ import { MdShoppingCart } from "react-icons/md";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
-import { Order, Quest } from "../../Services/Interface";
+import { Order } from "../../Services/Interface";
 import { updateQuestIndices } from "../../Services/Api";
 
 const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
@@ -36,9 +36,6 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     setComplete,
     isComplete,
   } = useOrderStatus();
-
-  console.log("Initial statusIndex from context:", statusIndex);
-  console.log("Initial quest from props:", order);
 
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("gray.600", "white");
@@ -83,49 +80,39 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
   ];
 
   const advanceStep = async () => {
+    let newProgressIndex = activeStep + 1;
+    let newStatusIndex = statusIndex;
+
+    if (activeStep === 2 && !agreeStatusF) {
+      setAgreeStatusF(true);
+    } else if (activeStep === progressSteps.length - 1) {
+      newStatusIndex = 3; // Completed status
+      setComplete(true);
+    }
+
+    // Update local context/state
+    setActiveStep(newProgressIndex);
+    setStatusIndex(newStatusIndex);
+    setProgressIndex(newProgressIndex);
+
+    // Log current state after state updates
     console.log(
-      `Advancing from step ${activeStep}, current statusIndex: ${statusIndex}, progressIndex: ${activeStep}`
+      `Updated to statusIndex: ${newStatusIndex}, progressIndex: ${newProgressIndex}`
     );
 
-    if (statusIndex !== 2) {
-      // Ensure we are not at a cancelled status
-      let newProgressIndex = activeStep + 1; // Move to the next step
-      let newStatusIndex = statusIndex;
-
-      if (activeStep === 2 && !agreeStatusF) {
-        setAgreeStatusF(true);
-        console.log("Agreement with QuestMaker is now true.");
-      } else if (activeStep === progressSteps.length - 1) {
-        newStatusIndex = 3; // Move to a new status if completing the process
-        setComplete(true);
-        console.log("Marking the quest as complete.");
-      }
-
-      console.log(
-        `Before setting - new indices to statusIndex: ${newStatusIndex}, progressIndex: ${newProgressIndex}`
+    // Update the backend
+    try {
+      const updatedQuest = await updateQuestIndices(
+        order.id,
+        newStatusIndex,
+        newProgressIndex
       );
-
-      // Update local context/state
-      setActiveStep(newProgressIndex);
-      setStatusIndex(newStatusIndex);
-      setProgressIndex(newProgressIndex);
-
-      console.log(
-        `After setting - new indices to statusIndex: ${newStatusIndex}, progressIndex: ${newProgressIndex}`
-      );
-
-      try {
-        const updatedQuest = await updateQuestIndices(
-          order.id,
-          newStatusIndex,
-          newProgressIndex
-        );
-        console.log("Database updated:", updatedQuest);
-      } catch (error) {
-        console.error("Failed to update quest indices:", error);
-      }
-    } else {
-      console.log("Quest is marked as cancelled, no further steps.");
+      console.log("Database updated successfully:", updatedQuest);
+      // Re-sync state with the response if necessary
+      setStatusIndex(updatedQuest.statusIndex);
+      setProgressIndex(updatedQuest.progressIndex);
+    } catch (error) {
+      console.error("Failed to update quest indices:", error);
     }
   };
 
@@ -159,7 +146,7 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
                 <Button
                   mt={2}
                   colorScheme={step.colorScheme}
-                  onClick={() => advanceStep()}
+                  onClick={advanceStep}
                   isDisabled={isComplete || (index === 2 && !agreeStatusQM)}
                 >
                   {step.actionLabel}

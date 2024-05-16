@@ -94,8 +94,7 @@ export const getQuestByAcceptor = async (req, res) => {
 
 export const updateQuestIndices = async (req, res) => {
   const { questId } = req.params;
-  const { statusIndex} = req.body.statusIndex;
-  const {progressIndex} = req.body.progressIndex;
+  const { statusIndex, progressIndex } = req.body;  // Corrected destructuring
 
   try {
     const quest = await Quest.findById(questId);
@@ -105,6 +104,7 @@ export const updateQuestIndices = async (req, res) => {
 
     console.log(`Original indices - statusIndex: ${quest.statusIndex}, progressIndex: ${quest.progressIndex}`);
 
+    // Update the indices
     quest.statusIndex = statusIndex;
     quest.progressIndex = progressIndex;
 
