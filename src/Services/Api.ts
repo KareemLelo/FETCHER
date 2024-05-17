@@ -220,20 +220,9 @@ export const fetchQuestByAcceptor = async (): Promise<Quest | null> => {
 };
 
 
-export const updateQuestIndices = async (questId:string, statusIndex:number, progressIndex:number) => {
+export const updateQuestIndices = async (questId: string, statusIndex: number, progressIndex: number) => {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error("No token found in local storage");
-    }
-    
-    const config = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
-
-    const response = await axios.put(`/updateQuest/${questId}`, { statusIndex, progressIndex }, config);
+    const response = await api.put(`/updateQuest/${questId}`, { statusIndex, progressIndex });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

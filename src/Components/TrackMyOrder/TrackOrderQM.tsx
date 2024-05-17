@@ -19,6 +19,8 @@ import { MdShoppingCart } from "react-icons/md";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 import { Order, Quest } from "../../Services/Interface";
 import { updateQuestIndices } from "../../Services/Api";
+import Lottie from "lottie-react";
+import animationData from "../../assets/Animations/Animation - 1715874839862.json";
 
 const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
   const { activeStep, setAgreeStatusQM, agreeStatusQM, statusIndex } =
@@ -51,10 +53,13 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
   };
 
   return (
-    <Box background={cardBg} p={5} roundedTop="md" shadow="lg">
+    <Box background={"#FFFFFF"} p={5} roundedTop="md" shadow="lg">
       <Text fontWeight="bold" color={textColor} mb={4}>
         Quest ID: {order.id}
       </Text>
+      <Flex justifyContent={"center"}>
+        <Lottie animationData={animationData} loop autoplay />
+      </Flex>
       <Divider mb={4} />
       <HStack spacing={8} justify="center">
         {statusSteps.map((step, index) => (
