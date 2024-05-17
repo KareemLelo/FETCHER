@@ -234,3 +234,18 @@ export const updateQuestIndices = async (questId: string, statusIndex: number, p
     }
   }
 };
+
+export const updateCanceledBy = async (questId: string, canceledBy: string) => {
+  try {
+    const response = await api.put(`/quest/cancel/${questId}`, { canceledBy });
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Update canceledBy API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error updating canceledBy");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while updating canceledBy.');
+    }
+  }
+};

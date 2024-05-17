@@ -53,7 +53,7 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
   };
 
   return (
-    <Box background={"#FFFFFF"} p={5} roundedTop="md" shadow="lg">
+    <Box background={cardBg} p={5} roundedTop="md" shadow="lg">
       <Text fontWeight="bold" color={textColor} mb={4}>
         Quest ID: {order.id}
       </Text>

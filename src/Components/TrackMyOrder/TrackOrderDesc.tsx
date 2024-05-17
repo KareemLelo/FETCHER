@@ -10,9 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { FaBox, FaDollarSign, FaShippingFast, FaBan } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { useOrderStatus } from "../../Hooks/OrderStatusContext"; // Adjust the import based on your actual structure
-
-import { updateQuestIndices } from "../../Services/Api";
+import { useOrderStatus } from "../../Hooks/OrderStatusContext";
+import { updateCanceledBy, updateQuestIndices } from "../../Services/Api";
 import { Order } from "../../Services/Interface";
 import { useContent } from "../../Hooks/ContentContext";
 
@@ -20,9 +19,14 @@ const MotionBox = motion(Box);
 const MotionButton = motion(Button);
 
 const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
-  const { setStatusIndex, setCanceledBy, isComplete, progressIndex } =
-    useOrderStatus();
-  const { accountType } = useContent(); // Use your content hook to determine if it's QuestMaker or Fetcher
+  const {
+    setStatusIndex,
+    setCanceledBy,
+    isComplete,
+    progressIndex,
+    handleQuestStatusChange,
+  } = useOrderStatus();
+  const { accountType } = useContent();
 
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("gray.600", "white");
@@ -31,11 +35,16 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
   const cancelQuest = async () => {
     console.log(`Canceling quest by ${accountType}`);
     setStatusIndex(2);
-    setCanceledBy(accountType); // Set who canceled the quest
+    setCanceledBy(accountType);
 
-    // Send the update to the backend
     try {
-      const updatedQuest = await updateQuestIndices(order.id, 2, progressIndex); // Assuming you reset progressIndex to 0 on cancel
+      await updateCanceledBy(order.id, accountType);
+      const updatedQuest = await updateQuestIndices(order.id, 2, progressIndex);
+      handleQuestStatusChange(
+        order.quantity,
+        order.weight,
+        parseFloat(order.price.substring(1))
+      ); // Call the new function here
       console.log("Database updated on cancel:", updatedQuest);
     } catch (error) {
       console.error("Failed to cancel quest:", error);
@@ -44,7 +53,7 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
 
   return (
     <MotionBox
-      background={"#FFFFFF"}
+      background={cardBg}
       p={5}
       shadow="lg"
       rounded="lg"

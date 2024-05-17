@@ -74,7 +74,7 @@ export const getUserProfile = async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    const user = await User.findById(req.user._id, req.user.accCategory);
+    const user = await User.findByIdLean(req.user._id, req.user.accCategory);
     if (user) {
       const userProfile = {
         id: user._id,

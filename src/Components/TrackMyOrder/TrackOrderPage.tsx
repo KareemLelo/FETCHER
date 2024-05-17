@@ -19,12 +19,17 @@ import {
   fetchQuestByCreatorTrackOrder,
   fetchQuestByAcceptor,
 } from "../../Services/Api";
-import { Order } from "../../Services/Interface"; // Assuming interfaces are exported from here
+import { Order } from "../../Services/Interface";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
-import animationData from "../../assets/Animations/Animation - 1715875081645.json"; // Adjust the path to your Lottie animation file
+import animationData from "../../assets/Animations/Animation - 1715875081645.json";
 
 const TrackOrderPage: React.FC = () => {
-  const { setActiveStep, setStatusIndex, setProgressIndex } = useOrderStatus();
+  const {
+    setActiveStep,
+    setStatusIndex,
+    setProgressIndex,
+    /* handleQuestStatusChange, */
+  } = useOrderStatus();
   const { accountType } = useContent();
   const [order, setOrder] = useState<Order | null>(null);
 
@@ -50,10 +55,14 @@ const TrackOrderPage: React.FC = () => {
         };
         setOrder(transformedQuest);
 
-        // Initialize context with fetched quest statusIndex and other details
         setStatusIndex(fetchedQuest.statusIndex);
         setProgressIndex(fetchedQuest.progressIndex);
-        setActiveStep(fetchedQuest.progressIndex); // Ensure this is correctly named
+        setActiveStep(fetchedQuest.progressIndex);
+        /* handleQuestStatusChange(
+          fetchedQuest.itemQuantity,
+          fetchedQuest.itemWeight,
+          fetchedQuest.itemPrice
+        ); */ // Call the new function here
         console.log(
           `Context initialized with statusIndex: ${fetchedQuest.statusIndex}, progressIndex: ${fetchedQuest.progressIndex}`
         );
