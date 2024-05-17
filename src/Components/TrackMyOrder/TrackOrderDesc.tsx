@@ -23,6 +23,7 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
     setStatusIndex,
     setCanceledBy,
     isComplete,
+    canceledBy,
     progressIndex,
     handleQuestStatusChange,
   } = useOrderStatus();
@@ -108,7 +109,7 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
           <MotionButton
             colorScheme="red"
             onClick={cancelQuest}
-            isDisabled={isComplete}
+            isDisabled={isComplete || canceledBy !== null}
             w="150px"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

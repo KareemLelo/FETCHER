@@ -21,6 +21,7 @@ import {
   FaSuitcaseRolling,
 } from "react-icons/fa";
 import { EditIcon, CheckIcon, CalendarIcon } from "@chakra-ui/icons";
+import { fetchQuestByAcceptor } from "../../Services/Api"; // Import the API function
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
@@ -43,16 +44,39 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   const buttonHover = useColorModeValue("brand.accent", "teal.300");
 
   const [editMode, setEditMode] = useState(false);
-  const [ticket, setTicket] = useState(flightData);
+  const [ticket, setTicket] = useState<FlightUpdateData>(flightData);
+  const [detailsSaved, setDetailsSaved] = useState(false);
+  const [formDisabled, setFormDisabled] = useState(false);
 
   useEffect(() => {
-    setTicket({
-      depFlightNumber: flightData.depFlightNumber || "",
-      departureDate: formatDate(flightData.departureDate),
-      arrFlightNumber: flightData.arrFlightNumber || "",
-      arrivalDate: formatDate(flightData.arrivalDate),
-      alreadyThere: flightData.alreadyThere || false,
-    });
+    const checkQuestStatus = async () => {
+      try {
+        const quest = await fetchQuestByAcceptor();
+        if (quest) {
+          setFormDisabled(true);
+          setTicket({
+            depFlightNumber: flightData.depFlightNumber || "",
+            departureDate: formatDate(flightData.departureDate),
+            arrFlightNumber: flightData.arrFlightNumber || "",
+            arrivalDate: formatDate(flightData.arrivalDate),
+            alreadyThere: flightData.alreadyThere || false,
+          });
+        } else {
+          setFormDisabled(false);
+          setTicket({
+            depFlightNumber: "",
+            departureDate: "",
+            arrFlightNumber: "",
+            arrivalDate: "",
+            alreadyThere: flightData.alreadyThere || false,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching quest by acceptor:", error);
+      }
+    };
+
+    checkQuestStatus();
   }, [flightData]);
 
   const updateTicketField = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +99,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       await onSave(updatedData);
       setTicket(updatedData);
       setEditMode(false);
+      setDetailsSaved(true);
       toast({
         title: "Flight Details Updated",
         description: "Your flight details were successfully updated.",
@@ -147,7 +172,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
               background="brand.primary"
               onClick={handleAlreadyThere}
               w="70%"
-              isDisabled={ticket.alreadyThere}
+              isDisabled={ticket.alreadyThere || !editMode}
               _hover={{ bg: buttonHover }}
             >
               <FaPlaneArrival style={{ marginRight: 8 }} /> I'm Already There
@@ -167,7 +192,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       value={ticket.depFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Departure Flight Number"
-                      isDisabled={ticket.alreadyThere}
+                      isDisabled={formDisabled || flightData.alreadyThere}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -181,7 +206,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       name="departureDate"
                       value={ticket.departureDate}
                       onChange={updateTicketField}
-                      isDisabled={ticket.alreadyThere}
+                      isDisabled={formDisabled || flightData.alreadyThere}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -195,6 +220,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       value={ticket.arrFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Arrival Flight Number"
+                      isDisabled={formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -208,6 +234,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       name="arrivalDate"
                       value={ticket.arrivalDate}
                       onChange={updateTicketField}
+                      isDisabled={formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -237,7 +264,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="depFlightNumber"
                   value={ticket.depFlightNumber}
                   isReadOnly={true}
-                  isDisabled={ticket.alreadyThere}
+                  isDisabled={ticket.alreadyThere || formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -250,7 +277,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="departureDate"
                   value={ticket.departureDate}
                   isReadOnly={true}
-                  isDisabled={ticket.alreadyThere}
+                  isDisabled={ticket.alreadyThere || formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -264,6 +291,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="arrFlightNumber"
                   value={ticket.arrFlightNumber}
                   isReadOnly={true}
+                  isDisabled={ticket.alreadyThere || formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -276,6 +304,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="arrivalDate"
                   value={ticket.arrivalDate}
                   isReadOnly={true}
+                  isDisabled={ticket.alreadyThere || formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -287,6 +316,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   _hover={{ bg: buttonHoverBg }}
+                  isDisabled={formDisabled}
                 >
                   <EditIcon mr={2} /> Edit Details
                 </MotionButton>
