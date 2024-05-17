@@ -6,7 +6,7 @@ const userBankAccountSchema = new mongoose.Schema({
     required: true
   },
   cardNumber: {
-    type: Number,
+    type: String,
     required: true,
   },
   expDate:{
@@ -20,7 +20,7 @@ const userBankAccountSchema = new mongoose.Schema({
     }
   },
   cvv: {
-    type: Number,
+    type: String,
     required: true,
   },
   UserId: mongoose.Schema.Types.ObjectId

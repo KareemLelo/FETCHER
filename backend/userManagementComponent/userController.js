@@ -12,7 +12,7 @@ import bcrypt from 'bcryptjs';
 // it embeds the user's ID within the token's payload.
 // This ID is then used to identify the user in subsequent requests to protected routes.
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '600s'});
+  return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '1800s'});
 };
 
 export const registerUser = async (req, res) => {
@@ -255,11 +255,14 @@ export const addBankAccount = async (req, res) => {
     const { cardHolderName, cardNumber, cvv, expDate } = req.body;
     const userId = req.user._id;
 
+    const hashedCardNumber = await bcrypt.hash(cardNumber.toString(),10);
+    const hashedCvv = await bcrypt.hash(cvv.toString(),10);
+
     const newBankAccount = new userBankAccount({
       userId,
       cardHolderName,
-      cardNumber,
-      cvv,
+      cardNumber: hashedCardNumber,
+      cvv: hashedCvv,
       expDate
     });
 
@@ -292,17 +295,28 @@ export const updateBankAccount = async (req, res) => {
     const userId = req.user._id;
     const updates = req.body;
 
-    const bankAccount = await userBankAccount.findOneAndUpdate(
-      { userId },
-      updates,
-      { new: true }
-    );
+    const bankAccount = await userBankAccount.findOneAndUpdate(userId);
 
     if (!bankAccount) {
       return res.status(404).json({ message: 'Bank account not found' });
     }
+    
+    if (updates.cardNumber) {
+      bankAccount.cardNumber = await bcrypt.hash(updates.cardNumber.toString(), 10);
+    }
+    if (updates.cvv) {
+      bankAccount.cvv = await bcrypt.hash(updates.cvv.toString(), 10);
+    }
+    if (updates.cardHolderName) {
+      bankAccount.cardHolderName = updates.cardHolderName;
+    }
+    if (updates.expDate) {
+      bankAccount.expDate = updates.expDate;
+    }
 
-    res.status(200).json(bankAccount);
+    const updatedBankAccount = await bankAccount.save();
+    res.status(200).json(updatedBankAccount);
+
   } catch (error) {
     console.error('Error updating bank account:', error);
     res.status(500).json({ message: 'Error updating bank account' });
