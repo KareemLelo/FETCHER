@@ -44,7 +44,7 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
 
   return (
     <MotionBox
-      background={cardBg}
+      background={"#FFFFFF"}
       p={5}
       shadow="lg"
       rounded="lg"

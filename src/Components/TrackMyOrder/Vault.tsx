@@ -32,7 +32,7 @@ const Vault: React.FC<VaultProps> = ({ balance, transactions }) => {
       <MotionBox
         w={["95%", "90%", "400px"]}
         h={["300px", "350px"]}
-        bg={cardBg}
+        bg={"#FFFFFF"}
         rounded="2xl"
         shadow="2xl"
         position="relative"
