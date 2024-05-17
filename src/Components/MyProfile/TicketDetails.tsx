@@ -44,35 +44,48 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   const buttonHover = useColorModeValue("brand.accent", "teal.300");
 
   const [editMode, setEditMode] = useState(false);
-  const [ticket, setTicket] = useState<FlightUpdateData>(flightData);
-  const [detailsSaved, setDetailsSaved] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
+  const [ticket, setTicket] = useState<FlightUpdateData>({
+    depFlightNumber: "",
+    departureDate: "",
+    arrFlightNumber: "",
+    arrivalDate: "",
+    alreadyThere: false,
+  });
+
+  useEffect(() => {
+    console.log("Initial flightData:", flightData);
+    setTicket({
+      depFlightNumber: flightData.depFlightNumber || "",
+      departureDate: formatDate(flightData.departureDate),
+      arrFlightNumber: flightData.arrFlightNumber || "",
+      arrivalDate: formatDate(flightData.arrivalDate),
+      alreadyThere: flightData.alreadyThere || false,
+    });
+  }, [flightData]);
 
   useEffect(() => {
     const checkQuestStatus = async () => {
       try {
+        console.log("Initial flightData:", flightData);
         const quest = await fetchQuestByAcceptor();
         if (quest) {
+          console.log("Quest found:", quest);
           setFormDisabled(true);
-          setTicket({
-            depFlightNumber: flightData.depFlightNumber || "",
-            departureDate: formatDate(flightData.departureDate),
-            arrFlightNumber: flightData.arrFlightNumber || "",
-            arrivalDate: formatDate(flightData.arrivalDate),
-            alreadyThere: flightData.alreadyThere || false,
-          });
         } else {
+          console.log("No quest found for acceptor");
           setFormDisabled(false);
-          setTicket({
-            depFlightNumber: "",
-            departureDate: "",
-            arrFlightNumber: "",
-            arrivalDate: "",
-            alreadyThere: flightData.alreadyThere || false,
-          });
         }
+        console.log("Updated ticket state:", {
+          depFlightNumber: flightData.depFlightNumber || "",
+          departureDate: formatDate(flightData.departureDate),
+          arrFlightNumber: flightData.arrFlightNumber || "",
+          arrivalDate: formatDate(flightData.arrivalDate),
+          alreadyThere: flightData.alreadyThere || false,
+        });
       } catch (error) {
         console.error("Error fetching quest by acceptor:", error);
+        setFormDisabled(false); // Make sure form is not disabled if there's an error
       }
     };
 
@@ -99,7 +112,6 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       await onSave(updatedData);
       setTicket(updatedData);
       setEditMode(false);
-      setDetailsSaved(true);
       toast({
         title: "Flight Details Updated",
         description: "Your flight details were successfully updated.",
@@ -192,7 +204,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       value={ticket.depFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Departure Flight Number"
-                      isDisabled={formDisabled || flightData.alreadyThere}
+                      isDisabled={ticket.alreadyThere || formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -206,7 +218,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       name="departureDate"
                       value={ticket.departureDate}
                       onChange={updateTicketField}
-                      isDisabled={formDisabled || flightData.alreadyThere}
+                      isDisabled={ticket.alreadyThere || formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -291,7 +303,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="arrFlightNumber"
                   value={ticket.arrFlightNumber}
                   isReadOnly={true}
-                  isDisabled={ticket.alreadyThere || formDisabled}
+                  isDisabled={formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -304,7 +316,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="arrivalDate"
                   value={ticket.arrivalDate}
                   isReadOnly={true}
-                  isDisabled={ticket.alreadyThere || formDisabled}
+                  isDisabled={formDisabled}
                   bg={inputBg}
                 />
               </FormControl>

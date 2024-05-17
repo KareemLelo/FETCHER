@@ -21,7 +21,7 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 import { Order } from "../../Services/Interface";
-import { updateQuestIndices } from "../../Services/Api";
+import { updateFlightDetails, updateQuestIndices } from "../../Services/Api";
 
 const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
   const {
@@ -35,6 +35,7 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     setAgreeStatusF,
     setComplete,
     isComplete,
+    canceledBy,
   } = useOrderStatus();
 
   const cardBg = useColorModeValue("brand.background", "brand.primary");
@@ -88,6 +89,13 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     } else if (activeStep === progressSteps.length - 1) {
       newStatusIndex = 3; // Completed status
       setComplete(true);
+      await updateFlightDetails({
+        departureDate: "",
+        arrivalDate: "",
+        depFlightNumber: "",
+        arrFlightNumber: "",
+        alreadyThere: false,
+      });
     }
 
     // Update local context/state
@@ -147,7 +155,11 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
                   mt={2}
                   colorScheme={step.colorScheme}
                   onClick={advanceStep}
-                  isDisabled={isComplete || (index === 2 && !agreeStatusQM)}
+                  isDisabled={
+                    isComplete ||
+                    (index === 2 && !agreeStatusQM) ||
+                    canceledBy !== null
+                  }
                 >
                   {step.actionLabel}
                 </Button>

@@ -37,6 +37,7 @@ const SideBar = () => {
     { title: "My Credit Card", icon: BsCreditCard },
     { title: "New Quest", icon: AiOutlineShopping, gap: true },
     { title: "Track My Order", icon: BsAirplaneEngines },
+    { title: "Order History", icon: BsAirplaneEngines },
     { title: "Logout", icon: IoIosLogOut },
   ];
 
@@ -49,6 +50,7 @@ const SideBar = () => {
       gap: true,
     },
     { title: "Track My Progress", icon: BsAirplaneEngines },
+    { title: "Order History", icon: BsAirplaneEngines },
     { title: "Logout", icon: IoIosLogOut },
   ];
 

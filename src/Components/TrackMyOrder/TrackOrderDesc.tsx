@@ -11,7 +11,11 @@ import {
 import { FaBox, FaDollarSign, FaShippingFast, FaBan } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
-import { updateCanceledBy, updateQuestIndices } from "../../Services/Api";
+import {
+  updateCanceledBy,
+  updateFlightDetails,
+  updateQuestIndices,
+} from "../../Services/Api";
 import { Order } from "../../Services/Interface";
 import { useContent } from "../../Hooks/ContentContext";
 
@@ -46,6 +50,13 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
         order.weight,
         parseFloat(order.price.substring(1))
       ); // Call the new function here
+      await updateFlightDetails({
+        departureDate: "",
+        arrivalDate: "",
+        depFlightNumber: "",
+        arrFlightNumber: "",
+        alreadyThere: false,
+      });
       console.log("Database updated on cancel:", updatedQuest);
     } catch (error) {
       console.error("Failed to cancel quest:", error);
