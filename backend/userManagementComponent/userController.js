@@ -66,14 +66,13 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// Get current user's profile
 export const getUserProfile = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
       return res.status(404).send('User not found');
     }
 
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id, req.user.accCategory);
     if (user) {
       const userProfile = {
         id: user._id,
@@ -186,6 +185,27 @@ export const updateFlightDetails = async (req, res) => {
   } catch (error) {
     console.error('Failed to update flight details:', error);
     res.status(500).json({ message: 'Error updating flight details' });
+  }
+};
+
+export const updateAlreadyThere = async (req, res) => {
+  try {
+      const user = await User.findById(req.user._id,req.user.accCategory);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      user.flightDetails.alreadyThere = true;
+
+      await user.save();
+
+      res.status(200).json({
+          message: 'Fetcher status updated to already there',
+          flightDetails: user.flightDetails
+      });
+  } catch (error) {
+      console.error('Failed to update alreadyThere attribute:', error);
+      res.status(500).json({ message: 'Error updating alreadyThere attribute' });
   }
 };
 

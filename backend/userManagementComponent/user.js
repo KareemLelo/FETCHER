@@ -34,7 +34,10 @@ const FetcherSchema = new mongoose.Schema({
     arrivalDate: Date,
     depFlightNumber: String,
     arrFlightNumber: String,
-    alreadyThere: Boolean
+    alreadyThere: {
+      type: Boolean,
+      default: false
+    }
   }
 },
 {
@@ -74,11 +77,15 @@ class User {
     return user;
   }
   
-  static async findById(_id) {
-    let user = await QuestMakerModel.findById(_id);
-    if (!user) {
-      user = await FetcherModel.findById(_id);
+  static async findById(_id,accCategory) {
+
+    if(accCategory==="QuestMaker")
+    {
+      let user = await QuestMakerModel.findById(_id);
+      return user;
     }
+    let user = await FetcherModel.findById(_id);
+    
     return user;
   }
 

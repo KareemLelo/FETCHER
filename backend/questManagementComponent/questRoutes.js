@@ -10,6 +10,6 @@ router.get('/questsByCreator', protectRoutes, getQuestByCreator);
 router.get('/questsByCreatorTrackOrder',protectRoutes,getQuestByCreatorTrackOrder);
 router.get('/questsByAcceptedBy', protectRoutes, getQuestByAcceptor);
 router.put('/updateQuest', protectRoutes, updateQuestIndices);
-router.put('/quest/:questId/cancel', protectRoutes, updateCanceledBy);
+router.put('/quest/cancel/:questId', protectRoutes, updateCanceledBy);
 
 export default router;
