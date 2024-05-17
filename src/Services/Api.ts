@@ -233,7 +233,7 @@ export const updateQuestIndices = async (questId:string, statusIndex:number, pro
       }
     };
 
-    const response = await axios.put(`http://localhost:5050/updateQuest/${questId}`, { statusIndex, progressIndex }, config);
+    const response = await axios.put(`/updateQuest/${questId}`, { statusIndex, progressIndex }, config);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
