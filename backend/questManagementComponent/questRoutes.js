@@ -9,7 +9,7 @@ router.get('/quests', getAvailableQuests);
 router.get('/questsByCreator', protectRoutes, getQuestByCreator);
 router.get('/questsByCreatorTrackOrder',protectRoutes,getQuestByCreatorTrackOrder);
 router.get('/questsByAcceptedBy', protectRoutes, getQuestByAcceptor);
-router.put('/updateQuest/:questId', protectRoutes, updateQuestIndices);
+router.put('/updateQuest', protectRoutes, updateQuestIndices);
 router.put('/quest/:questId/cancel', protectRoutes, updateCanceledBy);
 
 export default router;

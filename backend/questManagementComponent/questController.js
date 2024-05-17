@@ -74,11 +74,14 @@ export const getQuestByCreatorTrackOrder = async (req, res) => {
 };
 
 export const getQuestByAcceptor = async (req, res) => {
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ message: "Unauthorized access: No user ID found." });
+  }
   try {
-    const acceptedById = req.params.acceptedById;
+    
     const statusIndex = 1;
 
-    const quest = await Quest.findQuestByAcceptor(acceptedById, statusIndex);
+    const quest = await Quest.findQuestByAcceptor(req.user._id, statusIndex);
     if (!quest) {
       return res.status(404).json({ message: "No matching quest found." });
     }
@@ -91,22 +94,24 @@ export const getQuestByAcceptor = async (req, res) => {
 
 export const updateQuestIndices = async (req, res) => {
   const { questId } = req.params;
-  const {statusIndex} = req.body.statusIndex;
-  const {progressIndex} = req.body.progressIndex;
+  const { statusIndex, progressIndex } = req.body;  // Corrected destructuring
 
   try {
     const quest = await Quest.findById(questId);
-
     if (!quest) {
       return res.status(404).json({ message: "Quest not found" });
     }
 
+    console.log(`Original indices - statusIndex: ${quest.statusIndex}, progressIndex: ${quest.progressIndex}`);
+
+    // Update the indices
     quest.statusIndex = statusIndex;
     quest.progressIndex = progressIndex;
 
-    await quest.save();
+    const updatedQuest = await quest.save();
+    console.log(`Updated indices - statusIndex: ${updatedQuest.statusIndex}, progressIndex: ${updatedQuest.progressIndex}`);
 
-    res.json(quest);
+    res.json(updatedQuest);
   } catch (error) {
     console.error('Failed to update quest:', error);
     res.status(500).json({ message: "An error occurred while updating the quest" });
