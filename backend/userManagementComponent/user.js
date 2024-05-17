@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Create a Schema corresponding to the document interface.
 const QuestMakerSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
@@ -44,7 +43,6 @@ const FetcherSchema = new mongoose.Schema({
   collection: 'Fetchers'
 });
 
-// Create a Model.
 const QuestMakerModel = mongoose.model('QuestMaker', QuestMakerSchema, 'QuestMakers');
 const FetcherModel = mongoose.model('Fetcher', FetcherSchema, 'Fetchers');
 

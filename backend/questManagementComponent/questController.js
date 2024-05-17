@@ -1,7 +1,7 @@
 import Quest from './quest.js';
+import User from '../userManagementComponent/user.js';
 
 export const createQuest = async (req, res) => {
-  console.log(req.user);  // Check what is being set here
   try {
     if (!req.user) {
       throw new Error('User not authenticated');
@@ -78,12 +78,19 @@ export const getQuestByAcceptor = async (req, res) => {
     return res.status(401).json({ message: "Unauthorized access: No user ID found." });
   }
   try {
-    
     const statusIndex = 1;
-
     const quest = await Quest.findQuestByAcceptor(req.user._id, statusIndex);
     if (!quest) {
       return res.status(404).json({ message: "No matching quest found." });
+    }
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.flightDetails.alreadyThere) {
+        quest.progressIndex = 2;
+        await quest.save();
     }
     res.json(quest);
   } catch (error) {
@@ -91,7 +98,7 @@ export const getQuestByAcceptor = async (req, res) => {
     res.status(500).json({ message: 'Error fetching quest' });
   }
 };
-
+ 
 export const updateQuestIndices = async (req, res) => {
   const { questId } = req.params;
   const { statusIndex, progressIndex } = req.body;  // Corrected destructuring
@@ -131,7 +138,7 @@ export const updateCanceledBy = async (req, res) => {
     quest.canceledBy = canceledBy;
 
     await quest.save();
-    res.json(quest);
+    res.json({message:"Quest canceled successfully",quest});
   } catch (error) {
     console.error('Failed to update quest:', error);
     res.status(500).json({ message: "An error occurred while updating the quest" });
