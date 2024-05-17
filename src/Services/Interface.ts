@@ -72,3 +72,13 @@ export interface Profile {
     arrivalDate: string;
     alreadyThere?: boolean;
 }
+
+export interface Order {
+  id: string;
+  name: string;
+  price: string;
+  quantity: number;
+  weight: number;
+  direction: string;
+  category: string;
+}

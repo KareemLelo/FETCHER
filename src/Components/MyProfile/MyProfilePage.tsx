@@ -14,7 +14,7 @@ import {
   PassportUpdateData,
   FlightUpdateData,
 } from "../../Services/Interface";
-import { useContent } from "../../ContentManagment/ContentContext";
+import { useContent } from "../../Hooks/ContentContext";
 
 const MyProfilePage = () => {
   const { accountType } = useContent();

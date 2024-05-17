@@ -24,7 +24,7 @@ import {
 } from "react-icons/bs";
 import { MdLockOutline } from "react-icons/md";
 import { registerUser } from "../Services/Api";
-import { useContent } from "../ContentManagment/ContentContext";
+import { useContent } from "../Hooks/ContentContext";
 import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);

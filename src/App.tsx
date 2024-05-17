@@ -3,10 +3,10 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import "@fontsource/poppins"; // Ensure Poppins font is applied globally in your index.css or Chakra theme
 import NavBar from "./Components/NavBar";
-import MainContent from "./ContentManagment/MainContent";
-import { ContentContextProvider } from "./ContentManagment/ContentContext";
+import MainContent from "./Hooks/MainContent";
+import { ContentContextProvider } from "./Hooks/ContentContext";
 import SidebarAppear from "./SidebarAppear";
-import { OrderStatusProvider } from "./ContentManagment/OrderStatusContext";
+import { OrderStatusProvider } from "./Hooks/OrderStatusContext";
 
 function App() {
   return (

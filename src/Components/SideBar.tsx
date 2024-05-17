@@ -20,7 +20,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { RiFileUserLine } from "react-icons/ri";
 import avatar from "../assets/Icons/Avatar.png"; // Ensure this path is correct
 import { motion, AnimatePresence } from "framer-motion";
-import { useContent } from "../ContentManagment/ContentContext";
+import { useContent } from "../Hooks/ContentContext";
 
 const MotionBox = motion(Box);
 const MotionListItem = motion(ListItem);
