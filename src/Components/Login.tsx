@@ -60,7 +60,7 @@ const Login = () => {
   };
   return (
     <section className=" flex items-center justify-center m-5">
-      <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-3xl p-5 min-h-max items-center">
+      <div className="bg-gray-100 flex rounded-2xl border-2 shadow-lg max-w-3xl p-5 min-h-max items-center">
         <div className="md:w-1/2 px-8 md:px-16">
           <h2 className="font-bold text-2xl text-[#6D9886]">Login</h2>
           <p className="text-xs mt-4 text-[#333333]">

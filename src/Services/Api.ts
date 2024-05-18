@@ -209,9 +209,9 @@ export const fetchQuestByAcceptor = async (): Promise<Quest | null> => {
     const response = await api.get(`/questsByAcceptedBy`);
     return response.data;
   } catch (error: any) {
-    if (axios.isAxiosError(error)) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
       console.error('Fetch quest by acceptor API error:', error.response?.data || error.message);
-      throw new Error(error.response?.data.message || "Error fetching quest by acceptor");
+      return null; // Return null if no quest is found
     } else {
       console.error('Unexpected error:', error);
       throw new Error('An unexpected error occurred while fetching quest by acceptor.');
