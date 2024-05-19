@@ -33,11 +33,12 @@ const MotionBox = motion(Box);
 const MotionButton = motion(Button);
 
 const QuestCards = ({ quest, onAccept }: Props) => {
-  const cardBg = useColorModeValue("white", "gray.700");
-  const textColor = useColorModeValue("gray.700", "white");
+  const cardBg = useColorModeValue("brand.background", "brand.primary");
+  const textColor = useColorModeValue("gray.600", "white");
   const buttonBg = useColorModeValue("teal.500", "teal.200");
   const buttonHoverBg = useColorModeValue("teal.600", "teal.300");
   const toast = useToast();
+  const borderColor = useColorModeValue("gray.200", "gray.600");
 
   const handleAcceptQuest = async () => {
     try {
