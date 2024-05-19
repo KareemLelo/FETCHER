@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PassportUpdateData, Quest } from './Interface';
+import { PassportUpdateData, Quest, Vault } from './Interface';
 
  const API_URL = "http://localhost:5050";
 //const API_URL = "https://fetcher-backend.onrender.com"
@@ -219,6 +219,21 @@ export const fetchQuestByAcceptor = async (): Promise<Quest | null> => {
   }
 };
 
+export const getVaultById = async (questId: string) => {
+  try {
+    const response = await api.get(`/vaults/getVault/${questId}`);
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Get vault by ID API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || "Error fetching vault");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while fetching vault.');
+    }
+  }
+};
+
 
 export const updateQuestIndices = async (questId: string, statusIndex: number, progressIndex: number) => {
   try {
@@ -247,5 +262,23 @@ export const updateCanceledBy = async (questId: string, canceledBy: string) => {
       console.error('Unexpected error:', error);
       throw new Error('An unexpected error occurred while updating canceledBy.');
     }
+  }
+};
+
+export const createVaultEntry = async (vaultData: { questId: string; totalAmount: number; commitmentFee: number; serviceFee: number; feesDeducted: boolean; }) => {
+  try {
+    const response = await axios.post('/vaults/createVault', vaultData);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to create vault entry');
+  }
+};
+
+export const updateVault = async (vaultId: string, updateData: { vaultBalance: number, commitmentFee: number, serviceFee: number, feesDeducted: boolean }) => {
+  try {
+    const response = await axios.put(`/api/vaults/updateVault/${vaultId}`, updateData);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to update vault');
   }
 };

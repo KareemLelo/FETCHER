@@ -21,7 +21,11 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 import { Order } from "../../Services/Interface";
-import { updateFlightDetails, updateQuestIndices } from "../../Services/Api";
+import {
+  updateFlightDetails,
+  updateQuestIndices,
+  updateVault,
+} from "../../Services/Api";
 
 const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
   const {
@@ -33,9 +37,24 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     agreeStatusF,
     agreeStatusQM,
     setAgreeStatusF,
+    setAgreeStatusQM,
     setComplete,
     isComplete,
     canceledBy,
+    commFee,
+    servFee,
+    vaultBalance,
+    setCommFee,
+    setServFee,
+    setVaultBalance,
+    setFeesDeducted,
+    feesDeducted,
+    setBalanceF,
+    setBalanceQM,
+    balanceF,
+    balanceQM,
+    systemBalance,
+    setSystemBalance,
   } = useOrderStatus();
 
   const cardBg = useColorModeValue("brand.background", "brand.primary");
@@ -80,12 +99,86 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     },
   ];
 
+  const calculateFees = (price: number, weight: number, quantity: number) => {
+    const newCommFee = quantity * weight * 10; // example calculation
+    const newServFee = price * 0.3; // example calculation
+    setCommFee(newCommFee);
+    setServFee(newServFee);
+    const newVaultBalance = vaultBalance + newCommFee + newServFee;
+    setVaultBalance(newVaultBalance);
+
+    const newBalanceF = balanceF - newCommFee;
+    const newBalanceQM = balanceQM - newServFee;
+    setBalanceF(newBalanceF);
+    setBalanceQM(newBalanceQM);
+
+    setFeesDeducted(true);
+  };
+
+  if (activeStep === 0 && statusIndex === 1 && !feesDeducted) {
+    calculateFees(order.price, order.weight, order.quantity);
+    console.log(
+      "commfee:",
+      commFee,
+      "servfee:",
+      servFee,
+      "vaultbalance:",
+      vaultBalance,
+      systemBalance,
+      "f:",
+      balanceF,
+      "q:",
+      balanceQM
+    );
+    /* await updateVault(order.id, {
+      vaultBalance,
+      commFee,
+      servFee,
+      feesDeducted: true,
+    }); */
+  }
+
   const advanceStep = async () => {
     let newProgressIndex = activeStep + 1;
     let newStatusIndex = statusIndex;
 
+    console.log(
+      "commfee:",
+      commFee,
+      "servfee:",
+      servFee,
+      "vaultbalance:",
+      vaultBalance,
+      systemBalance,
+      "f:",
+      balanceF,
+      "q:",
+      balanceQM
+    );
+
+    if (activeStep === 5) {
+      const newBalanceF = balanceF + order.price + 0.5 * servFee + commFee;
+      const newSystemBalance = systemBalance + 0.5 * servFee;
+      setBalanceF(newBalanceF);
+      setSystemBalance(newSystemBalance);
+      console.log(
+        "commfee:",
+        commFee,
+        "servfee:",
+        servFee,
+        "vaultbalance:",
+        vaultBalance,
+        systemBalance,
+        "f:",
+        balanceF,
+        "q:",
+        balanceQM
+      );
+    }
+
     if (activeStep === 2 && !agreeStatusF) {
       setAgreeStatusF(true);
+      await updateQuestIndices(order.id, statusIndex, newProgressIndex);
     } else if (activeStep === progressSteps.length - 1) {
       newStatusIndex = 3; // Completed status
       setComplete(true);
@@ -121,6 +214,15 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
       setProgressIndex(updatedQuest.progressIndex);
     } catch (error) {
       console.error("Failed to update quest indices:", error);
+    }
+
+    if (newProgressIndex === 5 && newStatusIndex === 3) {
+      /* await updateVault(order.id, {
+        vaultBalance: newVaultBalance,
+        commFee,
+        servFee,
+        feesDeducted: true,
+      }); */
     }
   };
 
@@ -158,7 +260,7 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
                   isDisabled={
                     isComplete ||
                     (index === 2 && !agreeStatusQM) ||
-                    canceledBy !== null
+                    canceledBy !== ""
                   }
                 >
                   {step.actionLabel}

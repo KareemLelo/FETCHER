@@ -15,6 +15,7 @@ import {
   updateCanceledBy,
   updateFlightDetails,
   updateQuestIndices,
+  updateVault,
 } from "../../Services/Api";
 import { Order } from "../../Services/Interface";
 import { useContent } from "../../Hooks/ContentContext";
@@ -26,10 +27,21 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
   const {
     setStatusIndex,
     setCanceledBy,
+    setVaultBalance,
+    setBalanceF,
+    setBalanceQM,
+    setSystemBalance,
     isComplete,
     canceledBy,
     progressIndex,
-    handleQuestStatusChange,
+    vaultBalance,
+    balanceF,
+    balanceQM,
+    commFee,
+    servFee,
+    systemBalance,
+    activeStep,
+    agreeStatusQM,
   } = useOrderStatus();
   const { accountType } = useContent();
 
@@ -37,27 +49,115 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
   const textColor = useColorModeValue("gray.600", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
+  console.log(
+    "commfee:",
+    commFee,
+    "servfee:",
+    servFee,
+    "vaultbalance:",
+    vaultBalance,
+    systemBalance,
+    "f:",
+    balanceF,
+    "q:",
+    balanceQM
+  );
+
   const cancelQuest = async () => {
     console.log(`Canceling quest by ${accountType}`);
     setStatusIndex(2);
     setCanceledBy(accountType);
 
+    // Apply the cancellation logic based on the different cases
+    let newVaultBalance = vaultBalance;
+    let newBalanceF = balanceF;
+    let newBalanceQM = balanceQM;
+    let newSystemBalance = systemBalance;
+
+    if (activeStep === 0) {
+      // Case 1
+
+      newBalanceF += commFee;
+      newBalanceQM += servFee;
+    } else if (activeStep === 1) {
+      if (accountType === "QuestMaker") {
+        // Case 2
+
+        newBalanceF += commFee + 0.25 * servFee;
+        newSystemBalance += 0.75 * servFee;
+      } else if (accountType === "Fetcher") {
+        // Case 2.1
+
+        newBalanceQM += servFee;
+        newSystemBalance += commFee;
+      }
+    } else if (activeStep === 2) {
+      if (accountType === "QuestMaker") {
+        // Case 4
+        if (agreeStatusQM) {
+          newBalanceF += commFee + 0.5 * servFee;
+          newSystemBalance += 0.5 * servFee;
+          newBalanceQM += order.price;
+        } else {
+          newBalanceF += commFee + 0.5 * servFee;
+          newSystemBalance += 0.5 * servFee;
+        }
+      } else if (accountType === "Fetcher") {
+        if (agreeStatusQM) {
+          newBalanceQM += order.price + servFee;
+          newSystemBalance += commFee;
+          newVaultBalance -= order.price;
+        } else {
+          newBalanceQM += servFee;
+          newSystemBalance += commFee;
+        }
+      }
+    } else if (activeStep === 4 || activeStep === 3) {
+      // Case 5
+      newBalanceQM += order.price + servFee;
+      newSystemBalance += commFee;
+    }
+
+    // Update local state
+    setVaultBalance(newVaultBalance);
+    setBalanceF(newBalanceF);
+    setBalanceQM(newBalanceQM);
+    setSystemBalance(newSystemBalance);
+
+    console.log(
+      "commfee:",
+      commFee,
+      "servfee:",
+      servFee,
+      "vaultbalance:",
+      vaultBalance,
+      systemBalance,
+      "f:",
+      balanceF,
+      "q:",
+      balanceQM
+    );
+
+    // Update the backend
     try {
       await updateCanceledBy(order.id, accountType);
-      const updatedQuest = await updateQuestIndices(order.id, 2, progressIndex);
-      handleQuestStatusChange(
-        order.quantity,
-        order.weight,
-        parseFloat(order.price.substring(1))
-      ); // Call the new function here
-      await updateFlightDetails({
-        departureDate: "",
-        arrivalDate: "",
-        depFlightNumber: "",
-        arrFlightNumber: "",
-        alreadyThere: false,
-      });
-      console.log("Database updated on cancel:", updatedQuest);
+      await updateQuestIndices(order.id, 3, progressIndex);
+      /* await updateVault(order.id, {
+        vaultBalance: newVaultBalance,
+        commitmentFee: commFee,
+        serviceFee: servFee,
+        feesDeducted: true,
+      }); */
+      if (canceledBy !== "") {
+        await updateFlightDetails({
+          departureDate: "",
+          arrivalDate: "",
+          depFlightNumber: "",
+          arrFlightNumber: "",
+          alreadyThere: false,
+        });
+        console.log("Database updated on cancel");
+      }
     } catch (error) {
       console.error("Failed to cancel quest:", error);
     }
@@ -120,7 +220,7 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
           <MotionButton
             colorScheme="red"
             onClick={cancelQuest}
-            isDisabled={isComplete || canceledBy !== null}
+            isDisabled={isComplete || canceledBy !== ""}
             w="150px"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

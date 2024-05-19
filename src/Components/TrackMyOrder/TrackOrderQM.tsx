@@ -23,8 +23,17 @@ import Lottie from "lottie-react";
 import animationData from "../../assets/Animations/Animation - 1715874839862.json";
 
 const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
-  const { activeStep, setAgreeStatusQM, agreeStatusQM, statusIndex } =
-    useOrderStatus();
+  const {
+    activeStep,
+    setAgreeStatusQM,
+    agreeStatusQM,
+    statusIndex,
+    setVaultBalance,
+    vaultBalance,
+    balanceQM,
+    setBalanceQM,
+    canceledBy,
+  } = useOrderStatus();
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("brand.text", "white");
 
@@ -48,6 +57,12 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
   const updateStatus = async () => {
     if (activeStep === 2 && !agreeStatusQM) {
       setAgreeStatusQM(true);
+      const newVaultBalance = vaultBalance + order.price;
+      const newBalanceQM = balanceQM - order.price;
+      setBalanceQM(newBalanceQM);
+      setVaultBalance(newVaultBalance);
+      console.log("vaultbalance:", vaultBalance, "q:", balanceQM);
+
       await updateQuestIndices(order.id, statusIndex, activeStep); // Assuming a direct mapping
     }
   };
@@ -82,7 +97,7 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
           <Button
             colorScheme={"yellow"}
             onClick={updateStatus}
-            isDisabled={agreeStatusQM}
+            isDisabled={agreeStatusQM || canceledBy != ""}
           >
             Agree
           </Button>

@@ -28,10 +28,13 @@ const TrackOrderPage: React.FC = () => {
     setActiveStep,
     setStatusIndex,
     setProgressIndex,
-    /* handleQuestStatusChange, */
+    commFee,
+    servFee,
+    vaultBalance,
+    canceledBy,
   } = useOrderStatus();
   const { accountType } = useContent();
-  const [order, setOrder] = useState<Order | null>(null);
+  const [order, setOrder] = useState<Order>();
 
   const loadQuestData = async () => {
     try {
@@ -47,7 +50,7 @@ const TrackOrderPage: React.FC = () => {
         const transformedQuest = {
           id: fetchedQuest._id,
           name: fetchedQuest.itemName,
-          price: `$${fetchedQuest.itemPrice.toFixed(2)}`,
+          price: fetchedQuest.itemPrice,
           quantity: fetchedQuest.itemQuantity,
           weight: fetchedQuest.itemWeight,
           direction: fetchedQuest.itemDirection,
@@ -58,11 +61,6 @@ const TrackOrderPage: React.FC = () => {
         setStatusIndex(fetchedQuest.statusIndex);
         setProgressIndex(fetchedQuest.progressIndex);
         setActiveStep(fetchedQuest.progressIndex);
-        /* handleQuestStatusChange(
-          fetchedQuest.itemQuantity,
-          fetchedQuest.itemWeight,
-          fetchedQuest.itemPrice
-        ); */ // Call the new function here
         console.log(
           `Context initialized with statusIndex: ${fetchedQuest.statusIndex}, progressIndex: ${fetchedQuest.progressIndex}`
         );
@@ -122,15 +120,11 @@ const TrackOrderPage: React.FC = () => {
         )}
         <TrackOrderDesc order={order} />
         <Vault
-          balance={200}
-          transactions={[
-            {
-              id: "TXN456",
-              amount: 75,
-              date: "2023-09-05",
-              description: "Initial Deposit",
-            },
-          ]}
+          questId={order.id}
+          commitmentFee={commFee}
+          serviceFee={servFee}
+          vaultBalance={vaultBalance}
+          canceledBy={canceledBy}
         />
       </VStack>
     </Flex>

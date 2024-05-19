@@ -13,16 +13,20 @@ import { FaDollarSign } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 interface VaultProps {
-  balance: number;
-  transactions: Array<{
-    id: string;
-    amount: number;
-    date: string;
-    description: string;
-  }>;
+  questId: string;
+  commitmentFee: number;
+  serviceFee: number;
+  vaultBalance: number;
+  canceledBy: string;
 }
 
-const Vault: React.FC<VaultProps> = ({ balance, transactions }) => {
+const Vault: React.FC<VaultProps> = ({
+  questId,
+  commitmentFee,
+  serviceFee,
+  vaultBalance,
+  canceledBy,
+}) => {
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("gray.600", "white");
   const MotionBox = motion(Box);
@@ -68,24 +72,17 @@ const Vault: React.FC<VaultProps> = ({ balance, transactions }) => {
         >
           <Text color={textColor} fontSize="xl" fontWeight="bold">
             <Icon as={FaDollarSign} mr={2} />
-            Balance: ${balance.toFixed(2)}
+            Total Amount: {vaultBalance}
           </Text>
           <Text color={textColor} fontSize="md">
-            Transactions
+            Commitment Fee: {commitmentFee}
           </Text>
-          {transactions.slice(0, 2).map((transaction, index) => (
-            <Flex key={transaction.id} w="full" justify="space-between">
-              <Text color={textColor} fontSize="sm" fontWeight="medium">
-                {transaction.description}
-              </Text>
-              <Text color={textColor} fontSize="sm" fontWeight="medium">
-                ${transaction.amount.toFixed(2)}
-              </Text>
-            </Flex>
-          ))}
-          {transactions.length > 2 && (
-            <Text color={textColor} fontSize="sm" mt={2}>
-              + {transactions.length - 2} more...
+          <Text color={textColor} fontSize="md">
+            Service Fee: {serviceFee}
+          </Text>
+          {canceledBy && (
+            <Text color={textColor} fontSize="md">
+              Canceled By: {canceledBy}
             </Text>
           )}
         </VStack>
@@ -99,7 +96,7 @@ const Vault: React.FC<VaultProps> = ({ balance, transactions }) => {
           fontSize="sm"
           fontWeight="medium"
         >
-          Vault ID: {transactions[0].id}
+          Quest ID: {questId}
         </Text>
       </MotionBox>
     </Flex>

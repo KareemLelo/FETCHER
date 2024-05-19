@@ -76,9 +76,17 @@ export interface Profile {
 export interface Order {
   id: string;
   name: string;
-  price: string;
+  price: number;
   quantity: number;
   weight: number;
   direction: string;
   category: string;
+}
+
+export interface Vault {
+  questId:string
+  totalAmount : number
+  commitmentFee: number
+  serviceFee: number
+  feesDeducted: boolean
 }
