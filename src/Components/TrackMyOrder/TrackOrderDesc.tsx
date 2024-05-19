@@ -68,7 +68,6 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
     setStatusIndex(2);
     setCanceledBy(accountType);
 
-    // Apply the cancellation logic based on the different cases
     let newVaultBalance = vaultBalance;
     let newBalanceF = balanceF;
     let newBalanceQM = balanceQM;
@@ -76,7 +75,6 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
 
     if (activeStep === 0) {
       // Case 1
-
       newBalanceF += commFee;
       newBalanceQM += servFee;
     } else if (activeStep === 1) {
@@ -87,7 +85,6 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
         newSystemBalance += 0.75 * servFee;
       } else if (accountType === "Fetcher") {
         // Case 2.1
-
         newBalanceQM += servFee;
         newSystemBalance += commFee;
       }
