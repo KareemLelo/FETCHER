@@ -1,12 +1,19 @@
 import {
-  Card,
-  CardBody,
-  CardFooter,
-  Button,
-  Text,
+  Box,
+  Flex,
   Heading,
-  useColorModeValue,
+  Text,
+  HStack,
+  Icon,
+  VStack,
 } from "@chakra-ui/react";
+import {
+  FaRegCreditCard,
+  FaUser,
+  FaCalendarAlt,
+  FaLock,
+  FaWifi,
+} from "react-icons/fa";
 import { CreditInfo } from "./CreditCardForm"; // Adjust the import path as necessary
 
 interface Props {
@@ -14,57 +21,77 @@ interface Props {
 }
 
 const CreditCard = ({ creditCard }: Props) => {
-  // Use theme colors
-  const cardBg = useColorModeValue("brand.background", "brand.secondary"); // Default to secondary color for dark mode
-  const textColor = useColorModeValue("brand.text", "white");
-  const buttonBg = useColorModeValue("brand.primary", "brand.accent");
-  const buttonHoverBg = useColorModeValue("brand.accent", "brand.primary");
-  const buttonTextColor = useColorModeValue("white", "brand.text");
+  const cardBg = "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)"; // Updated gradient background
+  const textColor = "white";
+  const iconColor = "whiteAlpha.900";
 
   return (
-    <Card
-      bg={cardBg}
-      maxW="sm"
-      borderRadius="lg"
-      overflow="hidden"
-      width="300px"
-      boxShadow="xl" // Adding a shadow for better visual separation
-    >
-      <CardBody>
-        <Heading
-          fontSize="xl"
-          fontFamily="body"
-          paddingBottom={4}
-          color={textColor}
-        >
-          Visa Card
-        </Heading>
-        <Text color={textColor} pb={2}>
-          Card Number: {creditCard.cardNumber}
-        </Text>
-        <Text color={textColor} pb={2}>
-          Expiration Date: {creditCard.expirationDate}
-        </Text>
-        <Text color={textColor} pb={2}>
-          CVV: {creditCard.CVV}
-        </Text>
-        <Text color={textColor} pb={2}>
-          Card Holder: {creditCard.holderName}
-        </Text>
-      </CardBody>
-      <CardFooter display="flex" justifyContent="center">
-        <Button
-          width="200px"
-          height="50px"
-          mt="-10px"
-          bg={buttonBg}
-          color={buttonTextColor}
-          _hover={{ bg: buttonHoverBg }}
-        >
-          View Info
-        </Button>
-      </CardFooter>
-    </Card>
+    <Box position="relative" p={6} width="340px" height="fit-content">
+      {/* Background pattern */}
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        right={0}
+        bottom={0}
+        bgSize="cover"
+        bgPosition="center"
+        opacity={0.7}
+        borderRadius="lg"
+        zIndex={-1}
+      />
+
+      {/* Card */}
+      <Flex
+        bg={cardBg}
+        color={textColor}
+        p={6}
+        borderRadius="lg"
+        flexDirection="column"
+        justifyContent="space-between"
+        boxShadow="xl"
+        width="100%"
+        height="100%"
+        backdropFilter="blur(10px)"
+        border="1px solid rgba(255, 255, 255, 0.2)"
+        transform="scale(1)"
+        transition="all 0.3s ease-in-out"
+        _hover={{ transform: "scale(1.05)" }}
+      >
+        {/* Top Section */}
+        <Flex justifyContent="space-between" alignItems="center" mb={4}>
+          <Heading size="sm" fontWeight="bold">
+            {creditCard.holderName}
+          </Heading>
+          <HStack spacing={1}>
+            <Text fontSize="md">VISA</Text>
+            <Icon as={FaWifi} boxSize={4} color={iconColor} />
+          </HStack>
+        </Flex>
+
+        {/* Middle Section */}
+        <Box my={4}>
+          <Text fontSize="lg" letterSpacing="0.1em">
+            {creditCard.cardNumber}
+          </Text>
+        </Box>
+
+        {/* Bottom Section */}
+        <Flex justifyContent="space-between" alignItems="center">
+          <VStack spacing={1} alignItems="flex-start">
+            <HStack spacing={2}>
+              <Icon as={FaCalendarAlt} boxSize={4} color={iconColor} />
+              <Text fontSize="sm">{creditCard.expirationDate}</Text>
+            </HStack>
+            <HStack spacing={2}>
+              <Icon as={FaLock} boxSize={4} color={iconColor} />
+              <Text fontSize="sm">{creditCard.CVV}</Text>
+            </HStack>
+          </VStack>
+          <Icon as={FaUser} boxSize={8} color={iconColor} />
+        </Flex>
+      </Flex>
+    </Box>
   );
 };
 

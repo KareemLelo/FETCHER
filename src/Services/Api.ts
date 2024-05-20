@@ -232,16 +232,11 @@ export const getVaultById = async (questId: string) => {
       throw new Error('An unexpected error occurred while fetching vault.');
     }
   }
-};
-
-<<<<<<< HEAD
-    const response = await axios.put(`/updateQuest/${questId}`, { statusIndex, progressIndex }, config);
-=======
+}; 
 
 export const updateQuestIndices = async (questId: string, statusIndex: number, progressIndex: number) => {
   try {
     const response = await api.put(`/updateQuest/${questId}`, { statusIndex, progressIndex });
->>>>>>> e083dfcc87c5bd9f39c00f0f80bade1cb8512780
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
