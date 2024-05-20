@@ -2,25 +2,23 @@ import React, { useState } from "react";
 import {
   Box,
   Flex,
-  IconButton,
-  Image,
   useColorModeValue,
   VStack,
   Text,
   List,
   ListItem,
   Icon,
-  useDisclosure,
-  Collapse,
 } from "@chakra-ui/react";
-import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+
 import { BsCreditCard, BsAirplaneEngines } from "react-icons/bs";
 import { AiOutlineShopping } from "react-icons/ai";
 import { IoIosLogOut } from "react-icons/io";
 import { RiFileUserLine } from "react-icons/ri";
-import avatar from "../assets/Icons/Avatar.png"; // Ensure this path is correct
+
 import { motion, AnimatePresence } from "framer-motion";
 import { useContent } from "../Hooks/ContentContext";
+import Lottie from "lottie-react";
+import animationData from "../assets/Animations/Animation - 1716029187943.json";
 
 const MotionBox = motion(Box);
 const MotionListItem = motion(ListItem);
@@ -37,6 +35,7 @@ const SideBar = () => {
     { title: "My Credit Card", icon: BsCreditCard },
     { title: "New Quest", icon: AiOutlineShopping, gap: true },
     { title: "Track My Order", icon: BsAirplaneEngines },
+    { title: "Order History", icon: BsAirplaneEngines },
     { title: "Logout", icon: IoIosLogOut },
   ];
 
@@ -49,6 +48,7 @@ const SideBar = () => {
       gap: true,
     },
     { title: "Track My Progress", icon: BsAirplaneEngines },
+    { title: "Order History", icon: BsAirplaneEngines },
     { title: "Logout", icon: IoIosLogOut },
   ];
 
@@ -87,7 +87,9 @@ const SideBar = () => {
         h="full"
       >
         <VStack gap="4" alignItems={open ? "flex-start" : "center"} w="full">
-          <Image src={avatar} borderRadius="full" boxSize="50px" />
+          <Box width={"40%"}>
+            <Lottie animationData={animationData} loop autoplay />
+          </Box>
           <AnimatePresence>
             {open && (
               <MotionBox

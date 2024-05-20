@@ -15,7 +15,7 @@ const colors = {
       primary: "#6D9886",
       secondary: "#A9BFA4",
       accent: "#F2D096",
-      background: "#F4F4F2",
+      background: "#FFFFFF",
       text: "#333333",
       highlight: "#9DB4A0", // A lighter shade of primary for highlights or hover states
     alert: "#E57373", // For warnings or errors

@@ -21,6 +21,7 @@ import {
   FaSuitcaseRolling,
 } from "react-icons/fa";
 import { EditIcon, CheckIcon, CalendarIcon } from "@chakra-ui/icons";
+import { fetchQuestByAcceptor } from "../../Services/Api"; // Import the API function
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
@@ -43,9 +44,17 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   const buttonHover = useColorModeValue("brand.accent", "teal.300");
 
   const [editMode, setEditMode] = useState(false);
-  const [ticket, setTicket] = useState(flightData);
+  const [formDisabled, setFormDisabled] = useState(false);
+  const [ticket, setTicket] = useState<FlightUpdateData>({
+    depFlightNumber: "",
+    departureDate: "",
+    arrFlightNumber: "",
+    arrivalDate: "",
+    alreadyThere: false,
+  });
 
   useEffect(() => {
+    console.log("Initial flightData:", flightData);
     setTicket({
       depFlightNumber: flightData.depFlightNumber || "",
       departureDate: formatDate(flightData.departureDate),
@@ -53,6 +62,34 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
       arrivalDate: formatDate(flightData.arrivalDate),
       alreadyThere: flightData.alreadyThere || false,
     });
+  }, [flightData]);
+
+  useEffect(() => {
+    const checkQuestStatus = async () => {
+      try {
+        console.log("Initial flightData:", flightData);
+        const quest = await fetchQuestByAcceptor();
+        if (quest) {
+          console.log("Quest found:", quest);
+          setFormDisabled(true);
+        } else {
+          console.log("No quest found for acceptor");
+          setFormDisabled(false);
+        }
+        console.log("Updated ticket state:", {
+          depFlightNumber: flightData.depFlightNumber || "",
+          departureDate: formatDate(flightData.departureDate),
+          arrFlightNumber: flightData.arrFlightNumber || "",
+          arrivalDate: formatDate(flightData.arrivalDate),
+          alreadyThere: flightData.alreadyThere || false,
+        });
+      } catch (error) {
+        console.error("Error fetching quest by acceptor:", error);
+        setFormDisabled(false); // Make sure form is not disabled if there's an error
+      }
+    };
+
+    checkQuestStatus();
   }, [flightData]);
 
   const updateTicketField = (e: ChangeEvent<HTMLInputElement>) => {
@@ -147,7 +184,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
               background="brand.primary"
               onClick={handleAlreadyThere}
               w="70%"
-              isDisabled={ticket.alreadyThere}
+              isDisabled={ticket.alreadyThere || !editMode}
               _hover={{ bg: buttonHover }}
             >
               <FaPlaneArrival style={{ marginRight: 8 }} /> I'm Already There
@@ -167,7 +204,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       value={ticket.depFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Departure Flight Number"
-                      isDisabled={ticket.alreadyThere}
+                      isDisabled={ticket.alreadyThere || formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -181,7 +218,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       name="departureDate"
                       value={ticket.departureDate}
                       onChange={updateTicketField}
-                      isDisabled={ticket.alreadyThere}
+                      isDisabled={ticket.alreadyThere || formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -195,6 +232,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       value={ticket.arrFlightNumber}
                       onChange={updateTicketField}
                       placeholder="Enter Arrival Flight Number"
+                      isDisabled={formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -208,6 +246,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       name="arrivalDate"
                       value={ticket.arrivalDate}
                       onChange={updateTicketField}
+                      isDisabled={formDisabled}
                       bg={inputBg}
                     />
                   </FormControl>
@@ -237,7 +276,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="depFlightNumber"
                   value={ticket.depFlightNumber}
                   isReadOnly={true}
-                  isDisabled={ticket.alreadyThere}
+                  isDisabled={ticket.alreadyThere || formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -250,7 +289,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="departureDate"
                   value={ticket.departureDate}
                   isReadOnly={true}
-                  isDisabled={ticket.alreadyThere}
+                  isDisabled={ticket.alreadyThere || formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -264,6 +303,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="arrFlightNumber"
                   value={ticket.arrFlightNumber}
                   isReadOnly={true}
+                  isDisabled={formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -276,6 +316,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   name="arrivalDate"
                   value={ticket.arrivalDate}
                   isReadOnly={true}
+                  isDisabled={formDisabled}
                   bg={inputBg}
                 />
               </FormControl>
@@ -287,6 +328,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   _hover={{ bg: buttonHoverBg }}
+                  isDisabled={formDisabled}
                 >
                   <EditIcon mr={2} /> Edit Details
                 </MotionButton>

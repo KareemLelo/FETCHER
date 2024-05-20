@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRoutes from './userManagementComponent/userRoutes.js';
 import questRoutes from './questManagementComponent/questRoutes.js';
+import vaultRoutes from './vaultManagementComponent/vaultRoutes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use('/',userRoutes);//tells the Express. app to use the router defined in userRoutes for any HTTP requests that match the path '/api/users'
 // '/api/users': This is the base path or route prefix. The userRoutes router will handle any requests that start with this path.
 app.use('/',questRoutes);
+app.use('/',vaultRoutes);
 const PORT = process.env.PORT || 5050;
 
 app.get('/api/hello', (req, res) => {

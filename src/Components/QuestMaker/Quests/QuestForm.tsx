@@ -11,9 +11,21 @@ import {
   VStack,
   useColorModeValue,
   Flex,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { Quest } from "../../../Services/Interface";
 import { createQuest } from "../../../Services/Api";
+import {
+  FaJediOrder,
+  FaTag,
+  FaWeight,
+  FaDollarSign,
+  FaLink,
+  FaFirstOrder,
+} from "react-icons/fa";
+import { BiDirections } from "react-icons/bi";
+import { AiOutlineNumber } from "react-icons/ai";
 
 const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
   onCreate,
@@ -67,15 +79,17 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
     }
   };
 
-  const formBg = useColorModeValue("brand.highlight", "brand.highlight");
-  const borderColor = useColorModeValue("brand.dark", "brand.light"); // Changed to new color set
-  const placeholderColor = useColorModeValue("brand.dark", "brand.light"); // Changed to new color set
-  const buttonBg = useColorModeValue("brand.accent", "brand.accent"); // New highlight color for buttons
+  const formBg = useColorModeValue("brand.background", "brand.primary");
+  const borderColor = useColorModeValue("gray.200", "gray.600");
+  const placeholderColor = useColorModeValue("gray.500", "gray.400");
+  const buttonBg = useColorModeValue("teal.500", "teal.200");
   const buttonTextColor = "white";
 
   return (
     <Flex justifyContent={"center"} mt={10}>
       <Box
+        borderWidth="1px"
+        borderColor={borderColor}
         bg={formBg}
         p={8}
         borderRadius="lg"
@@ -86,80 +100,116 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
           <VStack spacing={4}>
             <FormControl isRequired>
               <FormLabel>Quest Name</FormLabel>
-              <Input
-                name="itemName"
-                value={quest.itemName}
-                onChange={handleChange}
-                placeholder="Enter Quest Name..."
-                borderColor={borderColor}
-                _placeholder={{ color: placeholderColor }}
-              />
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <FaFirstOrder color={placeholderColor} />
+                </InputLeftElement>
+                <Input
+                  name="itemName"
+                  value={quest.itemName}
+                  onChange={handleChange}
+                  placeholder="Enter Quest Name..."
+                  borderColor={borderColor}
+                  _placeholder={{ color: placeholderColor }}
+                />
+              </InputGroup>
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Item Type</FormLabel>
-              <Input
-                name="itemCategory"
-                value={quest.itemCategory}
-                onChange={handleChange}
-                placeholder="Enter Item Type..."
-                borderColor={borderColor}
-                _placeholder={{ color: placeholderColor }}
-              />
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <FaTag color={placeholderColor} />
+                </InputLeftElement>
+                <Input
+                  name="itemCategory"
+                  value={quest.itemCategory}
+                  onChange={handleChange}
+                  placeholder="Enter Item Type..."
+                  borderColor={borderColor}
+                  _placeholder={{ color: placeholderColor }}
+                />
+              </InputGroup>
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Quantity</FormLabel>
-              <NumberInput min={1} defaultValue={1}>
-                <NumberInputField
-                  name="itemQuantity"
-                  value={quest.itemQuantity.toString()}
-                  onChange={handleChange}
-                  borderColor={borderColor}
-                />
-              </NumberInput>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <AiOutlineNumber color={placeholderColor} />
+                </InputLeftElement>
+                <NumberInput min={1} defaultValue={1}>
+                  <NumberInputField
+                    name="itemQuantity"
+                    value={quest.itemQuantity.toString()}
+                    onChange={handleChange}
+                    borderColor={borderColor}
+                  />
+                </NumberInput>
+              </InputGroup>
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Direction</FormLabel>
-              <Input
-                name="itemDirection"
-                value={quest.itemDirection}
-                onChange={handleChange}
-                placeholder="Enter Item Place..."
-                borderColor={borderColor}
-                _placeholder={{ color: placeholderColor }}
-              />
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <BiDirections color={placeholderColor} />
+                </InputLeftElement>
+                <Input
+                  name="itemDirection"
+                  value={quest.itemDirection}
+                  onChange={handleChange}
+                  placeholder="Enter Item Place..."
+                  borderColor={borderColor}
+                  _placeholder={{ color: placeholderColor }}
+                />
+              </InputGroup>
             </FormControl>
             <FormControl isRequired>
               <FormLabel>Weight (kg)</FormLabel>
-              <NumberInput min={0}>
-                <NumberInputField
-                  name="itemWeight"
-                  value={quest.itemWeight.toString()}
-                  onChange={handleChange}
-                  borderColor={borderColor}
-                />
-              </NumberInput>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <FaWeight color={placeholderColor} />
+                </InputLeftElement>
+                <NumberInput min={0}>
+                  <NumberInputField
+                    name="itemWeight"
+                    value={quest.itemWeight.toString()}
+                    onChange={handleChange}
+                    borderColor={borderColor}
+                  />
+                </NumberInput>
+              </InputGroup>
             </FormControl>
+
             <FormControl isRequired>
               <FormLabel>Price (JD)</FormLabel>
-              <NumberInput min={0}>
-                <NumberInputField
-                  name="itemPrice"
-                  value={quest.itemPrice.toString()}
-                  onChange={handleChange}
-                  borderColor={borderColor}
-                />
-              </NumberInput>
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <FaDollarSign color={placeholderColor} />
+                </InputLeftElement>
+                <NumberInput min={0}>
+                  <NumberInputField
+                    name="itemPrice"
+                    value={quest.itemPrice.toString()}
+                    onChange={handleChange}
+                    borderColor={borderColor}
+                  />
+                </NumberInput>
+              </InputGroup>
             </FormControl>
             <FormControl>
               <FormLabel>Link (URL)</FormLabel>
-              <Input
-                name="itemLink"
-                value={quest.itemLink}
-                onChange={handleChange}
-                placeholder="Enter Url Here..."
-                borderColor={borderColor}
-                _placeholder={{ color: placeholderColor }}
-              />
+              <InputGroup>
+                <InputLeftElement pointerEvents="none">
+                  <FaLink color={placeholderColor} />
+                </InputLeftElement>
+                <Input
+                  name="itemLink"
+                  value={quest.itemLink}
+                  onChange={handleChange}
+                  placeholder="Enter Url Here..."
+                  borderColor={borderColor}
+                  _placeholder={{ color: placeholderColor }}
+                />
+              </InputGroup>
             </FormControl>
             <Button
               type="submit"
@@ -167,6 +217,7 @@ const QuestForm: React.FC<{ onCreate: (quest: Quest) => void }> = ({
               color={buttonTextColor}
               size="lg"
               width="full"
+              _hover={{ bg: useColorModeValue("teal.500", "teal.700") }}
             >
               Create Quest
             </Button>
