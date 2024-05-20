@@ -112,11 +112,11 @@ export const updateUserProfile = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-  // Update profile fields
-  const updates = req.body;
-  for (let key in updates) {
-    if (key in user) user[key] = updates[key];
-  }
+    // Update profile fields
+    const updates = req.body;
+    for (let key in updates) {
+      if (key in user) user[key] = updates[key];
+    }
 
     const updatedUser = await user.save();  // Save the updated user info
 

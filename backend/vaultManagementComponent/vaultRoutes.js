@@ -1,6 +1,6 @@
 import express from 'express';
 import { createVault, getVaultById, updateVault} from './vaultController.js';
-import { protectRoutes } from '../middlewares/authMiddleware.js';
+import { protectRoutes } from '../middlewares/authenticationMiddleware.js';
 
 const router = express.Router();
 
