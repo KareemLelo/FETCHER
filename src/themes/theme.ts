@@ -12,11 +12,10 @@ const breakpoints = createBreakpoints({
 
 const colors = {
     brand: {
-      primary: "#6D9886",
-      secondary: "#A9BFA4",
-      accent: "#F2D096",
+      primary: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+      hover: "linear-gradient(135deg, #6a11cb 30%, #2575fc 70%)",
       background: "#FFFFFF",
-      text: "#333333",
+      text: "gray.600",
       highlight: "#9DB4A0", // A lighter shade of primary for highlights or hover states
     alert: "#E57373", // For warnings or errors
     success: "#81C784", // For success messages

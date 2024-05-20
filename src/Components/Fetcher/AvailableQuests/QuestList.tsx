@@ -41,10 +41,10 @@ const MotionVStack = motion(VStack);
 
 const QuestList = ({ quest, onAccept }: QuestListProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const cardBg = useColorModeValue("gray.50", "gray.800");
-  const textColor = useColorModeValue("gray.700", "white");
-  const buttonBg = useColorModeValue("teal.500", "teal.200");
-  const hoverBg = useColorModeValue("teal.600", "teal.300");
+  const cardBg = "brand.background";
+  const textColor = "gray.600";
+  const buttonBg = "brand.primary";
+  const hoverBg = "brand.hover";
   const toast = useToast();
 
   const handleAcceptQuest = () => {

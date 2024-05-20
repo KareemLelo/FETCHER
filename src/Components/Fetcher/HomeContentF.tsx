@@ -87,9 +87,15 @@ const HomeContentF = () => {
         >
           <Lottie animationData={animationData} loop autoplay />
         </MotionBox>
-        <Heading size="lg" marginBottom="8px">
+        <Box
+          fontSize="3xl"
+          fontWeight="bold"
+          bgGradient="linear(to-r, #6a11cb 30%, #2575fc 70%)"
+          bgClip="text"
+          marginBottom="8px"
+        >
           No Quests Available
-        </Heading>
+        </Box>
         <Text fontSize="lg" marginBottom="16px">
           It looks like there are no available quests right now.
         </Text>

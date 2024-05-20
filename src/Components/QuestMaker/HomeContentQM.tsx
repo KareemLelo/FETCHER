@@ -7,6 +7,8 @@ import {
   AspectRatio,
   useColorModeValue,
   Flex,
+  VStack,
+  HStack,
 } from "@chakra-ui/react";
 
 const HomeContentQM: React.FC = () => {
@@ -39,12 +41,19 @@ const HomeContentQM: React.FC = () => {
   return (
     <Flex justifyContent={"center"}>
       <Box color={text} textAlign="center" p={6} w={"90%"}>
-        <Text fontSize="3xl" fontWeight="bold" mb={4}>
-          <Box as="span" color={textPrimary}>
+        <HStack display={"flex"} justifyContent={"center"}>
+          <Box
+            bgGradient={"linear(to-r, #6a11cb 30%, #2575fc 70%)"}
+            bgClip={"text"}
+            fontSize={"2xl"}
+            fontWeight={"bold"}
+          >
             Browse
           </Box>{" "}
-          The Internet
-        </Text>
+          <Box fontSize={"2xl"} fontWeight={"bold"}>
+            The Internet
+          </Box>
+        </HStack>
         <Text fontSize="lg" mb={6}>
           Save the link of the item you want and post it in the New Quest
           Section for it to be Fetched.

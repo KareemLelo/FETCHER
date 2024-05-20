@@ -6,22 +6,29 @@ import {
   useDisclosure,
   SimpleGrid,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import CreditCard from "./CreditCard";
 import { useState } from "react";
 import { CreditInfo } from "./CreditCardForm";
 import CreditCardForm from "./CreditCardForm";
+import { motion } from "framer-motion";
 
 const CreditCardGrid = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [creditCards, setCreditCards] = useState<CreditInfo[]>([
     {
-      cardNumber: "1234 5678 9012 3456",
+      cardNumber: "#### #### #### 3456",
       expirationDate: "12/24",
-      CVV: "123",
-      holderName: "John Doe",
+      CVV: "***",
+      holderName: "KAREEM LELO",
     },
   ]);
+
+  const buttonBg = "gray.600";
+  const buttonHoverBg = "brand.hover";
+  const MotionButton = motion(Button);
+  const hoverBg = useColorModeValue("gray.100", "gray.700");
 
   const handleSaveCreditCard = (newCard: CreditInfo) => {
     setCreditCards([...creditCards, newCard]);
@@ -30,15 +37,18 @@ const CreditCardGrid = () => {
 
   return (
     <Box p={4}>
-      <Button
+      <MotionButton
         size="lg"
-        backgroundColor="teal.400"
-        color="white"
-        _hover={{ backgroundColor: "teal.600" }}
+        backgroundColor={hoverBg}
+        color="black"
+        _hover={{ bg: "gray.300" }}
+        borderColor={buttonBg}
         onClick={onOpen}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
       >
         Add Credit Card
-      </Button>
+      </MotionButton>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

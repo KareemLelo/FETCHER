@@ -15,6 +15,7 @@ import {
   Icon,
   InputGroup,
   InputLeftElement,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   BsChevronDown,
@@ -53,6 +54,11 @@ const Register = () => {
   const { setContent, setAccountType } = useContent();
   const toast = useToast();
 
+  const cardBg = useColorModeValue("brand.background", "brand.primary");
+  const textColor = useColorModeValue("gray.600", "white");
+  const buttonBg = useColorModeValue("teal.500", "teal.200");
+  const buttonHoverBg = useColorModeValue("teal.600", "teal.300");
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRegisterData({ ...registerData, [name]: value });
@@ -90,17 +96,17 @@ const Register = () => {
   // Enhanced styles
   const inputStyle = {
     variant: "filled",
-    _hover: { borderColor: "brand.highlight" },
+    _hover: { borderColor: "brand.text" },
     _focus: {
       boxShadow: "0 0 0 1px var(--chakra-colors-brand-primary)",
     },
   };
 
   const buttonStyle = {
-    bg: "brand.primary",
+    bg: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
     color: "white",
-    _hover: { bg: "brand.highlight" },
-    _active: { bg: "brand.accent" },
+    _hover: { bg: "linear-gradient(135deg, #6a11cb 30%, #2575fc 70%)" },
+    _active: { bg: "linear-gradient(135deg, #6a11cb 30%, #2575fc 70%)" },
   };
 
   return (
@@ -118,14 +124,15 @@ const Register = () => {
         w="full"
       >
         <VStack spacing={4}>
-          <Text
+          <Box
             fontSize="2xl"
             fontWeight="bold"
-            color="brand.primary"
-            textAlign="center"
+            bgGradient="linear(to-r, #6a11cb 30%, #2575fc 70%)"
+            bgClip="text"
+            mr={4}
           >
             Register
-          </Text>
+          </Box>
           <Text fontSize="md" color="brand.text" mt={2}>
             Be a Fetcher or QuestMaker With Us
           </Text>

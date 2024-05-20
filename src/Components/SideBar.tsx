@@ -18,7 +18,7 @@ import { RiFileUserLine } from "react-icons/ri";
 import { motion, AnimatePresence } from "framer-motion";
 import { useContent } from "../Hooks/ContentContext";
 import Lottie from "lottie-react";
-import animationData from "../assets/Animations/Animation - 1716029187943.json";
+import animationData from "../assets/Animations/Animation - 1716029187943 (1).json";
 
 const MotionBox = motion(Box);
 const MotionListItem = motion(ListItem);
@@ -98,9 +98,14 @@ const SideBar = () => {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <Text fontSize="xl" fontWeight="medium" color={textColor}>
+                <Box
+                  fontSize="xl"
+                  bgGradient="linear(to-r, #6a11cb 30%, #2575fc 70%)"
+                  bgClip="text"
+                  fontWeight="medium"
+                >
                   {accountType === "QuestMaker" ? "QuestMaker" : "Fetcher"}
-                </Text>
+                </Box>
               </MotionBox>
             )}
           </AnimatePresence>

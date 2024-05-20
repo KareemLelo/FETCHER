@@ -57,10 +57,11 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   });
 
   const toast = useToast();
-  const cardBg = useColorModeValue("white", "gray.700");
-  const textColor = useColorModeValue("gray.700", "white");
+  const cardBg = "brand.background";
   const inputBg = useColorModeValue("white", "gray.700");
-  const buttonHoverBg = useColorModeValue("brand.primary", "teal.300");
+  const textColor = "gray.600";
+  const buttonColor = "brand.primary";
+  const buttonHoverBg = "brand.hover";
 
   useEffect(() => {
     setProfile({
@@ -202,7 +203,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                 <Flex justifyContent={"center"} mt={4} w="100%">
                   <MotionButton
                     onClick={handleSubmit}
-                    background="brand.accent"
+                    color={"white"}
+                    background={buttonColor}
                     w="60%"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -215,10 +217,12 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
                 <Flex justifyContent={"center"} mt={4} w="100%">
                   <MotionButton
                     onClick={() => setEditMode(true)}
-                    background="brand.accent"
+                    background={buttonColor}
+                    color={"white"}
                     w="60%"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    _hover={{ bg: buttonHoverBg }}
                   >
                     <EditIcon mr={2} /> Edit Profile
                   </MotionButton>

@@ -6,12 +6,16 @@ import {
   InputGroup,
   InputRightElement,
   Box,
+  useColorModeValue,
+  Text,
+  Flex,
+  VStack,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { login as apiLogin } from "../Services/Api"; // Ensure path is correct
 import { useContent } from "../Hooks/ContentContext";
 import Lottie from "lottie-react";
-import loginAnimation from "../assets/Animations/Animation - 1715715544544.json";
+import loginAnimation from "../assets/Animations/Animation - 1715715544544 (1).json";
 
 interface LoginDetails {
   username: string;
@@ -58,100 +62,119 @@ const Login = () => {
       });
     }
   };
-  return (
-    <section className=" flex items-center justify-center m-5">
-      <div className="bg-gray-100 flex rounded-2xl border-2 shadow-lg max-w-3xl p-5 min-h-max items-center">
-        <div className="md:w-1/2 px-8 md:px-16">
-          <h2 className="font-bold text-2xl text-[#6D9886]">Login</h2>
-          <p className="text-xs mt-4 text-[#333333]">
-            If you are already a member, easily log in
-          </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-7">
-            <Input
-              variant="filled"
-              bg="brand.background"
-              color="brand.text"
-              borderColor="brand.primary"
-              placeholder="Username"
-              name="username"
-              onChange={handleInputChange}
-              _focus={{
-                borderColor: "brand.primary",
-                boxShadow: `0 0 0 1px ${"#6D9886"}`,
-              }}
-              value={loginDetails.username}
-            />
-            <InputGroup>
+  const cardBg = "brand.background";
+  const textColor = "gray.600";
+  const buttonBg = "brand.primary";
+  const buttonHoverBg = "brand.hover";
+
+  return (
+    <Flex align="center" justify="center" m={5}>
+      <Flex
+        bg={cardBg}
+        rounded="2xl"
+        borderWidth="2px"
+        shadow="lg"
+        maxW="3xl"
+        p={5}
+        minH="max"
+        alignItems="center"
+      >
+        <Box w={["full", "full", "50%"]} p={[8, 16]}>
+          <Box
+            fontSize="2xl"
+            fontWeight="bold"
+            bgGradient="linear(to-r, #6a11cb 30%, #2575fc 70%)"
+            bgClip="text"
+            mb={4}
+          >
+            Login
+          </Box>
+          <Text fontSize="xs" mt={4} color={textColor}>
+            If you are already a member, easily log in
+          </Text>
+
+          <form onSubmit={handleSubmit}>
+            <VStack spacing={4} mt={7}>
               <Input
                 variant="filled"
-                pr="4.5rem"
-                type={showPassword ? "text" : "password"}
-                bg="brand.background"
-                color="brand.text"
-                borderColor="brand.primary"
-                placeholder="Password"
-                _focus={{
-                  borderColor: "brand.primary",
-                  boxShadow: `0 0 0 1px ${"#6D9886"}`,
-                }}
-                name="password"
+                color={textColor}
+                borderColor={textColor}
+                placeholder="Username"
+                name="username"
                 onChange={handleInputChange}
-                value={loginDetails.password}
+                value={loginDetails.username}
               />
-              <InputRightElement width="4.5rem">
-                <Button
-                  h="1.75rem"
-                  size="sm"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            <Button
-              mt={4}
-              bg="brand.primary"
-              color="white"
-              _hover={{ bg: "brand.highlight" }}
-              type="submit"
-            >
-              Login
-            </Button>
+              <InputGroup>
+                <Input
+                  variant="filled"
+                  pr="4.5rem"
+                  type={showPassword ? "text" : "password"}
+                  bg={cardBg}
+                  color={textColor}
+                  borderColor={textColor}
+                  placeholder="Password"
+                  name="password"
+                  onChange={handleInputChange}
+                  value={loginDetails.password}
+                />
+                <InputRightElement width="4.5rem">
+                  <Button
+                    h="1.75rem"
+                    size="sm"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <Button
+                mt={4}
+                bg={buttonBg}
+                color="white"
+                _hover={{ bg: buttonHoverBg }}
+                type="submit"
+                w="full"
+              >
+                Login
+              </Button>
+            </VStack>
           </form>
 
-          <div className="mt-5 text-xs border-b border-[#6D9886] py-4 text-[#333333]">
-            <a href="#">Forgot your password?</a>
-          </div>
+          <Box mt={5} borderBottomWidth="1px" py={4} />
 
-          <div className="mt-3 text-xs flex justify-between items-center text-[#333333]">
-            <p>Don't have an account?</p>
-            <button
-              className="py-2 px-5 bg-[#A9BFA4] border rounded-xl text-[#333333] hover:scale-110 duration-300"
+          <Flex mt={3} justify="space-between" align="center" color={textColor}>
+            <Text fontSize="xs">Don't have an account?</Text>
+            <Button
+              fontSize="sm"
+              bg={buttonBg}
+              color="white"
+              _hover={{ bg: buttonHoverBg }}
+              py={2}
+              px={5}
+              borderRadius="lg"
               onClick={() => setContent("register")}
             >
               Register
-            </button>
-          </div>
-        </div>
+            </Button>
+          </Flex>
+        </Box>
 
-        <div className="md:block hidden w-1/2">
-          <Box
-            w={["full", "full", "100%"]}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Lottie
-              animationData={loginAnimation}
-              loop
-              autoplay
-              style={{ width: "500px", height: "500px" }}
-            />
-          </Box>
-        </div>
-      </div>
-    </section>
+        <Box
+          display={["none", "none", "block"]}
+          w="50%"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Lottie
+            animationData={loginAnimation}
+            loop
+            autoplay
+            style={{ width: "500px", height: "500px" }}
+          />
+        </Box>
+      </Flex>
+    </Flex>
   );
 };
 

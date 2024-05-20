@@ -37,7 +37,6 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     agreeStatusF,
     agreeStatusQM,
     setAgreeStatusF,
-    setAgreeStatusQM,
     setComplete,
     isComplete,
     canceledBy,
@@ -57,8 +56,8 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     setSystemBalance,
   } = useOrderStatus();
 
-  const cardBg = useColorModeValue("brand.background", "brand.primary");
-  const textColor = useColorModeValue("gray.600", "white");
+  const cardBg = "brand.background";
+  const textColor = "gray.600";
 
   const progressSteps = [
     {
@@ -100,8 +99,8 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
   ];
 
   const calculateFees = (price: number, weight: number, quantity: number) => {
-    const newCommFee = quantity * weight * 10; // example calculation
-    const newServFee = price * 0.3; // example calculation
+    const newCommFee = quantity * weight * 0.4;
+    const newServFee = price * 0.3;
     setCommFee(newCommFee);
     setServFee(newServFee);
     const newVaultBalance = vaultBalance + newCommFee + newServFee;
@@ -157,7 +156,7 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     );
 
     if (activeStep === 5) {
-      const newBalanceF = balanceF + order.price + 0.5 * servFee + commFee;
+      const newBalanceF = balanceF + 0.5 * servFee + commFee;
       const newSystemBalance = systemBalance + 0.5 * servFee;
       setBalanceF(newBalanceF);
       setSystemBalance(newSystemBalance);

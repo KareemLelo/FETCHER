@@ -77,6 +77,9 @@ const NavBar = () => {
     }
   };
 
+  const buttonBg = "brand.primary";
+  const buttonHoverBg = "brand.hover";
+
   return (
     <Box
       px={4}
@@ -86,15 +89,20 @@ const NavBar = () => {
       borderColor={useColorModeValue("gray.200", "gray.700")}
     >
       <MotionFlex h={16} alignItems="center" justifyContent="space-between">
-        {/* Logo and potentially visible large screen menu items */}
         <Flex
           alignItems="center"
           justifyContent={{ base: "center", md: "start" }}
           flex={{ base: 1, md: "auto" }}
         >
-          <Text fontSize="xl" fontWeight="bold" color={color} mr={4}>
+          <Box
+            fontSize="xl"
+            fontWeight="bold"
+            bgGradient="linear(to-r, #6a11cb 30%, #2575fc 70%)"
+            bgClip="text"
+            mr={4}
+          >
             FETCHER
-          </Text>
+          </Box>
           {isLargerScreen &&
             Menus.slice(0, 2).map((item: { title: any; icon: any }) => (
               <MotionButton
@@ -138,11 +146,12 @@ const NavBar = () => {
                 whileTap={{ scale: 0.95 }}
                 width={{ base: "85px", md: "auto" }}
                 variant="solid"
-                bg={useColorModeValue("brand.primary", "gray.600")}
+                bg={buttonBg}
+                color={"white"}
                 size="sm"
                 leftIcon={<FaRegUser />}
                 onClick={() => setContent("login")}
-                _hover={{ bg: hoverBg }}
+                _hover={{ bg: buttonHoverBg }}
                 aria-label="Login"
               >
                 Login
@@ -152,7 +161,7 @@ const NavBar = () => {
                 whileTap={{ scale: 0.95 }}
                 width={{ base: "85px", md: "auto" }}
                 variant="outline"
-                borderColor={useColorModeValue("brand.primary", "gray.600")}
+                borderColor={buttonBg}
                 size="sm"
                 color={color}
                 onClick={() => setContent("register")}

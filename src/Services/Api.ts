@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { PassportUpdateData, Quest, Vault } from './Interface';
+import {Quest} from './Interface';
 
- const API_URL = "http://localhost:5050";
+const API_URL = "http://localhost:5050";
 //const API_URL = "https://fetcher-backend.onrender.com"
 const api = axios.create({
   baseURL: API_URL,
@@ -232,7 +232,8 @@ export const getVaultById = async (questId: string) => {
       throw new Error('An unexpected error occurred while fetching vault.');
     }
   }
-}; 
+};
+
 
 export const updateQuestIndices = async (questId: string, statusIndex: number, progressIndex: number) => {
   try {

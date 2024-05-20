@@ -41,6 +41,7 @@ const CreditCardForm = ({ onSave }: Props) => {
 
   const inputBg = useColorModeValue("white", "gray.700");
   const buttonHoverBg = useColorModeValue("brand.primary", "teal.300");
+  const textColor = useColorModeValue("gray.600", "white");
 
   return (
     <Box
@@ -63,8 +64,8 @@ const CreditCardForm = ({ onSave }: Props) => {
                 placeholder="Card Number"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(e.target.value)}
-                _placeholder={{ color: "whiteAlpha.800" }}
-                color="white"
+                _placeholder={{ color: textColor }}
+                color={textColor}
                 _hover={{ borderColor: "whiteAlpha.500" }}
                 _focus={{ borderColor: "whiteAlpha.700" }}
               />
@@ -77,8 +78,8 @@ const CreditCardForm = ({ onSave }: Props) => {
                 placeholder="Expiration Date"
                 value={expirationDate}
                 onChange={(e) => setExpirationDate(e.target.value)}
-                _placeholder={{ color: "whiteAlpha.800" }}
-                color="white"
+                _placeholder={{ color: textColor }}
+                color={textColor}
                 _hover={{ borderColor: "whiteAlpha.500" }}
                 _focus={{ borderColor: "whiteAlpha.700" }}
               />
@@ -91,8 +92,8 @@ const CreditCardForm = ({ onSave }: Props) => {
                 placeholder="CVV"
                 value={CVV}
                 onChange={(e) => setCVV(e.target.value)}
-                _placeholder={{ color: "whiteAlpha.800" }}
-                color="white"
+                _placeholder={{ color: textColor }}
+                color={textColor}
                 _hover={{ borderColor: "whiteAlpha.500" }}
                 _focus={{ borderColor: "whiteAlpha.700" }}
               />
@@ -105,8 +106,8 @@ const CreditCardForm = ({ onSave }: Props) => {
                 placeholder="Holder Name"
                 value={holderName}
                 onChange={(e) => setHolderName(e.target.value)}
-                _placeholder={{ color: "whiteAlpha.800" }}
-                color="white"
+                _placeholder={{ color: textColor }}
+                color={textColor}
                 _hover={{ borderColor: "whiteAlpha.500" }}
                 _focus={{ borderColor: "whiteAlpha.700" }}
               />

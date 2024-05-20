@@ -37,11 +37,10 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
 }) => {
   const toast = useToast();
   const cardBg = useColorModeValue("white", "gray.700");
-  const textColor = useColorModeValue("gray.700", "white");
-  const buttonColor = useColorModeValue("brand.accent", "teal");
+  const textColor = "gray.600";
+  const buttonColor = "brand.primary";
   const inputBg = useColorModeValue("white", "gray.600");
-  const buttonHoverBg = useColorModeValue("brand.primary", "teal.300");
-  const buttonHover = useColorModeValue("brand.accent", "teal.300");
+  const buttonHoverBg = "brand.hover";
 
   const [editMode, setEditMode] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
@@ -181,11 +180,12 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
           </Heading>
           <Flex justifyContent={"center"} w={"100%"}>
             <Button
-              background="brand.primary"
+              background={buttonColor}
               onClick={handleAlreadyThere}
+              color={"white"}
               w="70%"
               isDisabled={ticket.alreadyThere || !editMode}
-              _hover={{ bg: buttonHover }}
+              _hover={{ bg: buttonHoverBg }}
             >
               <FaPlaneArrival style={{ marginRight: 8 }} /> I'm Already There
             </Button>
@@ -257,6 +257,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       _hover={{ bg: buttonHoverBg }}
+                      color={"white"}
                     >
                       <CheckIcon mr={2} /> Save Changes
                     </MotionButton>
@@ -329,6 +330,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                   whileTap={{ scale: 0.95 }}
                   _hover={{ bg: buttonHoverBg }}
                   isDisabled={formDisabled}
+                  color={"white"}
                 >
                   <EditIcon mr={2} /> Edit Details
                 </MotionButton>

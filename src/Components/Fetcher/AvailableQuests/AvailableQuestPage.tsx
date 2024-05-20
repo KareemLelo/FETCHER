@@ -14,6 +14,7 @@ import { Quest } from "../../../Services/Interface"; // Adjust path as necessary
 import { fetchQuests, sendAcceptedQuest } from "../../../Services/Api"; // Make sure the path matches where your Api.ts file is located
 import Lottie from "lottie-react";
 import animationData from "../../../assets/Animations/Animation - 1715269984072.json";
+import { motion } from "framer-motion";
 
 const AvailableQuestPage: React.FC = () => {
   const [quests, setQuests] = useState<Quest[]>([]);
@@ -77,31 +78,43 @@ const AvailableQuestPage: React.FC = () => {
     }
   };
 
+  const MotionBox = motion(Box);
+  const MotionButton = motion(Button);
+
   const stackSpacing = { base: 3, sm: 4, md: 5 };
 
   if (!quests || quests.length === 0) {
     return (
       <Center minHeight="60vh" flexDirection="column">
-        <Box height="300px" width="300px">
+        <MotionBox
+          height="300px"
+          width="300px"
+          animate={{ scale: 1.1 }}
+          transition={{ duration: 1, yoyo: Infinity }}
+        >
           <Lottie animationData={animationData} loop autoplay />
-        </Box>
-        <Heading size="lg" marginBottom="8px">
+        </MotionBox>
+        <Box
+          fontSize="3xl"
+          fontWeight="bold"
+          bgGradient="linear(to-r, #6a11cb 30%, #2575fc 70%)"
+          bgClip="text"
+          marginBottom="8px"
+        >
           No Quests Available
-        </Heading>
+        </Box>
         <Text fontSize="lg" marginBottom="16px">
           It looks like there are no available quests right now.
         </Text>
-        <Button
+        <MotionButton
           colorScheme="blue"
           onClick={() =>
             setTimeout(() => {
               fetchQuests()
                 .then((quests) => {
                   setQuests(quests);
-                  console.log("Updated quests after acceptance:", quests);
                 })
                 .catch((error) => {
-                  console.error("Error re-fetching quests:", error);
                   toast({
                     title: "Error",
                     description: "Failed to refresh quests",
@@ -112,9 +125,11 @@ const AvailableQuestPage: React.FC = () => {
                 });
             }, 2100)
           }
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
           Refresh
-        </Button>
+        </MotionButton>
       </Center>
     );
   }

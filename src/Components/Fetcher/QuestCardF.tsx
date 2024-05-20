@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -35,8 +34,8 @@ const MotionButton = motion(Button);
 const QuestCards = ({ quest, onAccept }: Props) => {
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("gray.600", "white");
-  const buttonBg = useColorModeValue("teal.500", "teal.200");
-  const buttonHoverBg = useColorModeValue("teal.600", "teal.300");
+  const buttonBg = "brand.primary";
+  const buttonHoverBg = "brand.hover";
   const toast = useToast();
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
@@ -126,7 +125,7 @@ const QuestCards = ({ quest, onAccept }: Props) => {
         rounded="lg"
         overflow="hidden"
         borderWidth="1px"
-        borderColor={useColorModeValue("gray.300", "gray.600")}
+        borderColor={borderColor}
         initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: -10, opacity: 0 }}
