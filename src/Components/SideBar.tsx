@@ -10,7 +10,11 @@ import {
   Icon,
 } from "@chakra-ui/react";
 
-import { BsCreditCard, BsAirplaneEngines } from "react-icons/bs";
+import {
+  BsCreditCard,
+  BsAirplaneEngines,
+  BsClockHistory,
+} from "react-icons/bs";
 import { AiOutlineShopping } from "react-icons/ai";
 import { IoIosLogOut } from "react-icons/io";
 import { RiFileUserLine } from "react-icons/ri";
@@ -35,7 +39,7 @@ const SideBar = () => {
     { title: "My Credit Card", icon: BsCreditCard },
     { title: "New Quest", icon: AiOutlineShopping, gap: true },
     { title: "Track My Order", icon: BsAirplaneEngines },
-    { title: "Order History", icon: BsAirplaneEngines },
+    { title: "Order History", icon: BsClockHistory },
     { title: "Logout", icon: IoIosLogOut },
   ];
 
@@ -48,7 +52,7 @@ const SideBar = () => {
       gap: true,
     },
     { title: "Track My Progress", icon: BsAirplaneEngines },
-    { title: "Order History", icon: BsAirplaneEngines },
+    { title: "Order History", icon: BsClockHistory },
     { title: "Logout", icon: IoIosLogOut },
   ];
 

@@ -27,7 +27,6 @@ const CreditCard = ({ creditCard }: Props) => {
 
   return (
     <Box position="relative" p={6} width="340px" height="fit-content">
-      {/* Background pattern */}
       <Box
         position="absolute"
         top={0}
@@ -41,7 +40,6 @@ const CreditCard = ({ creditCard }: Props) => {
         zIndex={-1}
       />
 
-      {/* Card */}
       <Flex
         bg={cardBg}
         color={textColor}
@@ -58,7 +56,6 @@ const CreditCard = ({ creditCard }: Props) => {
         transition="all 0.3s ease-in-out"
         _hover={{ transform: "scale(1.05)" }}
       >
-        {/* Top Section */}
         <Flex justifyContent="space-between" alignItems="center" mb={4}>
           <Heading size="sm" fontWeight="bold">
             {creditCard.holderName}
@@ -69,14 +66,12 @@ const CreditCard = ({ creditCard }: Props) => {
           </HStack>
         </Flex>
 
-        {/* Middle Section */}
         <Box my={4}>
           <Text fontSize="lg" letterSpacing="0.1em">
             {creditCard.cardNumber}
           </Text>
         </Box>
 
-        {/* Bottom Section */}
         <Flex justifyContent="space-between" alignItems="center">
           <VStack spacing={1} alignItems="flex-start">
             <HStack spacing={2}>

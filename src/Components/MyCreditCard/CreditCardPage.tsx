@@ -18,9 +18,9 @@ const CreditCardGrid = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [creditCards, setCreditCards] = useState<CreditInfo[]>([
     {
-      cardNumber: "#### #### #### 3456",
+      cardNumber: "2365 1123 8734 3456",
       expirationDate: "12/24",
-      CVV: "***",
+      CVV: "907",
       holderName: "KAREEM LELO",
     },
   ]);
@@ -55,7 +55,7 @@ const CreditCardGrid = () => {
           <CreditCardForm onSave={handleSaveCreditCard} />
         </ModalContent>
       </Modal>
-      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={6} mt={4}>
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} spacing={2} mt={4}>
         {creditCards.map((creditCard, index) => (
           <CreditCard key={index} creditCard={creditCard} />
         ))}

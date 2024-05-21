@@ -34,11 +34,8 @@ const MotionButton = motion(Button);
 const NavBar = () => {
   const { isOpen, onToggle } = useDisclosure();
   const { setContent, accountType, logout } = useContent();
-
-  // Determine screen size to manage content visibility
   const isLargerScreen = useBreakpointValue({ base: false, md: true });
 
-  // Decide which menus to show in the NavBar based on the account type
   const allMenus = {
     QuestMaker: [
       { title: "Home", icon: AiFillHome },
@@ -63,12 +60,12 @@ const NavBar = () => {
   const Menus =
     accountType === "QuestMaker" ? allMenus.QuestMaker : allMenus.Fetcher;
 
-  // Background and color settings
   const bg = useColorModeValue("white", "gray.800");
   const color = useColorModeValue("gray.600", "white");
   const hoverBg = useColorModeValue("gray.100", "gray.700");
+  const buttonBg = "brand.primary";
+  const buttonHoverBg = "brand.hover";
 
-  // Handler for menu item click
   const handleMenuClick = (title: string) => {
     if (title === "Logout") {
       logout();
@@ -76,9 +73,6 @@ const NavBar = () => {
       setContent(title);
     }
   };
-
-  const buttonBg = "brand.primary";
-  const buttonHoverBg = "brand.hover";
 
   return (
     <Box
@@ -177,12 +171,12 @@ const NavBar = () => {
           {accountType && (
             <Popover isOpen={isOpen} onClose={onToggle}>
               <PopoverTrigger>
-                <MotionButton
+                <IconButton
                   aria-label="Open Menu"
                   icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
                   onClick={onToggle}
                   bg={bg}
-                  color={color}
+                  color={buttonBg}
                   _hover={{ bg: hoverBg }}
                   size="md"
                   m={{ base: 1, md: 2 }}

@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 
 const HomeContentQM: React.FC = () => {
-  const textPrimary = useColorModeValue("brand.primary", "brand.primary"); // Changed to new color set
   const text = useColorModeValue("brand.text", "brand.text"); // New highlight color for buttons
 
   const items = [
@@ -40,7 +39,7 @@ const HomeContentQM: React.FC = () => {
 
   return (
     <Flex justifyContent={"center"}>
-      <Box color={text} textAlign="center" p={6} w={"90%"}>
+      <Box color={text} textAlign="center" p={1} w={"90%"}>
         <HStack display={"flex"} justifyContent={"center"}>
           <Box
             bgGradient={"linear(to-r, #6a11cb 30%, #2575fc 70%)"}

@@ -31,12 +31,6 @@ const validateCreateQuest = [
     .isFloat({ min: 0 })
     .withMessage('Weight must be a non-negative number'),
 
-  body('itemLink')
-    .optional()
-    .trim()
-    .isURL()
-    .withMessage('Invalid URL'),
-
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -50,7 +50,6 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
         borderColor={borderColor}
         p={6}
         role="group"
-        _hover={{ boxShadow: "2xl", bg: hoverBg, transform: "scale(1.02)" }}
       >
         <Heading
           fontSize="2xl"
