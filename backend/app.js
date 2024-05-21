@@ -1,4 +1,8 @@
 import express from "express";
+import fs from 'fs';
+import https from 'https';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import mongoose from "mongoose";
 import userRoutes from './userManagementComponent/userRoutes.js';
 import questRoutes from './questManagementComponent/questRoutes.js';
@@ -30,16 +34,20 @@ app.use('/',userRoutes);//tells the Express. app to use the router defined in us
 // '/api/users': This is the base path or route prefix. The userRoutes router will handle any requests that start with this path.
 app.use('/',questRoutes);
 app.use('/',vaultRoutes);
+
 const PORT = process.env.PORT || 5050;
 
-app.get('/api/hello', (req, res) => {
-  res.status(200).send('Hello, world!');
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const startServer = async () => {
-    app.listen(PORT, () => {
-      console.log(`Server running on ${PORT}`);
-    });
+const keyPath = path.join(__dirname, '../certificates/localhost+2-key.pem');
+const certPath = path.join(__dirname, '../certificates/localhost+2.pem');
+
+const options = {
+  key: fs.readFileSync(keyPath),
+  cert: fs.readFileSync(certPath)
 };
-  
-startServer();
+
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`Server running on https://localhost:${PORT}`);
+});
