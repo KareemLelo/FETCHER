@@ -33,6 +33,10 @@ app.use('/',vaultRoutes);
 
 const PORT = process.env.PORT || 5050;
 
+app.get('/hello', (req, res) => {
+  res.send('Hello, World!');
+});
+
 const startServer = async () => {
   app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
