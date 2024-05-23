@@ -34,7 +34,7 @@ app.use('/',vaultRoutes);
 const PORT = process.env.PORT || 5050;
 
 const startServer = async () => {
-  app.listen(PORT, () => {
+  app.listen(() => {
     console.log(`Server running on ${PORT}`);
   });
 };
