@@ -136,61 +136,44 @@ const QuestCards = ({ quest, onAccept }: Props) => {
             {quest.itemName}
           </Heading>
           <VStack spacing={2} align={"start"}>
-            <Text
-              fontSize="md"
-              color={textColor}
-              display="flex"
-              alignItems="center"
-            >
-              <Icon as={FaBoxOpen} mr={2} /> Type: {quest.itemCategory}
-            </Text>
-            <Text
-              fontSize="md"
-              color={textColor}
-              display="flex"
-              alignItems="center"
-            >
-              <Icon as={FaWeightHanging} mr={2} /> Weight: {quest.itemWeight} Kg
-            </Text>
-            <Text
-              fontSize="md"
-              color={textColor}
-              display="flex"
-              alignItems="center"
-            >
-              <Icon as={FaMapMarkedAlt} mr={2} /> Direction:{" "}
-              {quest.itemDirection}
-            </Text>
-            <Text
-              fontSize="md"
-              color={textColor}
-              display="flex"
-              alignItems="center"
-            >
-              <Icon as={FaMoneyBillWave} mr={2} /> Price: {quest.itemPrice} JD
-            </Text>
+            <Flex align="center">
+              <Icon as={FaBoxOpen} mr={2} />
+              <Text fontSize="md" color={textColor}>
+                Type: {quest.itemCategory}
+              </Text>
+            </Flex>
+            <Flex align="center">
+              <Icon as={FaWeightHanging} mr={2} />
+              <Text fontSize="md" color={textColor}>
+                Weight: {quest.itemWeight} Kg
+              </Text>
+            </Flex>
+            <Flex align="center">
+              <Icon as={FaMapMarkedAlt} mr={2} />
+              <Text fontSize="md" color={textColor}>
+                Direction: {quest.itemDirection}
+              </Text>
+            </Flex>
+            <Flex align="center">
+              <Icon as={FaMoneyBillWave} mr={2} />
+              <Text fontSize="md" color={textColor}>
+                Price: {quest.itemPrice} JD
+              </Text>
+            </Flex>
             {quest.itemLink ? (
-              <Text
-                fontSize="lg"
-                color={textColor}
-                display="flex"
-                alignItems="center"
-              >
+              <Flex align="center">
                 <Icon as={ExternalLinkIcon} mr={2} />
                 <Link pl={1} href={quest.itemLink} target="_blank" isExternal>
                   Item Link <ExternalLinkIcon mx="2px" />
                 </Link>
-              </Text>
+              </Flex>
             ) : (
-              <Text
-                fontSize="lg"
-                color={textColor}
-                display="flex"
-                alignItems="center"
-              >
+              <Flex align="center">
                 <Icon as={FaBan} mr={2} />
-                <Text pl={1}>No Link Provided</Text>
-              </Text>
+                <Text pl={1} fontSize="md" color={textColor}>
+                  No Link Provided
+                </Text>
+              </Flex>
             )}
           </VStack>
           <MotionButton
