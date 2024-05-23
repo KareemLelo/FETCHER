@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {Quest} from './Interface';
 
-const API_URL = "http://localhost:5050";
-//const API_URL = "https://fetcher-backend.onrender.com"
+/* const API_URL = "http://localhost:5050"; */
+const API_URL = "https://fetcher-backend.onrender.com"
 const api = axios.create({
   baseURL: API_URL,
   headers: {
