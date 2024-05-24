@@ -55,6 +55,23 @@ export const getQuestByCreator = async (req, res) => {
   }
 };
 
+export const getAllQuestsByCreator = async (req, res) => {
+  if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "Unauthorized access: No user ID found." });
+  }
+  try {
+      const quests = await Quest.findAllByCreator(req.user._id);
+
+      if (!quests.length) {
+          return res.status(404).json({ message: "No quests found for this user." });
+      }
+      res.status(200).json(quests);
+  } catch (error) {
+      console.error('Error fetching quests by creator:', error);
+      res.status(500).json({ message: 'Error fetching quests' });
+  }
+};
+
 export const getQuestByCreatorTrackOrder = async (req, res) => {
   if (!req.user || !req.user._id) {
     return res.status(401).json({ message: "Unauthorized access: No user ID found." });
@@ -98,7 +115,24 @@ export const getQuestByAcceptor = async (req, res) => {
     res.status(500).json({ message: 'Error fetching quest' });
   }
 };
- 
+
+export const getAllQuestsByAcceptor = async (req, res) => {
+  if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "Unauthorized access: No user ID found." });
+  }
+  try {
+      const quests = await Quest.findAllByAcceptor(req.user._id);
+
+      if (!quests.length) {
+          return res.status(404).json({ message: "No quests found for this acceptor." });
+      }
+      res.status(200).json(quests);
+  } catch (error) {
+      console.error('Error fetching quests by acceptor:', error);
+      res.status(500).json({ message: 'Error fetching quests' });
+  }
+};
+
 export const updateQuestIndices = async (req, res) => {
   const { questId } = req.params;
   const { statusIndex, progressIndex } = req.body;  // Corrected destructuring

@@ -52,6 +52,11 @@ class Quest {
     static async findByCreator(creatorId) {
       return await QuestModel.findOne({ createdBy: creatorId, statusIndex: { $in: [0, 1] } });
     }
+
+    static async findAllByCreator(creatorId) {
+      return await QuestModel.find({ createdBy: creatorId });
+    }
+
     static async findByCreatorTrackOrder(creatorId, statusIndex) {
       return await QuestModel.findOne({ createdBy: creatorId, statusIndex: statusIndex });
     }
@@ -67,13 +72,18 @@ class Quest {
       }
       return quest;
     }
+
     static async find(criteria) {
       return await QuestModel.find(criteria); // Use lean for performance if you don't need a full Mongoose document
     }
+
     static async findQuestByAcceptor(acceptedById, statusIndex) {
       return await QuestModel.findOne({acceptedBy: acceptedById,statusIndex: statusIndex});
     }  
-  
+    
+    static async findAllByAcceptor(acceptorId) {
+      return await QuestModel.find({ acceptedBy: acceptorId });
+  }
     async save() {
       // Create a new document in the database from the data provided to the class.
       const newQuest = new this.model(this.data);
