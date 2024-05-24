@@ -219,22 +219,6 @@ export const fetchQuestByAcceptor = async (): Promise<Quest | null> => {
   }
 };
 
-export const getVaultById = async (questId: string) => {
-  try {
-    const response = await api.get(`/vaults/getVault/${questId}`);
-    return response.data;
-  } catch (error: any) {
-    if (axios.isAxiosError(error)) {
-      console.error('Get vault by ID API error:', error.response?.data || error.message);
-      throw new Error(error.response?.data.message || "Error fetching vault");
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred while fetching vault.');
-    }
-  }
-};
-
-
 export const updateQuestIndices = async (questId: string, statusIndex: number, progressIndex: number) => {
   try {
     const response = await api.put(`/updateQuest/${questId}`, { statusIndex, progressIndex });
@@ -265,20 +249,48 @@ export const updateCanceledBy = async (questId: string, canceledBy: string) => {
   }
 };
 
-export const createVaultEntry = async (vaultData: { questId: string; totalAmount: number; commitmentFee: number; serviceFee: number; feesDeducted: boolean; }) => {
+export const createVaultEntry = async (vaultData: { questId: string; vaultBalance: number; commitmentFee: number; serviceFee: number; feesDeducted: boolean; }) => {
   try {
-    const response = await axios.post('/vaults/createVault', vaultData);
+    const response = await api.post('/vaults/createVault', vaultData);
     return response.data;
-  } catch (error) {
-    throw new Error('Failed to create vault entry');
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Create vault entry API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || 'Failed to create vault entry');
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred during vault entry creation.');
+    }
   }
 };
 
-export const updateVault = async (vaultId: string, updateData: { vaultBalance: number, commitmentFee: number, serviceFee: number, feesDeducted: boolean }) => {
+export const getVaultByQuestId = async (questId: string) => {
   try {
-    const response = await axios.put(`/api/vaults/updateVault/${vaultId}`, updateData);
+    const response = await api.get(`/vaults/getVault/${questId}`);
     return response.data;
-  } catch (error) {
-    throw new Error('Failed to update vault');
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Get vault by ID API error:', error.response?.data || error.message);
+      return null;
+      throw new Error(error.response?.data.message || "Error fetching vault");
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while fetching vault.');
+    }
+  }
+};
+
+export const updateVaultBalance = async (questId: string, vaultBalance: number) => {
+  try {
+    const response = await api.put(`/vaults/updateVault/${questId}`, { vaultBalance });
+    return response.data;
+  } catch (error: any) {
+    if (axios.isAxiosError(error)) {
+      console.error('Update vault balance API error:', error.response?.data || error.message);
+      throw new Error(error.response?.data.message || 'Failed to update vault balance');
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred while updating the vault balance.');
+    }
   }
 };

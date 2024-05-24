@@ -69,29 +69,44 @@ const QuestCards = ({ quest, onAccept }: Props) => {
         return;
       }
 
-      const { passportNumber, nationality, passportExpDate } =
-        profileData.passportDetails;
-      const { depFlightNumber, departureDate, arrFlightNumber, arrivalDate } =
-        profileData.flightDetails;
+      // Check if flight details are empty strings
+      const {
+        departureDate,
+        arrivalDate,
+        depFlightNumber,
+        arrFlightNumber,
+        alreadyThere,
+      } = profileData.flightDetails;
 
-      if (
-        !passportNumber ||
-        !nationality ||
-        !passportExpDate ||
-        !depFlightNumber ||
-        !departureDate ||
-        !arrFlightNumber ||
-        !arrivalDate
-      ) {
-        toast({
-          title: "Incomplete Profile",
-          description:
-            "Please fill in your passport and flight details before accepting a quest.",
-          status: "warning",
-          duration: 3000,
-          isClosable: true,
-        });
-        return;
+      if (alreadyThere) {
+        if (!arrivalDate || !arrFlightNumber) {
+          toast({
+            title: "Incomplete Flight Details",
+            description:
+              "Please ensure all flight details are filled in before accepting a quest.",
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+          });
+          return;
+        }
+      } else {
+        if (
+          !departureDate ||
+          !arrivalDate ||
+          !depFlightNumber ||
+          !arrFlightNumber
+        ) {
+          toast({
+            title: "Incomplete Flight Details",
+            description:
+              "Please ensure all flight details are filled in before accepting a quest.",
+            status: "warning",
+            duration: 3000,
+            isClosable: true,
+          });
+          return;
+        }
       }
 
       onAccept(quest._id);

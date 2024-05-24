@@ -17,12 +17,19 @@ import {
 } from "react-icons/fa";
 import { MdShoppingCart } from "react-icons/md";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
-import { Order, Quest } from "../../Services/Interface";
-import { updateQuestIndices } from "../../Services/Api";
+import { Order } from "../../Services/Interface";
+import {
+  getVaultByQuestId,
+  updateQuestIndices,
+  updateVaultBalance,
+} from "../../Services/Api";
 import Lottie from "lottie-react";
 import animationData from "../../assets/Animations/Animation - 1715874839862.json";
 
-const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
+const TrackOrderQM: React.FC<{ order: Order; onAgree: () => void }> = ({
+  order,
+  onAgree,
+}) => {
   const {
     activeStep,
     setAgreeStatusQM,
@@ -55,15 +62,25 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
   ];
 
   const updateStatus = async () => {
+    let fetchedVault = await getVaultByQuestId(order.id);
+    console.log("order . id :", order.id);
     if (activeStep === 2 && !agreeStatusQM) {
       setAgreeStatusQM(true);
-      const newVaultBalance = vaultBalance + order.price;
+      const currentVaultBalance = fetchedVault.vaultBalance;
+      const newVaultBalance = currentVaultBalance + order.price;
       const newBalanceQM = balanceQM - order.price;
+
       setBalanceQM(newBalanceQM);
       setVaultBalance(newVaultBalance);
-      console.log("vaultbalance:", vaultBalance, "q:", balanceQM);
+      console.log("vaultbalance:", newVaultBalance, "q:", newBalanceQM);
 
       await updateQuestIndices(order.id, statusIndex, activeStep); // Assuming a direct mapping
+
+      // Update the vault balance in the backend
+      await updateVaultBalance(fetchedVault.questId, newVaultBalance);
+      console.log("Vault balance updated:", newVaultBalance);
+
+      onAgree(); // Call the refresh function from the parent component
     }
   };
 
@@ -97,7 +114,7 @@ const TrackOrderQM: React.FC<{ order: Order }> = ({ order }) => {
           <Button
             colorScheme={"yellow"}
             onClick={updateStatus}
-            isDisabled={agreeStatusQM || canceledBy != ""}
+            isDisabled={agreeStatusQM || canceledBy !== ""}
           >
             Agree
           </Button>

@@ -26,9 +26,13 @@ class Vault {
     static async findById(id) {
       return VaultModel.findById(id).lean();
     }
+
+    static async findByQuestId(questId) {
+      return VaultModel.findOne({ questId }).lean();
+    }
   
-    static async updateById(id, updates) {
-      return VaultModel.findByIdAndUpdate(id, updates, { new: true });
+    static async updateByQuestId(questId, updates) {
+      return VaultModel.findOneAndUpdate({ questId }, updates, { new: true });
     }
   
     static async deleteById(id) {

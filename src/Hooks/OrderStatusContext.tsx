@@ -19,6 +19,8 @@ interface OrderStatus {
   price: number;
   weight: number;
   quantity: number;
+  alreadyThere: boolean;
+  setAlreadyThere: (alreadyThere: boolean) => void;
   setPrice: (price: number) => void;
   setWeight: (weight: number) => void;
   setQuantity: (quantity: number) => void;
@@ -53,6 +55,7 @@ export const useOrderStatus = () => {
 export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [alreadyThere, setAlreadyThere] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [statusIndex, setStatusIndex] = useState(0);
   const [progressIndex, setProgressIndex] = useState(0);
@@ -73,6 +76,10 @@ export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleSetAgreeStatusQM = useCallback((status: boolean) => {
     setAgreeStatusQM(status);
+  }, []);
+
+  const handleSetAlredyThere = useCallback((status: boolean) => {
+    setAlreadyThere(status);
   }, []);
 
   const handleSetAgreeStatusF = useCallback((status: boolean) => {
@@ -140,6 +147,7 @@ export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <OrderStatusContext.Provider
       value={{
+        alreadyThere,
         activeStep,
         statusIndex,
         progressIndex,
@@ -157,6 +165,7 @@ export const OrderStatusProvider: React.FC<{ children: React.ReactNode }> = ({
         price,
         quantity,
         weight,
+        setAlreadyThere: handleSetAlredyThere,
         setQuantity: handleSetQuantity,
         setWeight: handleSetWeight,
         setPrice: handleSetPrice,

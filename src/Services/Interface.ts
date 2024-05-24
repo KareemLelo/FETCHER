@@ -83,9 +83,9 @@ export interface Order {
   category: string;
 }
 
-export interface Vault {
+export interface VaultInfo {
   questId:string
-  totalAmount : number
+  vaultBalance : number
   commitmentFee: number
   serviceFee: number
   feesDeducted: boolean

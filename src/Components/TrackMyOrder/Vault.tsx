@@ -11,25 +11,14 @@ import Lottie from "lottie-react";
 import safeAnimation from "../../assets/Animations/Animation - 1715706627765.json"; // Path to your Lottie JSON file
 import { FaDollarSign } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { VaultInfo } from "../../Services/Interface";
+import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 
-interface VaultProps {
-  questId: string;
-  commitmentFee: number;
-  serviceFee: number;
-  vaultBalance: number;
-  canceledBy: string;
-}
-
-const Vault: React.FC<VaultProps> = ({
-  questId,
-  commitmentFee,
-  serviceFee,
-  vaultBalance,
-  canceledBy,
-}) => {
+const Vault: React.FC<{ vault: VaultInfo }> = ({ vault }) => {
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("gray.600", "white");
   const MotionBox = motion(Box);
+  const { canceledBy } = useOrderStatus();
 
   return (
     <Flex align="center" justify="center" p={4}>
@@ -72,13 +61,13 @@ const Vault: React.FC<VaultProps> = ({
         >
           <Text color={textColor} fontSize="xl" fontWeight="bold">
             <Icon as={FaDollarSign} mr={2} />
-            Total Amount: {vaultBalance}
+            Total Amount: {vault.vaultBalance}
           </Text>
           <Text color={textColor} fontSize="md">
-            Commitment Fee: {commitmentFee}
+            Commitment Fee: {vault.commitmentFee}
           </Text>
           <Text color={textColor} fontSize="md">
-            Service Fee: {serviceFee}
+            Service Fee: {vault.serviceFee}
           </Text>
           {canceledBy && (
             <Text color={textColor} fontSize="md">
@@ -96,7 +85,7 @@ const Vault: React.FC<VaultProps> = ({
           fontSize="sm"
           fontWeight="medium"
         >
-          Quest ID: {questId}
+          Quest ID: {vault.questId}
         </Text>
       </MotionBox>
     </Flex>

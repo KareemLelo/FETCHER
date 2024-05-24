@@ -22,6 +22,7 @@ import {
 } from "react-icons/fa";
 import { EditIcon, CheckIcon, CalendarIcon } from "@chakra-ui/icons";
 import { fetchQuestByAcceptor } from "../../Services/Api"; // Import the API function
+import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
@@ -44,6 +45,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
 
   const [editMode, setEditMode] = useState(false);
   const [formDisabled, setFormDisabled] = useState(false);
+  const { setAlreadyThere } = useOrderStatus();
   const [ticket, setTicket] = useState<FlightUpdateData>({
     depFlightNumber: "",
     departureDate: "",
@@ -84,7 +86,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
         });
       } catch (error) {
         console.error("Error fetching quest by acceptor:", error);
-        setFormDisabled(false); // Make sure form is not disabled if there's an error
+        setFormDisabled(false);
       }
     };
 
@@ -102,22 +104,38 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
   const handleTicketSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const updatedData = {
-        ...ticket,
-        departureDate: new Date(ticket.departureDate).toISOString(),
-        arrivalDate: new Date(ticket.arrivalDate).toISOString(),
-      };
-
-      await onSave(updatedData);
-      setTicket(updatedData);
-      setEditMode(false);
-      toast({
-        title: "Flight Details Updated",
-        description: "Your flight details were successfully updated.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
+      if (ticket.departureDate) {
+        const updatedData = {
+          ...ticket,
+          departureDate: new Date(ticket.departureDate).toISOString(),
+          arrivalDate: new Date(ticket.arrivalDate).toISOString(),
+        };
+        await onSave(updatedData);
+        setTicket(updatedData);
+        setEditMode(false);
+        toast({
+          title: "Flight Details Updated",
+          description: "Your flight details were successfully updated.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        const updatedData = {
+          ...ticket,
+          arrivalDate: new Date(ticket.arrivalDate).toISOString(),
+        };
+        await onSave(updatedData);
+        setTicket(updatedData);
+        setEditMode(false);
+        toast({
+          title: "Flight Details Updated",
+          description: "Your flight details were successfully updated.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     } catch (error) {
       console.error("Error saving flight details:", error);
       toast({
@@ -134,14 +152,24 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
     try {
       const updatedData = {
         ...ticket,
-        alreadyThere: true,
+        alreadyThere: !ticket.alreadyThere,
       };
 
       await onSave(updatedData);
-      setTicket(updatedData);
+      setTicket((prev) => ({
+        ...prev,
+        alreadyThere: !prev.alreadyThere,
+      }));
+      if (updatedData.alreadyThere) {
+        setAlreadyThere(true);
+      } else {
+        setAlreadyThere(false);
+      }
       toast({
         title: "Update Successful",
-        description: "You have marked yourself as already there!",
+        description: updatedData.alreadyThere
+          ? "You have marked yourself as already there!"
+          : "You have marked yourself as not yet there.",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -184,7 +212,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
               onClick={handleAlreadyThere}
               color={"white"}
               w="70%"
-              isDisabled={ticket.alreadyThere || !editMode}
+              isDisabled={formDisabled || !editMode}
               _hover={{ bg: buttonHoverBg }}
             >
               <FaPlaneArrival style={{ marginRight: 8 }} /> I'm Already There
@@ -196,8 +224,7 @@ const TicketDetails: React.FC<TicketDetailsProps> = ({
                 <VStack spacing={4}>
                   <FormControl isRequired>
                     <FormLabel>
-                      <Icon as={FaPlaneDeparture} mr={2} /> Departure Flight
-                      Number
+                      <Icon as={FaPlaneDeparture} /> Departure Flight Number
                     </FormLabel>
                     <Input
                       name="depFlightNumber"

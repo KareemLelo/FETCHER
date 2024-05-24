@@ -2,8 +2,8 @@ import Vault from './vault.js';
 
 export const createVault = async (req, res) => {
   try {
-    const { questId, vaultBalance, commitmentFee, serviceFee } = req.body;
-    const newVault = await Vault.create({ questId, vaultBalance, commitmentFee, serviceFee });
+    const { questId, vaultBalance, commitmentFee, serviceFee,feesDeducted } = req.body;
+    const newVault = await Vault.create({ questId, vaultBalance, commitmentFee, serviceFee,feesDeducted });
     res.status(201).json(newVault);
   } catch (error) {
     console.error('Error creating vault:', error);
@@ -11,9 +11,9 @@ export const createVault = async (req, res) => {
   }
 };
 
-export const getVaultById = async (req, res) => {
+export const getVaultByQuestId = async (req, res) => {
   try {
-    const vault = await Vault.findById(req.params.id);
+    const vault = await Vault.findByQuestId(req.params.questId);
 
     if (!vault) {
       return res.status(404).json({ message: 'Vault not found' });
@@ -26,10 +26,10 @@ export const getVaultById = async (req, res) => {
   }
 };
 
-export const updateVault = async (req, res) => {
+export const updateVaultBalance = async (req, res) => {
   try {
-    const { vaultBalance, commitmentFee, serviceFee, feesDeducted } = req.body;
-    const updatedVault = await Vault.updateById(req.params.id, { vaultBalance, commitmentFee, serviceFee, feesDeducted });
+    const { vaultBalance } = req.body;
+    const updatedVault = await Vault.updateByQuestId(req.params.questId, { vaultBalance });
 
     if (!updatedVault) {
       return res.status(404).json({ message: 'Vault not found' });

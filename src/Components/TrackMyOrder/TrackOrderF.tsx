@@ -22,9 +22,9 @@ import { motion } from "framer-motion";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 import { Order } from "../../Services/Interface";
 import {
+  fetchProfileData,
   updateFlightDetails,
   updateQuestIndices,
-  updateVault,
 } from "../../Services/Api";
 
 const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
@@ -43,13 +43,7 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     commFee,
     servFee,
     vaultBalance,
-    setCommFee,
-    setServFee,
-    setVaultBalance,
-    setFeesDeducted,
-    feesDeducted,
     setBalanceF,
-    setBalanceQM,
     balanceF,
     balanceQM,
     systemBalance,
@@ -98,45 +92,6 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
     },
   ];
 
-  const calculateFees = (price: number, weight: number, quantity: number) => {
-    const newCommFee = quantity * weight * 0.4;
-    const newServFee = price * 0.3;
-    setCommFee(newCommFee);
-    setServFee(newServFee);
-    const newVaultBalance = vaultBalance + newCommFee + newServFee;
-    setVaultBalance(newVaultBalance);
-
-    const newBalanceF = balanceF - newCommFee;
-    const newBalanceQM = balanceQM - newServFee;
-    setBalanceF(newBalanceF);
-    setBalanceQM(newBalanceQM);
-
-    setFeesDeducted(true);
-  };
-
-  if (activeStep === 0 && statusIndex === 1 && !feesDeducted) {
-    calculateFees(order.price, order.weight, order.quantity);
-    console.log(
-      "commfee:",
-      commFee,
-      "servfee:",
-      servFee,
-      "vaultbalance:",
-      vaultBalance,
-      systemBalance,
-      "f:",
-      balanceF,
-      "q:",
-      balanceQM
-    );
-    /* await updateVault(order.id, {
-      vaultBalance,
-      commFee,
-      servFee,
-      feesDeducted: true,
-    }); */
-  }
-
   const advanceStep = async () => {
     let newProgressIndex = activeStep + 1;
     let newStatusIndex = statusIndex;
@@ -160,19 +115,6 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
       const newSystemBalance = systemBalance + 0.5 * servFee;
       setBalanceF(newBalanceF);
       setSystemBalance(newSystemBalance);
-      console.log(
-        "commfee:",
-        commFee,
-        "servfee:",
-        servFee,
-        "vaultbalance:",
-        vaultBalance,
-        systemBalance,
-        "f:",
-        balanceF,
-        "q:",
-        balanceQM
-      );
     }
 
     if (activeStep === 2 && !agreeStatusF) {
@@ -190,17 +132,14 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
       });
     }
 
-    // Update local context/state
     setActiveStep(newProgressIndex);
     setStatusIndex(newStatusIndex);
     setProgressIndex(newProgressIndex);
 
-    // Log current state after state updates
     console.log(
       `Updated to statusIndex: ${newStatusIndex}, progressIndex: ${newProgressIndex}`
     );
 
-    // Update the backend
     try {
       const updatedQuest = await updateQuestIndices(
         order.id,
@@ -213,15 +152,6 @@ const TrackOrderF: React.FC<{ order: Order }> = ({ order }) => {
       setProgressIndex(updatedQuest.progressIndex);
     } catch (error) {
       console.error("Failed to update quest indices:", error);
-    }
-
-    if (newProgressIndex === 5 && newStatusIndex === 3) {
-      /* await updateVault(order.id, {
-        vaultBalance: newVaultBalance,
-        commFee,
-        servFee,
-        feesDeducted: true,
-      }); */
     }
   };
 

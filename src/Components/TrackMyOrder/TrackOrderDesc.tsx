@@ -15,7 +15,7 @@ import {
   updateCanceledBy,
   updateFlightDetails,
   updateQuestIndices,
-  updateVault,
+  updateVaultBalance,
 } from "../../Services/Api";
 import { Order } from "../../Services/Interface";
 import { useContent } from "../../Hooks/ContentContext";
@@ -49,20 +49,6 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
   const textColor = useColorModeValue("gray.600", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
 
-  console.log(
-    "commfee:",
-    commFee,
-    "servfee:",
-    servFee,
-    "vaultbalance:",
-    vaultBalance,
-    systemBalance,
-    "f:",
-    balanceF,
-    "q:",
-    balanceQM
-  );
-
   const cancelQuest = async () => {
     console.log(`Canceling quest by ${accountType}`);
     setStatusIndex(2);
@@ -80,7 +66,6 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
     } else if (activeStep === 1) {
       if (accountType === "QuestMaker") {
         // Case 2
-
         newBalanceF += commFee + 0.25 * servFee;
         newSystemBalance += 0.75 * servFee;
       } else if (accountType === "Fetcher") {
@@ -139,12 +124,7 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
     try {
       await updateCanceledBy(order.id, accountType);
       await updateQuestIndices(order.id, 3, progressIndex);
-      /* await updateVault(order.id, {
-        vaultBalance: newVaultBalance,
-        commitmentFee: commFee,
-        serviceFee: servFee,
-        feesDeducted: true,
-      }); */
+      console.log("Database before on cancel", canceledBy);
       if (canceledBy !== "") {
         await updateFlightDetails({
           departureDate: "",
@@ -153,7 +133,7 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
           arrFlightNumber: "",
           alreadyThere: false,
         });
-        console.log("Database updated on cancel");
+        console.log("Database updated on cancel", canceledBy);
       }
     } catch (error) {
       console.error("Failed to cancel quest:", error);

@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Flex,
-  VStack,
-  Center,
-  Heading,
-  Text,
-  Box,
-  Button,
-} from "@chakra-ui/react";
+import { Flex, VStack, Center, Text, Box, Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import TrackOrderF from "./TrackOrderF";
@@ -18,8 +10,10 @@ import TrackOrderQM from "./TrackOrderQM";
 import {
   fetchQuestByCreatorTrackOrder,
   fetchQuestByAcceptor,
+  getVaultByQuestId,
+  createVaultEntry,
 } from "../../Services/Api";
-import { Order } from "../../Services/Interface";
+import { Order, VaultInfo } from "../../Services/Interface";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 import animationData from "../../assets/Animations/Animation - 1715875081645.json";
 
@@ -28,13 +22,39 @@ const TrackOrderPage: React.FC = () => {
     setActiveStep,
     setStatusIndex,
     setProgressIndex,
-    commFee,
-    servFee,
-    vaultBalance,
-    canceledBy,
+    setCommFee,
+    setServFee,
+    setVaultBalance,
+    balanceF,
+    balanceQM,
+    setBalanceF,
+    setBalanceQM,
+    setFeesDeducted,
   } = useOrderStatus();
   const { accountType } = useContent();
-  const [order, setOrder] = useState<Order>();
+  const [order, setOrder] = useState<Order | null>(null);
+  const [vault, setVault] = useState<VaultInfo | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0); // State variable to trigger refresh
+
+  const calculateFees = (price: number, weight: number, quantity: number) => {
+    const newCommFee = quantity * weight * 3.3;
+    const newServFee = (price * 0.5) / 5;
+    const newVaultBalance = newCommFee + newServFee;
+
+    // Update the state for consistency, though these might not be used directly in this function
+    setCommFee(newCommFee);
+    setServFee(newServFee);
+    setVaultBalance(newVaultBalance);
+
+    const newBalanceF = balanceF - newCommFee;
+    const newBalanceQM = balanceQM - newServFee;
+    setBalanceF(newBalanceF);
+    setBalanceQM(newBalanceQM);
+
+    setFeesDeducted(true);
+
+    return { newCommFee, newServFee, newVaultBalance };
+  };
 
   const loadQuestData = async () => {
     try {
@@ -64,6 +84,28 @@ const TrackOrderPage: React.FC = () => {
         console.log(
           `Context initialized with statusIndex: ${fetchedQuest.statusIndex}, progressIndex: ${fetchedQuest.progressIndex}`
         );
+
+        let vaultData = await getVaultByQuestId(fetchedQuest._id);
+        if (!vaultData) {
+          const { newCommFee, newServFee, newVaultBalance } = calculateFees(
+            fetchedQuest.itemPrice,
+            fetchedQuest.itemWeight,
+            fetchedQuest.itemQuantity
+          );
+          // Create vault if it doesn't exist
+          const createdVault = await createVaultEntry({
+            questId: fetchedQuest._id,
+            vaultBalance: newVaultBalance,
+            commitmentFee: newCommFee,
+            serviceFee: newServFee,
+            feesDeducted: true,
+          });
+          setVault(createdVault);
+          console.log("Vault created for quest:", createdVault);
+        } else {
+          setVault(vaultData);
+          console.log("Vault already exists for quest:", vaultData);
+        }
       }
     } catch (error) {
       console.error("Error loading quest data:", error);
@@ -72,7 +114,11 @@ const TrackOrderPage: React.FC = () => {
 
   useEffect(() => {
     loadQuestData();
-  }, [accountType, setStatusIndex, setActiveStep]);
+  }, [accountType, setStatusIndex, setActiveStep, refreshKey]); // Add refreshKey to dependencies
+
+  const handleRefresh = () => {
+    setRefreshKey((oldKey) => oldKey + 1); // Update state to trigger refresh
+  };
 
   const MotionBox = motion(Box);
   const MotionButton = motion(Button);
@@ -120,18 +166,12 @@ const TrackOrderPage: React.FC = () => {
     <Flex justifyContent={"center"}>
       <VStack align="stretch" maxWidth="full" m={6} spacing={6} width={"80%"}>
         {accountType === "QuestMaker" ? (
-          <TrackOrderQM order={order} />
+          <TrackOrderQM order={order} onAgree={handleRefresh} /> // Pass handleRefresh to TrackOrderQM
         ) : (
           <TrackOrderF order={order} />
         )}
         <TrackOrderDesc order={order} />
-        <Vault
-          questId={order.id}
-          commitmentFee={commFee}
-          serviceFee={servFee}
-          vaultBalance={vaultBalance}
-          canceledBy={canceledBy}
-        />
+        {vault && <Vault vault={vault} />}
       </VStack>
     </Flex>
   );

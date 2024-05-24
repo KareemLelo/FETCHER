@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { VStack, SimpleGrid, useToast } from "@chakra-ui/react";
 import MyPassport from "./MyPassport";
 import ProfileInfo from "./ProfileInfo";
@@ -39,40 +39,40 @@ const MyProfilePage = () => {
   });
   const toast = useToast();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchProfileData();
-        setProfile({
-          id: data.id,
-          name: data.name,
-          email: data.email,
-          mobileNumber: data.mobileNumber,
-          bio: data.bio,
-          passportDetails: data.passportDetails || {
-            passportNumber: "",
-            nationality: "",
-            passportExpDate: "",
-          },
-          flightDetails: data.flightDetails || {
-            departureDate: "",
-            arrivalDate: "",
-            depFlightNumber: "",
-            arrFlightNumber: "",
-            alreadyThere: false,
-          },
-        });
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to fetch profile data.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const data = await fetchProfileData();
+      setProfile({
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        mobileNumber: data.mobileNumber,
+        bio: data.bio,
+        passportDetails: data.passportDetails || {
+          passportNumber: "",
+          nationality: "",
+          passportExpDate: "",
+        },
+        flightDetails: data.flightDetails || {
+          departureDate: "",
+          arrivalDate: "",
+          depFlightNumber: "",
+          arrFlightNumber: "",
+          alreadyThere: false,
+        },
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch profile data.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [toast]);
 
@@ -84,13 +84,7 @@ const MyProfilePage = () => {
         mobile: updatedData.mobileNumber,
         bio: updatedData.bio,
       });
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        name: data.name,
-        email: data.email,
-        mobileNumber: data.mobile,
-        bio: data.bio,
-      }));
+      await fetchData();
       toast({
         title: "Profile Updated",
         description: "Your profile was successfully updated.",
@@ -118,13 +112,7 @@ const MyProfilePage = () => {
         nationality: passportData.nationality,
         passportExpDate: passportData.expirationDate,
       });
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        passportDetails: {
-          ...prevProfile.passportDetails,
-          ...data.passportDetails,
-        },
-      }));
+      await fetchData();
       toast({
         title: "Passport Updated",
         description: "Your passport details were successfully updated.",
@@ -146,10 +134,7 @@ const MyProfilePage = () => {
   const handleUpdateFlightDetails = async (flightData: FlightUpdateData) => {
     try {
       const data = await updateFlightDetails(flightData);
-      setProfile((prevProfile) => ({
-        ...prevProfile,
-        flightDetails: { ...prevProfile.flightDetails, ...data },
-      }));
+      await fetchData();
       toast({
         title: "Flight Details Updated",
         description: "Your flight details were successfully updated.",

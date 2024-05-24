@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SimpleGrid,
   Heading,
@@ -8,7 +8,6 @@ import {
   useToast,
   Button,
   Center,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import QuestCards from "./QuestCardF";
 import { fetchQuests, sendAcceptedQuest } from "../../Services/Api";
