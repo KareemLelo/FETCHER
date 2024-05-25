@@ -171,6 +171,55 @@ export const updateFlightDetails = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    const { departureDate, arrivalDate, alreadyThere } = req.body;
+
+    const passportExpDate = new Date(user.passportDetails.passportExpDate);
+    const sixMonthsBeforeExp = new Date(passportExpDate);
+    sixMonthsBeforeExp.setMonth(passportExpDate.getMonth() - 6);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to the start of the day
+    const minAllowedDate = new Date(today);
+    minAllowedDate.setDate(today.getDate() + 1); // Set to one day after today
+
+    // Check if passport expiration date is at least 6 months from now
+    if (new Date() > sixMonthsBeforeExp) {
+      return res.status(400).json({ message: 'Passport should be valid for at least 6 months from today' });
+    }
+
+    // If not "already there", check dates
+    if (!alreadyThere) {
+      const depDate = new Date(departureDate);
+      const arrDate = new Date(arrivalDate);
+
+      // Ensure departure and arrival dates are at least one day after today
+      if (depDate < minAllowedDate || arrDate < minAllowedDate) {
+        return res.status(400).json({ message: 'Departure and arrival dates must be at least one day after today' });
+      }
+
+      // Ensure departure and arrival dates are before passport expiration date
+      if (depDate >= passportExpDate || arrDate >= passportExpDate) {
+        return res.status(400).json({ message: 'Flight dates must be before passport expiration date' });
+      }
+
+      // Ensure arrival date is after departure date
+      if (arrDate <= depDate) {
+        return res.status(400).json({ message: 'Arrival date must be after departure date' });
+      }
+
+    } else {
+      // If the user is already there, only the arrival date needs to be checked
+      const arrDate = new Date(arrivalDate);
+      
+      if (arrDate < minAllowedDate) {
+        return res.status(400).json({ message: 'Arrival date must be at least one day after today' });
+      }
+
+      if (arrDate >= passportExpDate) {
+        return res.status(400).json({ message: 'Arrival date must be before passport expiration date' });
+      }
+    }
+
     // Update flight details
     user.flightDetails = {
       ...user.flightDetails,
@@ -178,7 +227,6 @@ export const updateFlightDetails = async (req, res) => {
     };
 
     await user.save();
-    
 
     res.status(200).json({
       message: 'Flight details updated successfully',
