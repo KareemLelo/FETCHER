@@ -105,6 +105,39 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+export const getTrackOrderUserProfile = async (req, res) => {
+  try {
+    const user = await User.findByIdLean(req.params.id);
+    if (user) {
+      const userProfile = {
+        id: user._id,
+        name: user.firstName + " " + user.lastName,
+        email: user.email,
+        mobileNumber: user.mobile,
+        bio: user.bio,
+        passportDetails: user.passportDetails || {
+          passportNumber: "",
+          nationality: "",
+          passportExpDate: ""
+        },
+        flightDetails: user.flightDetails || {
+          departureDate: "",
+          arrivalDate: "",
+          departureFlightNumber: "",
+          arrivalFlightNumber: "",
+          alreadyThere: false
+        }
+      };
+      res.json(userProfile);
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred during the process" });
+  }
+};
+
 export const updateUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);

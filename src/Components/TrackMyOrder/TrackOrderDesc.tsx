@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -7,17 +7,25 @@ import {
   Text,
   Icon,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
-import { FaBox, FaDollarSign, FaShippingFast, FaBan } from "react-icons/fa";
+import {
+  FaBox,
+  FaDollarSign,
+  FaShippingFast,
+  FaBan,
+  FaUser,
+} from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useOrderStatus } from "../../Hooks/OrderStatusContext";
 import {
   updateCanceledBy,
   updateFlightDetails,
   updateQuestIndices,
-  updateVaultBalance,
+  fetchProfileData,
+  fetchTrackOrderProfileData,
 } from "../../Services/Api";
-import { Order } from "../../Services/Interface";
+import { Order, Profile } from "../../Services/Interface";
 import { useContent } from "../../Hooks/ContentContext";
 
 const MotionBox = motion(Box);
@@ -44,10 +52,26 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
     agreeStatusQM,
   } = useOrderStatus();
   const { accountType } = useContent();
+  const [userProfile, setUserProfile] = useState<Profile | null>(null);
 
   const cardBg = useColorModeValue("brand.background", "brand.primary");
   const textColor = useColorModeValue("gray.600", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const userId =
+          accountType === "QuestMaker" ? order.acceptedBy : order.createdBy;
+        const profile = await fetchTrackOrderProfileData(userId);
+        setUserProfile(profile);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, [accountType, order]);
 
   const cancelQuest = async () => {
     console.log(`Canceling quest by ${accountType}`);
@@ -60,22 +84,18 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
     let newSystemBalance = systemBalance;
 
     if (activeStep === 0) {
-      // Case 1
       newBalanceF += commFee;
       newBalanceQM += servFee;
     } else if (activeStep === 1) {
       if (accountType === "QuestMaker") {
-        // Case 2
         newBalanceF += commFee + 0.25 * servFee;
         newSystemBalance += 0.75 * servFee;
       } else if (accountType === "Fetcher") {
-        // Case 2.1
         newBalanceQM += servFee;
         newSystemBalance += commFee;
       }
     } else if (activeStep === 2) {
       if (accountType === "QuestMaker") {
-        // Case 4
         if (agreeStatusQM) {
           newBalanceF += commFee + 0.5 * servFee;
           newSystemBalance += 0.5 * servFee;
@@ -95,12 +115,10 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
         }
       }
     } else if (activeStep === 4 || activeStep === 3) {
-      // Case 5
       newBalanceQM += order.price + servFee;
       newSystemBalance += commFee;
     }
 
-    // Update local state
     setVaultBalance(newVaultBalance);
     setBalanceF(newBalanceF);
     setBalanceQM(newBalanceQM);
@@ -120,7 +138,6 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
       balanceQM
     );
 
-    // Update the backend
     try {
       await updateCanceledBy(order.id, accountType);
       await updateQuestIndices(order.id, 3, progressIndex);
@@ -155,57 +172,101 @@ const TrackOrderDesc: React.FC<{ order: Order }> = ({ order }) => {
       exit={{ y: 20, opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Flex alignItems="center" mb={2}>
-        <Icon as={FaBox} w={5} h={5} color={textColor} mr={2} />
-        <Text fontWeight="bold" color={textColor}>
-          Order Summary
-        </Text>
+      <Flex direction={{ base: "column", md: "row" }} justify="space-between">
+        <Box flex={1} mr={{ md: 5 }}>
+          <Flex alignItems="center" mb={2}>
+            <Icon as={FaBox} w={5} h={5} color={textColor} mr={2} />
+            <Text fontWeight="bold" color={textColor}>
+              Order Summary
+            </Text>
+          </Flex>
+          <Divider mb={4} />
+          <Flex direction="column">
+            <Flex alignItems="center">
+              <Icon as={FaBox} w={4} h={4} color={textColor} mr={2} />
+              <Text color={textColor}>Item: {order.name}</Text>
+            </Flex>
+            <Divider my={3} />
+            <Flex alignItems="center">
+              <Icon as={FaDollarSign} w={4} h={4} color={textColor} mr={2} />
+              <Text color={textColor}>Price: {order.price}</Text>
+            </Flex>
+            <Divider my={3} />
+            <Flex alignItems="center">
+              <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
+              <Text color={textColor}>Quantity: {order.quantity}</Text>
+            </Flex>
+            <Divider my={3} />
+            <Flex alignItems="center">
+              <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
+              <Text color={textColor}>Weight: {order.weight}kg</Text>
+            </Flex>
+            <Divider my={3} />
+            <Flex alignItems="center">
+              <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
+              <Text color={textColor}>Direction: {order.direction}</Text>
+            </Flex>
+            <Divider my={3} />
+            <Flex alignItems="center">
+              <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
+              <Text color={textColor}>Category: {order.category}</Text>
+            </Flex>
+            <Divider my={3} />
+          </Flex>
+        </Box>
+        <Box flex={1}>
+          <Flex alignItems="center" mb={2}>
+            <Icon as={FaUser} w={5} h={5} color={textColor} mr={2} />
+            <Text fontWeight="bold" color={textColor}>
+              User Details
+            </Text>
+          </Flex>
+          <Divider mb={4} />
+          {userProfile && (
+            <Flex direction="column">
+              <Text color={textColor}>Name: {userProfile.name}</Text>
+              <Divider my={3} />
+              <Text color={textColor}>Email: {userProfile.email}</Text>
+              <Divider my={3} />
+              <Text color={textColor}>Mobile: {userProfile.mobileNumber}</Text>
+              {userProfile.flightDetails.depFlightNumber && (
+                <>
+                  <Divider my={3} />
+                  <Text color={textColor}>
+                    Departure Date:{" "}
+                    {new Date(
+                      userProfile.flightDetails.departureDate
+                    ).toLocaleDateString()}
+                  </Text>
+                </>
+              )}
+              {userProfile.flightDetails.arrFlightNumber && (
+                <>
+                  <Divider my={3} />
+                  <Text color={textColor}>
+                    Arrival Date:{" "}
+                    {new Date(
+                      userProfile.flightDetails.arrivalDate
+                    ).toLocaleDateString()}
+                  </Text>
+                </>
+              )}
+            </Flex>
+          )}
+        </Box>
       </Flex>
-      <Divider mb={4} />
-      <Flex direction="column">
-        <Flex alignItems="center">
-          <Icon as={FaBox} w={4} h={4} color={textColor} mr={2} />
-          <Text color={textColor}>Item: {order.name}</Text>
-        </Flex>
-        <Divider my={3} />
-        <Flex alignItems="center">
-          <Icon as={FaDollarSign} w={4} h={4} color={textColor} mr={2} />
-          <Text color={textColor}>Price: {order.price}</Text>
-        </Flex>
-        <Divider my={3} />
-        <Flex alignItems="center">
-          <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
-          <Text color={textColor}>Quantity: {order.quantity}</Text>
-        </Flex>
-        <Divider my={3} />
-        <Flex alignItems="center">
-          <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
-          <Text color={textColor}>Weight: {order.weight}kg</Text>
-        </Flex>
-        <Divider my={3} />
-        <Flex alignItems="center">
-          <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
-          <Text color={textColor}>Direction: {order.direction}</Text>
-        </Flex>
-        <Divider my={3} />
-        <Flex alignItems="center">
-          <Icon as={FaShippingFast} w={4} h={4} color={textColor} mr={2} />
-          <Text color={textColor}>Category: {order.category}</Text>
-        </Flex>
-        <Divider my={3} />
-        <Flex justifyContent="center" mt={4}>
-          <MotionButton
-            colorScheme="red"
-            onClick={cancelQuest}
-            isDisabled={isComplete || canceledBy !== ""}
-            w="150px"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Icon as={FaBan} mr={2} />
-            Cancel
-          </MotionButton>
-        </Flex>
+      <Flex justifyContent="center" mt={4}>
+        <MotionButton
+          colorScheme="red"
+          onClick={cancelQuest}
+          isDisabled={isComplete || canceledBy !== ""}
+          w="150px"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Icon as={FaBan} mr={2} />
+          Cancel
+        </MotionButton>
       </Flex>
     </MotionBox>
   );

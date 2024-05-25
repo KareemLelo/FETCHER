@@ -13,7 +13,7 @@ import { InfoIcon, CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 const TermsAndConditions: React.FC = () => {
   const [accepted, setAccepted] = useState(false);
-  const { accountType, setContent } = useContent();
+  const { accountType } = useContent();
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccepted(event.target.checked);

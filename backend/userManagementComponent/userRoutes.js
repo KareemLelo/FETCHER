@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, getUserProfile, updateUserProfile, updatePassportDetails, updateFlightDetails, updateAlreadyThere, acceptQuest} from './userController.js';
+import { registerUser, loginUser, getUserProfile, updateUserProfile, updatePassportDetails, updateFlightDetails, updateAlreadyThere, acceptQuest,getTrackOrderUserProfile} from './userController.js';
 import { addBankAccount, getBankAccount, updateBankAccount } from './userController.js';
 import validateRegistration from '../middlewares/validateRegistrationMiddleware.js'; 
 import validateLogin from '../middlewares/validateLoginMiddleware.js'; 
@@ -21,6 +21,7 @@ router.post('/login',validateLogin, loginUser);
 //protected routes
 router.get('/profile/me', protectRoutes, getUserProfile);
 router.put('/profile/me', protectRoutes, validateProfileUpdate, updateUserProfile);
+router.get('/profile/:id', protectRoutes,getTrackOrderUserProfile)
 router.put('/profile/passport', protectRoutes, validatePassportDetails, updatePassportDetails);
 router.put('/profile/flightDetails', protectRoutes, validateFlightDetails, updateFlightDetails);
 router.put('/profile/alreadyThere', protectRoutes, validateAlreadyThere, updateAlreadyThere);

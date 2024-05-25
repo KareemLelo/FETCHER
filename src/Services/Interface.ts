@@ -8,7 +8,7 @@ export interface Quest {
   itemPrice: number;
   itemLink: string;
   createdBy: string; 
-  acceptedBy?: string; 
+  acceptedBy: string; 
   statusIndex: number;
   progressIndex: number;
 }
@@ -81,6 +81,8 @@ export interface Order {
   weight: number;
   direction: string;
   category: string;
+  createdBy:string;
+  acceptedBy:string
 }
 
 export interface VaultInfo {

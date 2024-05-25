@@ -10,6 +10,7 @@ import AvailableQuestPage from "../Components/Fetcher/AvailableQuests/AvailableQ
 import CreditCardGrid from "../Components/MyCreditCard/CreditCardPage";
 import QuestManager from "../Components/QuestMaker/Quests/QuestManager";
 import TermsAndConditions from "../Components/Terms&Cond";
+import OrderHistory from "../Components/OrderHistory/OrderHistory";
 
 const MainContent: React.FC = () => {
   const CheckLogedin = () => {
@@ -47,6 +48,8 @@ const MainContent: React.FC = () => {
         return <TrackOrderPage />;
       case "Terms&Co":
         return <TermsAndConditions />;
+      case "Order History":
+        return <OrderHistory />;
       default:
         // This will handle undefined content state, showing home based on role
         return CheckLogedin();

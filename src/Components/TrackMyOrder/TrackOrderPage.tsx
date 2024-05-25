@@ -75,7 +75,10 @@ const TrackOrderPage: React.FC = () => {
           weight: fetchedQuest.itemWeight,
           direction: fetchedQuest.itemDirection,
           category: fetchedQuest.itemCategory,
+          createdBy: fetchedQuest.createdBy,
+          acceptedBy: fetchedQuest.acceptedBy,
         };
+
         setOrder(transformedQuest);
 
         setStatusIndex(fetchedQuest.statusIndex);

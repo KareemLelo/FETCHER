@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {Quest} from './Interface';
+import {Profile, Quest} from './Interface';
 
 const API_URL = "http://localhost:5050";
 /* const API_URL = "https://fetcher-backends.onrender.com" */
@@ -23,6 +23,15 @@ api.interceptors.request.use(config => {
 export const fetchProfileData = async (): Promise<any> => {
   try {
     const response = await api.get(`/profile/me`);
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data.message || "Error fetching profile");
+  }
+};
+
+export const fetchTrackOrderProfileData = async (userId: string): Promise<Profile> => {
+  try {
+    const response = await api.get(`/profile/${userId}`);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data.message || "Error fetching profile");
@@ -292,5 +301,24 @@ export const updateVaultBalance = async (questId: string, vaultBalance: number) 
       console.error('Unexpected error:', error);
       throw new Error('An unexpected error occurred while updating the vault balance.');
     }
+  }
+};
+
+
+export const fetchAllQuestByCreator = async (): Promise<Quest[]> => {
+  try {
+    const response = await api.get('/allQuestsByCreator');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data.message || "Error fetching quests by creator");
+  }
+};
+
+export const fetchAllQuestByAcceptor = async (): Promise<Quest[]> => {
+  try {
+    const response = await api.get('/allQuestsByAcceptor');
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data.message || "Error fetching quests by acceptor");
   }
 };

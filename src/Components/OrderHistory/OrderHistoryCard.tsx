@@ -19,21 +19,17 @@ import {
   FaMapMarkedAlt,
 } from "react-icons/fa";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Quest } from "../../../Services/Interface";
+import { Quest } from "../../Services/Interface";
 import { motion } from "framer-motion";
-import { useOrderStatus } from "../../../Hooks/OrderStatusContext";
 
 interface QuestCardProps {
   quest: Quest;
 }
 
-const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
+const OrderHistoryCard: React.FC<QuestCardProps> = ({ quest }) => {
   const cardBg = useColorModeValue("white", "gray.700");
   const textColor = useColorModeValue("gray.800", "white");
   const borderColor = useColorModeValue("gray.200", "gray.600");
-  const hoverBg = useColorModeValue("gray.50", "gray.600");
-
-  const hook = useOrderStatus();
 
   return (
     <Flex justifyContent="center" mt={10}>
@@ -126,4 +122,4 @@ const QuestCard: React.FC<QuestCardProps> = ({ quest }) => {
   );
 };
 
-export default QuestCard;
+export default OrderHistoryCard;
