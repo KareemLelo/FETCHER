@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import "@fontsource/poppins"; // Ensure Poppins font is applied globally in your index.css or Chakra theme
-import NavBar from "./Components/NavBar";
+import NavBar from "./Components/NavBarComponents/NavBar";
 import MainContent from "./Hooks/MainContent";
 import { ContentContextProvider } from "./Hooks/ContentContext";
 import SidebarAppear from "./SidebarAppear";

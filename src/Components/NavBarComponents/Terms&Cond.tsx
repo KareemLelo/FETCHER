@@ -8,7 +8,7 @@ import {
   VStack,
   Icon,
 } from "@chakra-ui/react";
-import { useContent } from "../Hooks/ContentContext";
+import { useContent } from "../../Hooks/ContentContext";
 import { InfoIcon, CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
 
 const TermsAndConditions: React.FC = () => {

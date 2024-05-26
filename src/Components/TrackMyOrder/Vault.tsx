@@ -33,8 +33,8 @@ const Vault: React.FC<{ vault: VaultInfo }> = ({ vault }) => {
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
+        fontSize={{ base: "sm", md: "md" }}
       >
-        {/* Vault Animation */}
         <Box
           position="absolute"
           top="40%"
@@ -59,18 +59,22 @@ const Vault: React.FC<{ vault: VaultInfo }> = ({ vault }) => {
           align="flex-start"
           zIndex="2"
         >
-          <Text color={textColor} fontSize="xl" fontWeight="bold">
+          <Text
+            color={textColor}
+            fontSize={{ base: "md", md: "xl" }}
+            fontWeight="bold"
+          >
             <Icon as={FaDollarSign} mr={2} />
             Total Amount: {vault.vaultBalance}
           </Text>
-          <Text color={textColor} fontSize="md">
+          <Text color={textColor} fontSize={{ base: "sm", md: "md" }}>
             Commitment Fee: {vault.commitmentFee}
           </Text>
-          <Text color={textColor} fontSize="md">
+          <Text color={textColor} fontSize={{ base: "sm", md: "md" }}>
             Service Fee: {vault.serviceFee}
           </Text>
           {canceledBy && (
-            <Text color={textColor} fontSize="md">
+            <Text color={textColor} fontSize={{ base: "sm", md: "md" }}>
               Canceled By: {canceledBy}
             </Text>
           )}
@@ -83,9 +87,9 @@ const Vault: React.FC<{ vault: VaultInfo }> = ({ vault }) => {
           left="6"
           color={textColor}
           fontSize="sm"
-          fontWeight="medium"
+          fontWeight={"bold"}
         >
-          Quest ID: {vault.questId}
+          Quest ID: {vault.questId.substring(0, 5)}
         </Text>
       </MotionBox>
     </Flex>

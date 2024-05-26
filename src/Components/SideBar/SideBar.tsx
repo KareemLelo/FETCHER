@@ -20,9 +20,9 @@ import { IoIosLogOut } from "react-icons/io";
 import { RiFileUserLine } from "react-icons/ri";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useContent } from "../Hooks/ContentContext";
+import { useContent } from "../../Hooks/ContentContext";
 import Lottie from "lottie-react";
-import animationData from "../assets/Animations/Animation - 1716029187943 (1).json";
+import animationData from "../../assets/Animations/Animation - 1716029187943 (1).json";
 
 const MotionBox = motion(Box);
 const MotionListItem = motion(ListItem);

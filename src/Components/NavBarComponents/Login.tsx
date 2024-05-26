@@ -12,10 +12,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { login as apiLogin } from "../Services/Api"; // Ensure path is correct
-import { useContent } from "../Hooks/ContentContext";
+import { login as apiLogin } from "../../Services/Api"; // Ensure path is correct
+import { useContent } from "../../Hooks/ContentContext";
 import Lottie from "lottie-react";
-import loginAnimation from "../assets/Animations/Animation - 1715715544544 (1).json";
+import loginAnimation from "../../assets/Animations/Animation - 1715715544544 (1).json";
 
 interface LoginDetails {
   username: string;

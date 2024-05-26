@@ -6,6 +6,7 @@ import {
   Icon,
   Divider,
   HStack,
+  VStack,
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -36,7 +37,6 @@ const TrackOrderQM: React.FC<{ order: Order; onAgree: () => void }> = ({
     agreeStatusQM,
     statusIndex,
     setVaultBalance,
-    vaultBalance,
     balanceQM,
     setBalanceQM,
     canceledBy,
@@ -93,20 +93,28 @@ const TrackOrderQM: React.FC<{ order: Order; onAgree: () => void }> = ({
         <Lottie animationData={animationData} loop autoplay />
       </Flex>
       <Divider mb={4} />
-      <HStack spacing={8} justify="center">
+      <HStack
+        spacing={{ base: 4, md: 8 }}
+        justify="center"
+        wrap={{ base: "wrap", md: "nowrap" }}
+      >
         {statusSteps.map((step, index) => (
-          <Flex key={index} align="center" direction="column">
+          <VStack key={index} align="center" spacing={1}>
             <Icon
               as={step.icon}
-              boxSize="24px"
+              boxSize={{ base: "20px", md: "24px" }}
               color={
                 index <= activeStep ? `${step.colorScheme}.400` : "gray.400"
               }
             />
-            <Text fontSize="xs" color={textColor} mt={2} textAlign="center">
+            <Text
+              fontSize={{ base: "xs", md: "sm" }}
+              color={textColor}
+              textAlign="center"
+            >
               {step.label}
             </Text>
-          </Flex>
+          </VStack>
         ))}
       </HStack>
       {activeStep === 2 && (

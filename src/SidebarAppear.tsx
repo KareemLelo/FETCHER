@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import SideBar from "./Components/SideBar";
+import SideBar from "./Components/SideBar/SideBar";
 import { useContent } from "./Hooks/ContentContext";
 
 const SidebarAppear: React.FC = () => {

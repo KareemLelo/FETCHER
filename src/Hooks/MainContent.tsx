@@ -2,14 +2,14 @@ import React from "react";
 import { useContent } from "../Hooks/ContentContext";
 import HomeContentF from "../Components/Fetcher/HomeContentF";
 import HomeContentQM from "../Components/QuestMaker/HomeContentQM";
-import Register from "../Components/SignUp";
-import Login from "../Components/Login";
+import Register from "../Components/NavBarComponents/SignUp";
+import Login from "../Components/NavBarComponents/Login";
 import MyProfilePage from "../Components/MyProfile/MyProfilePage";
 import TrackOrderPage from "../Components/TrackMyOrder/TrackOrderPage";
 import AvailableQuestPage from "../Components/Fetcher/AvailableQuests/AvailableQuestPage";
 import CreditCardGrid from "../Components/MyCreditCard/CreditCardPage";
 import QuestManager from "../Components/QuestMaker/Quests/QuestManager";
-import TermsAndConditions from "../Components/Terms&Cond";
+import TermsAndConditions from "../Components/NavBarComponents/Terms&Cond";
 import OrderHistory from "../Components/OrderHistory/OrderHistory";
 
 const MainContent: React.FC = () => {
