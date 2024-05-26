@@ -1,4 +1,8 @@
 import express from "express";
+import fs from 'fs';
+import https from 'https';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import mongoose from "mongoose";
 import userRoutes from './userManagementComponent/userRoutes.js';
 import questRoutes from './questManagementComponent/questRoutes.js';
@@ -33,14 +37,17 @@ app.use('/',vaultRoutes);
 
 const PORT = process.env.PORT || 5050;
 
-app.get('/hello', (req, res) => {
-  res.send('Hello, World!');
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const startServer = async () => {
-  app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`);
-  });
+const keyPath = process.env.SSL_KEY_FILE;
+const certPath = process.env.SSL_CRT_FILE;
+
+const options = {
+  key: fs.readFileSync(path.join(__dirname, keyPath)),
+  cert: fs.readFileSync(path.join(__dirname, certPath))
 };
 
-startServer();
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`Server running on https://localhost:${PORT}`);
+});
